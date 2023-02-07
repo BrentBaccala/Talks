@@ -527,6 +527,7 @@ sage: roots_to_rs(N)
 
 \begin{frame}[fragile]
 \frametitle{Hydrogen ansatz 5}
+\small
 
 \centerline{$B = r + x$}
 \vskip 20pt
@@ -540,9 +541,12 @@ sage: roots_to_rs(N)
 
 \centerline{$-\frac{1}{2} \left(\frac{\delta^2}{\delta^2 x} + \frac{\delta^2}{\delta^2 y} + \frac{\delta^2}{\delta^2 z}\right) \Psi - \frac{1}{r}\Psi = 0$}
 
-\centerline{$\frac{\delta}{\delta x} \Psi = \frac{\delta B}{\delta x} \frac{\delta}{\delta B}  \Psi = \left(\frac{x}{r} + 1\right)\frac{\delta}{\delta B}  \Psi$}
+\centerline{$\frac{\delta}{\delta x} \Psi = \frac{\delta B}{\delta x} \frac{\delta}{\delta B}  \Psi = \left(\frac{x}{r} + 1\right)\Psi' \qquad \frac{\delta}{\delta y} \Psi = \frac{y}{r} \Psi' $}
 
-\centerline{$\frac{\delta^2}{\delta^2 x} \Psi = \frac{\delta}{\delta x} \left(\left(\frac{x}{r} + 1\right) \Psi'\right)$}
+\centerline{$\frac{\delta^2}{\delta^2 x} \Psi = \frac{\delta}{\delta x} \left(\left(\frac{x + r}{r}\right) \Psi'\right) = \left(\frac{r(1 + \frac{x}{r}) - \frac{x}{r}(r+x)}{r^2} \Psi' + \left(\frac{x}{r} + 1\right)\Psi''\right)$}
+\centerline{$= \left(\frac{r(r + x) - x(r+x)}{r^3} \Psi' + \left(\frac{x}{r} + 1\right)\Psi''\right) = \left(\frac{r^2 - x^2}{r^3} \Psi' + \left(\frac{x}{r} + 1\right)\Psi''\right)$}
+
+\centerline{$\frac{\delta^2}{\delta^2 y} \Psi = \frac{\delta}{\delta y} \left(\left(\frac{y}{r}\right) \Psi'\right) = \left(\frac{r - \frac{y}{r}(y)}{r^2} \Psi' + \left(\frac{y}{r}\right)\Psi''\right)$}
 
 
 \end{frame}
