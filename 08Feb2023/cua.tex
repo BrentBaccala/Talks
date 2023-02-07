@@ -53,6 +53,96 @@ While Buchberger's algorithm to construct Gr\"obner bases has justifiably been t
 \end{frame}
 
 \begin{frame}
+\begin{semiverbatim}
+R.<x,y,z,l> = PolynomialRing(QQ, order='lex')
+
+f = x\^{}3 + 2*x*y*z - z\^{}2
+
+g = x\^{}2 + y\^{}2 + z\^{}2 - 1
+
+I = ideal([R(diff(f+l*g, v)) for v in (x,y,z,l)])
+
+I.groebner\_basis()
+
+$\left[x + y z + \frac{352}{221} l^{5} - \frac{10604}{3315} l^{4} - \frac{1596}{1105} l^{3} + \frac{7953}{1105} l^{2} - \frac{13747}{3315} l,\allowbreak y^{2} + \frac{4448}{3315} l^{5} - \frac{22556}{9945} l^{4} - \frac{25232}{9945} l^{3} + \frac{55171}{9945} l^{2} - \frac{1198}{1105} l - 1, y z l - y z - \frac{432}{1105} l^{5} + \frac{1398}{1105} l^{4} + \frac{6}{1105} l^{3} - \frac{6291}{2210} l^{2} + \frac{4347}{2210} l, y l^{2} - y l - \frac{1}{5} z l^{2} - \frac{1}{5} z l + \frac{2}{5} z, z^{2} - \frac{192}{221} l^{5} + \frac{1928}{1105} l^{4} + \frac{2076}{1105} l^{3} - \frac{4338}{1105} l^{2} + \frac{189}{1105} l, z l^{3} - \frac{53}{24} z l^{2} + \frac{25}{24} z l + \frac{1}{6} z, l^{6} - \frac{53}{24} l^{5} - \frac{29}{24} l^{4} + \frac{493}{96} l^{3} - \frac{75}{32} l^{2} - \frac{3}{8} l\right]$
+
+sage: I.groebner\_basis()[-1])
+
+$l^{6} - \frac{53}{24} l^{5} - \frac{29}{24} l^{4} + \frac{493}{96} l^{3} - \frac{75}{32} l^{2} - \frac{3}{8} l$
+
+sage: I.groebner\_basis()[-1].numerator()
+
+$96 l^{6} - 212 l^{5} - 116 l^{4} + 493 l^{3} - 225 l^{2} - 36 l$
+
+sage: I.groebner\_basis()[-1].numerator().factor()
+
+$l \cdot (l - 1) \cdot (2 l - 3) \cdot (2 l + 3) \cdot (3 l - 4) \cdot (8 l + 1)$
+
+sage: I.variety()
+
+$\left[\text{\texttt{{\char`\{}l:{ }0,{ }z:{ }0,{ }y:{ }1,{ }x:{ }0{\char`\}}}}, \text{\texttt{{\char`\{}l:{ }0,{ }z:{ }0,{ }y:{ }{-}1,{ }x:{ }0{\char`\}}}}, \text{\texttt{{\char`\{}l:{ }1,{ }z:{ }1,{ }y:{ }0,{ }x:{ }0{\char`\}}}}, \text{\texttt{{\char`\{}l:{ }1,{ }z:{ }{-}1,{ }y:{ }0,{ }x:{ }0{\char`\}}}}, \text{\texttt{{\char`\{}l:{ }3/2,{ }z:{ }0,{ }y:{ }0,{ }x:{ }{-}1{\char`\}}}}, \text{\texttt{{\char`\{}l:{ }{-}3/2,{ }z:{ }0,{ }y:{ }0,{ }x:{ }1{\char`\}}}}, \text{\texttt{{\char`\{}l:{ }4/3,{ }z:{ }2/3,{ }y:{ }1/3,{ }x:{ }{-}2/3{\char`\}}}}, \text{\texttt{{\char`\{}l:{ }4/3,{ }z:{ }{-}2/3,{ }y:{ }{-}1/3,{ }x:{ }{-}2/3{\char`\}}}}\right]$
+
+sage: [f.subs(dict(pt)) for pt in I.variety()]
+
+$\left[0, 0, -1, -1, -1, 1, -\frac{28}{27}, -\frac{28}{27}\right]$
+
+
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}
+
+\begin{semiverbatim}
+\scriptsize
+\textcolor{blue}{sage:} R=PolynomialRing(QQ, names=[f'x\{i\}' for i in range(1,9)], order='lex')
+
+\textcolor{blue}{sage:} edges = [(1,2), (1,5), (1,6), (2,3), (2,4), (2,8),
+
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \        (3,4), (3,8), (4,5), (4,7), (5,6), (6,7), (7,8)]
+
+
+\textcolor{blue}{sage:} set1 = [g\^{}3 - 1 for g in R.gens()]
+
+$\left[x_{1}^{3} - 1, x_{2}^{3} - 1, x_{3}^{3} - 1, x_{4}^{3} - 1, x_{5}^{3} - 1, x_{6}^{3} - 1, x_{7}^{3} - 1, x_{8}^{3} - 1\right]$
+
+
+\textcolor{blue}{sage:} set2 = [R.gen(i-1)\^{}2 + R.gen(i-1)*R.gen(j-1) + R.gen(j-1)\^{}2 for i,j in edges]
+$\left[x_{1}^{2} + x_{1} x_{2} + x_{2}^{2}, x_{1}^{2} + x_{1} x_{5} + x_{5}^{2}, x_{1}^{2} + x_{1} x_{6} + x_{6}^{2}, x_{2}^{2} + x_{2} x_{3} + x_{3}^{2}, x_{2}^{2} + x_{2} x_{4} + x_{4}^{2}, x_{2}^{2} + x_{2} x_{8} + x_{8}^{2}, x_{3}^{2} + x_{3} x_{4} + x_{4}^{2}, x_{3}^{2} + x_{3} x_{8} + x_{8}^{2}, x_{4}^{2} + x_{4} x_{5} + x_{5}^{2}, x_{4}^{2} + x_{4} x_{7} + x_{7}^{2}, x_{5}^{2} + x_{5} x_{6} + x_{6}^{2}, x_{6}^{2} + x_{6} x_{7} + x_{7}^{2}, x_{7}^{2} + x_{7} x_{8} + x_{8}^{2}\right]$
+
+\textcolor{blue}{sage:} I=ideal(set1,set2)
+
+\textcolor{blue}{sage:} I.groebner\_basis()
+
+\textcolor{blue}{sage:} I.variety()
+
+\textcolor{blue}{sage:} R=PolynomialRing(QQbar, names=[f'x\{i\}' for i in range(1,9)], order='lex')
+
+\textcolor{blue}{sage:} set1 = [g\^{}3 - 1 for g in R.gens()]
+
+\textcolor{blue}{sage:} set2 = [R.gen(i-1)\^{}2 + R.gen(i-1)*R.gen(j-1) + R.gen(j-1)\^{}2 for i,j in edges]
+
+\textcolor{blue}{sage:} I = R.ideal(set1 + set2)
+
+\textcolor{blue}{sage:} I.groebner\_basis()
+
+\textcolor{blue}{sage:} I.variety()
+
+\textcolor{blue}{sage:} QQbar.options.display\_format = 'radical'
+
+\textcolor{blue}{sage:} len(I.variety())
+
+8
+
+\textcolor{blue}{sage:} I.variety()[0]
+
+$\text{\texttt{{\char`\{}x8:{ }1,{ }x7:{ }{-}1/2*I*sqrt(3){ }{-}{ }1/2,{ }x6:{ }1,{ }x5:{ }{-}1/2*I*sqrt(3){ }{-}{ }1/2,{ }x4:{ }1,{ }x3:{ }1/2*I*sqrt(3){ }{-}{ }1/2,{ }x2:{ }{-}1/2*I*sqrt(3){ }{-}{ }1/2,{ }x1:{ }1/2*I*sqrt(3){ }{-}{ }1/2{\char`\}}}}$
+
+\end{semiverbatim}
+
+
+\end{frame}
+
+\begin{frame}
 
 \begin{exampleblock}{Learning a performance metric of Buchberger's algorithm
 
@@ -172,6 +262,153 @@ Experimental Mathematics, 22:1, 38-50, DOI: 10.1080/10586458.2013.737640
 \end{frame}
 
 \begin{frame}
+\frametitle{Hybrid numerical/symbolic techniques}
+\begin{itemize}
+\item Gr\"obner bases are computed using exact (integer) arithmetic
+\item The obvious alternative: a numerical technique, but we lose exactness (or do we?)
+\item {\it Witness points} are approximate solutions accurate enough to find exact solutions
+\item "Exactness recovery algorithms" such as LLL
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\begin{semiverbatim}
+\small
+x = 0.464918758265008
+
+y = 0.5179110625786596
+
+z = 0.7180659297529489
+
+
+
+L = [a for a in (1,x,y,z,x\^{}2,y\^{}2,z\^{}2,x*y,x*z,y*z)]
+
+
+$\begin{array}{r}
+1.00000000000000 \\
+0.464918758265008 \\
+0.517911062578660 \\
+0.718065929752949 \\
+0.216149451786677 \\
+0.268231868741356 \\
+0.515618679471967 \\
+0.240786568105781 \\
+0.333842320413149 \\
+0.371894288679883
+\end{array}
+$
+
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}
+\begin{semiverbatim}
+\small
+
+def lindepmat(L,N):
+
+\ \ \ \ return matrix(ZZ,[[1 if i==j else 0
+
+\ \ \ \ \ \ \ \ \ \ \ \ \ \   for i in [0..len(L)-1]] + [round(N*L[j])]
+
+\ \ \ \ \ \ \ \ \ \ \ \ \ \   for j in [0..len(L)-1]])
+
+{\tiny {\tt http://people.math.sfu.ca/\~{}summerschool/summer\_school\_2014/LLL\_sage\_computations.html}}
+
+
+
+M = lindepmat(L,10\^{}13)
+
+
+$\left(\begin{array}{rrrrrrrrrrr}
+1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 10000000000000 \\
+0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 4649187582650 \\
+0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 5179110625787 \\
+0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 7180659297529 \\
+0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 2161494517867 \\
+0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 2682318687414 \\
+0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 5156186794720 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 2407865681058 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 3338423204131 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 3718942886799
+\end{array}\right)
+$
+
+\end{semiverbatim}
+\end{frame}
+
+
+\begin{frame}
+\begin{semiverbatim}
+\small
+
+M.LLL()
+
+
+$\left(\begin{array}{rrrrrrrrrrr}
+-1 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 0 & 1 \\
+4 & -2 & -5 & -11 & -4 & -9 & 16 & -2 & 11 & -2 & -1 \\
+2 & -3 & 3 & 3 & 0 & 9 & 5 & -3 & -9 & -15 & -14 \\
+-7 & 1 & 11 & -3 & -6 & -1 & 2 & -17 & 5 & 16 & -3 \\
+-2 & 14 & 4 & 3 & 4 & -8 & -6 & -17 & 7 & -7 & 9 \\
+-2 & -4 & -5 & 11 & -10 & -17 & 12 & -16 & 1 & 7 & 12 \\
+-14 & 12 & 20 & -2 & -7 & -1 & 3 & 4 & 3 & -6 & -10 \\
+-4 & -13 & -3 & 18 & 6 & 4 & -12 & -12 & 15 & 1 & -3 \\
+5 & -19 & 14 & 3 & 6 & -14 & 3 & -15 & 8 & -10 & 9 \\
+11 & -11 & -1 & -1 & -20 & 12 & 6 & 3 & -2 & -18 & 12
+\end{array}\right)$
+
+
+
+
+\centerline{$-1 + x^2 + y^2 + z^2 = -10^{-13}$}
+
+\centerline{$x^2 + y^2 + z^2 \approx 1$}
+
+
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}
+\begin{exampleblock}{Bates, Hauenstein, McCoy, Peterson, Sommese
+
+Recovering Exact Results from Inexact Numerical Data in Algebraic Geometry,
+
+Experimental Mathematics, 22:1, 38-50 (2013)}
+
+Since the goal of this paper is the application of such methods rather than the
+development of a new algorithm of this type, we will restrict our attention
+to the LLL algorithm as described in [23, 17]. It is worth noting that there
+are improvements to the LLL algorithm [26, 28, 27], as well as alternatives
+(such as BKZ and PSLQ [16, 30]), but a full analysis and description of the
+various options would not significantly enhance the value of this article.
+
+By fixing the required input precision and the maximum degree of rela-
+tions, it is clear that the above process terminates. It should be noted that
+upper bounds do exist on the largest degree generator of P` given the degree
+of the variety V (P`), see [9], but these tend to be impractically large. To
+make matters worse, bounds on the coefficient size may not be known, and
+hence the precision requirements may be ambiguous. While these issues can
+be mitigated, as discussed in §2.4, they cannot at present be eliminated.
+
+\end{exampleblock}
+
+\end{frame}
+
+\begin{frame}
+\includegraphics[width=\textwidth]{Lenstra–Lenstra–Lovasz_lattice_basis_reduction_algorithm.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{Lenstra Lenstra Lov\'asz lattice basis reduction algorithm}
+\includegraphics[page=2,clip,trim=0in 0.8in 0in 9in, width=\textwidth]{Lenstra–Lenstra–Lovasz_lattice_basis_reduction_algorithm.pdf}
+%\includegraphics[page=3,clip,trim=0in 11in 0in 0in, width=\textwidth]{Lenstra–Lenstra–Lovasz_lattice_basis_reduction_algorithm.pdf}
+\includegraphics[page=3,clip,trim=0in 7.5in 0in 1in, width=\textwidth]{Lenstra–Lenstra–Lovasz_lattice_basis_reduction_algorithm.pdf}
+\end{frame}
+
+\begin{frame}
 \includegraphics[width=\textwidth]{Homotopy.pdf}
 \end{frame}
 
@@ -201,6 +438,22 @@ Experimental Mathematics, 22:1, 38-50, DOI: 10.1080/10586458.2013.737640
 \frametitle{Hydrogen ansatz 5}
 \begin{semiverbatim}
 \tiny
+        # A second-order homogeneous ODE: D(B) d^2 Zeta/dB^2 - M(B) dZeta/dB - N(B) Zeta = 0
+        # where D(B), M(B), and N(B) are linear polynomials in B, which is itself a linear polynomial
+        #
+        # Homogenization forces B and D to be non-zero; B is also forced to be non-constant
+
+        (Bvars, B) = trial_polynomial('b', coordinates, roots, 1, constant=None)
+        Psi = Zeta(B)
+        (Dvars, D) = trial_polynomial('d', [B], [], 1)
+        (Mvars, M) = trial_polynomial('m', [B], [], 1)
+        (Nvars, N) = trial_polynomial('n', [B], [], 1)
+
+        pre_subs = {DD[0,0](Zeta)(B) : (M * DD[0](Zeta)(B) + N * Zeta(B)) / D}
+
+        def H(Psi):
+            return - 1/2 * Del(Psi,[x1,y1,z1]) - (1/r1)*Psi
+
 \textcolor{blue}{sage:} load('helium.sage')
 \textcolor{blue}{sage:} prep_hydrogen(5)
 \textcolor{blue}{sage:} multi_init()
@@ -210,6 +463,14 @@ Experimental Mathematics, 22:1, 38-50, DOI: 10.1080/10586458.2013.737640
 ...
 6.169694306802097e-32                0.12 sec
 
+
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Hydrogen ansatz 5}
+\begin{semiverbatim}
+\tiny
 
 (E, 4.6673330021180737e-20)
 (b0, 1.0)
@@ -225,8 +486,43 @@ Experimental Mathematics, 22:1, 38-50, DOI: 10.1080/10586458.2013.737640
 (m1, 1.0711161751949155e-20)
 (n0, -1.0)
 (n1, -6.556316253156553e-20)
+
+sage: roots_to_rs(B)
+
+b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1
+
+sage: roots_to_rs(M)
+
+(b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*m1 + m0
+
+sage: roots_to_rs(N)
+
+(b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*n1 + n0
+
 \end{semiverbatim}
 \vskip 0pt plus 100fill
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Hydrogen ansatz 5}
+
+\centerline{$B = r + 0.464918758265 x + 0.5179110625786 y + 0.7180659297529 z$}
+\vskip 20pt
+\centerline{$B \frac{d^2\Psi}{dB^2} - \frac{d^2\Psi}{dB^2} - \Psi = 0$}
+\vskip 20pt
+
+\centerline{$-\frac{1}{2} \Delta \Psi - \frac{1}{r}\Psi = 0$}
+\vskip 20pt
+\centerline{$-\frac{1}{2} \triangledown^2 \Psi - \frac{1}{r}\Psi = 0$}
+\vskip 20pt
+
+\centerline{$-\frac{1}{2} \left(\frac{\delta^2}{\delta^2 x} + \frac{\delta^2}{\delta^2 y} + \frac{\delta^2}{\delta^2 z}\right) \Psi - \frac{1}{r}\Psi = 0$}
+
+\centerline{$\frac{\delta}{\delta x} \Psi = \frac{\delta B}{\delta x} \frac{\delta}{\delta B}  \Psi$}
+
+\centerline{$\frac{\delta^2}{\delta^2 x} \Psi$}
+
+
 \end{frame}
 
 \begin{frame}[fragile]
