@@ -526,6 +526,28 @@ sage: roots_to_rs(N)
 \end{frame}
 
 \begin{frame}[fragile]
+\frametitle{Hydrogen ansatz 5}
+
+\centerline{$B = r + x$}
+\vskip 20pt
+\centerline{$B \frac{d^2\Psi}{dB^2} - \frac{d^2\Psi}{dB^2} - \Psi = 0$}
+\vskip 20pt
+
+\centerline{$-\frac{1}{2} \Delta \Psi - \frac{1}{r}\Psi = 0$}
+\vskip 20pt
+\centerline{$-\frac{1}{2} \triangledown^2 \Psi - \frac{1}{r}\Psi = 0$}
+\vskip 20pt
+
+\centerline{$-\frac{1}{2} \left(\frac{\delta^2}{\delta^2 x} + \frac{\delta^2}{\delta^2 y} + \frac{\delta^2}{\delta^2 z}\right) \Psi - \frac{1}{r}\Psi = 0$}
+
+\centerline{$\frac{\delta}{\delta x} \Psi = \frac{\delta B}{\delta x} \frac{\delta}{\delta B}  \Psi = \left(\frac{x}{r} + 1\right)\frac{\delta}{\delta B}  \Psi$}
+
+\centerline{$\frac{\delta^2}{\delta^2 x} \Psi = \frac{\delta}{\delta x} \left(\left(\frac{x}{r} + 1\right) \Psi'\right)$}
+
+
+\end{frame}
+
+\begin{frame}[fragile]
 \frametitle{scipy's sparse CSR matrix vector multiplication routine}
 %% ~/src/scipy/scipy/sparse/sparsetools/csr.h
 \begin{semiverbatim}
