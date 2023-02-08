@@ -90,6 +90,133 @@ $\left[0, 0, -1, -1, -1, 1, -\frac{28}{27}, -\frac{28}{27}\right]$
 \end{semiverbatim}
 \end{frame}
 
+\begin{frame}[fragile]
+\frametitle{Lagrange multipliers done correctly with {\tt QQbar}}
+\begin{semiverbatim}
+\textcolor{blue}{sage:} R.<x,y,z,l> = PolynomialRing(QQbar, order='lex') 
+....: f = x^3 + 2*x*y*z - z^2 
+....: g = x^2 + y^2 + z^2 - 1 
+....: I = ideal([R(diff(f+l*g, v)) for v in (x,y,z,l)]) 
+....: I.variety()                                                                                                                  
+[{l: 0, z: 0, y: 1, x: 0},
+ {l: 0, z: 0, y: -1, x: 0},
+ {l: 1, z: 1, y: 0, x: 0},
+ {l: 1, z: -1, y: 0, x: 0},
+ {l: 3/2, z: 0, y: 0, x: -1},
+ {l: -3/2, z: 0, y: 0, x: 1},
+ {l: 4/3, z: 2/3, y: 1/3, x: -2/3},
+ {l: 4/3, z: -2/3, y: -1/3, x: -2/3},
+ {l: -1/8, z: -1/8*sqrt(11/2), y: 3/8*sqrt(11/2), x: -3/8},
+ {l: -1/8, z: 1/8*sqrt(11/2), y: -3/8*sqrt(11/2), x: -3/8}]
+\textcolor{blue}{sage:} [f.subs(dict(pt)) for pt in I.variety()]
+[0, 0, -1, -1, -1, 1, -28/27, -28/27, 7/128, 7/128]
+
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The Lagrange multipliers problem done with Bertini}
+The Bertini input file
+\begin{semiverbatim}\small
+CONFIG
+
+END;
+
+INPUT
+
+variable_group x, y, z, l;
+function f, g, h, i;
+
+f = 3*x^2 + 2*x*l + 2*y*z;
+g = 2*x*z + 2*y*l;
+h = 2*x*y + 2*z*l + (-2)*z;
+i = x^2 + y^2 + z^2 - 1;
+
+END;
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The Lagrange multipliers problem done with Bertini}
+The {\tt finite\_solutions} output file
+\begin{semiverbatim}\tiny
+12                                               
+
+-6.666666666666669e-01 -1.387778780781446e-16
+3.333333333333327e-01 -2.081668171172169e-16
+6.666666666666657e-01 -1.942890293094024e-16
+1.333333333333333e+00 1.110223024625157e-16
+
+-1.242639553753176e-15 1.037232314986088e-15
+-1.086567340276065e-15 1.755622365349657e-15
+-9.999999999999994e-01 3.434752482434078e-16
+1.000000000000000e+00 7.068998164605489e-16
+
+...
+
+0.640708586058897743697e-14 -0.312021282000262752677e-14
+-0.142713225653312452193e-14 0.479093022537473430205e-14
+0.100000000000000442723e1 0.347026010358297831715e-15
+0.100000000000000125811e1 0.443850685372115805194e-14
+
+0.568153222086140476406e-14 -0.395514379958853185339e-14
+-0.822128696941474670143e-15 0.554792978704183544098e-14
+0.999999999999999876672e0 -0.871590126461097014499e-15
+0.999999999999999884261e0 0.498793985715534349268e-14
+
+-3.750000000000001e-01 -5.551115123125783e-17
+-8.794529549668934e-01 0.000000000000000e+00
+2.931509849889644e-01 6.938893903907228e-18
+-1.250000000000000e-01 -8.673617379884035e-17
+
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Exactness recovery with {\tt ries}}
+\begin{exampleblock}{{\tt http://mrob.com/pub/ries/index.html}}
+ries (or RIES, an acronym for RILYBOT Inverse Equation Solver) takes any number and produces a list of equations that approximately solve to that number.
+\end{exampleblock}
+\begin{semiverbatim}\tiny
+$ ries -a 2.931509849889644e-01
+
+   Your target value: T = 0.293150984988964                      mrob.com/ries
+
+                    9 x = phi^2                  for x = T - 0.00225832  {65}
+                    9 x = sqrt(7)                for x = T + 0.000821383 {65}
+                1/(x-1) = -sqrt(2)               for x = T - 0.000257766 {66}
+                  1/x-3 = 1/sqrt(6)              for x = T + 0.000254869 {76}
+                  x-1/3 = 1/-(5^2)               for x = T + 0.000182348 {82}
+            x+sqrt(phi) = 4"/6                   for x = T - 8.60544e-05 {87}
+                (8 x)^2 = 1/2+5                  for x = T - 5.55112e-17 {88}
+  (Stopping now because best match is within   1e-15 of target value.)
+
+  phi = the golden ratio, (1+sqrt(5))/2  sqrt(x) = square root
+  A"/B = Ath root of B
+
+                         --LHS--      --RHS--      -Total-
+     max complexity:          47           42           89
+          dead-ends:        8883        17840        26723  Time: 0.006
+        expressions:         484          838         1322
+           distinct:         373          386          759  Memory: 57392 B
+
+        Total equations tested:                  143978 (1.44e+05)
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The Lagrange multipliers problem done with Bertini}
+\begin{semiverbatim}
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Prof. Levin's graph coloring problem}
+Can this graph be 3-colored?
+\vskip 20pt
+\includegraphics[page=32, clip, trim=0in 0in 2in 3.5in, width=\textwidth]{Levin-GB-Talk at CUA.pdf}
+\end{frame}
+
 \begin{frame}
 
 \begin{semiverbatim}
@@ -107,13 +234,25 @@ $\left[x_{1}^{3} - 1, x_{2}^{3} - 1, x_{3}^{3} - 1, x_{4}^{3} - 1, x_{5}^{3} - 1
 
 
 \textcolor{blue}{sage:} set2 = [R.gen(i-1)\^{}2 + R.gen(i-1)*R.gen(j-1) + R.gen(j-1)\^{}2 for i,j in edges]
-$\left[x_{1}^{2} + x_{1} x_{2} + x_{2}^{2}, x_{1}^{2} + x_{1} x_{5} + x_{5}^{2}, x_{1}^{2} + x_{1} x_{6} + x_{6}^{2}, x_{2}^{2} + x_{2} x_{3} + x_{3}^{2}, x_{2}^{2} + x_{2} x_{4} + x_{4}^{2}, x_{2}^{2} + x_{2} x_{8} + x_{8}^{2}, x_{3}^{2} + x_{3} x_{4} + x_{4}^{2}, x_{3}^{2} + x_{3} x_{8} + x_{8}^{2}, x_{4}^{2} + x_{4} x_{5} + x_{5}^{2}, x_{4}^{2} + x_{4} x_{7} + x_{7}^{2}, x_{5}^{2} + x_{5} x_{6} + x_{6}^{2}, x_{6}^{2} + x_{6} x_{7} + x_{7}^{2}, x_{7}^{2} + x_{7} x_{8} + x_{8}^{2}\right]$
+$[x_{1}^{2} + x_{1} x_{2} + x_{2}^{2}, x_{1}^{2} + x_{1} x_{5} + x_{5}^{2}, x_{1}^{2} + x_{1} x_{6} + x_{6}^{2}, x_{2}^{2} + x_{2} x_{3} + x_{3}^{2}, x_{2}^{2} + x_{2} x_{4} + x_{4}^{2}, x_{2}^{2} + x_{2} x_{8} + x_{8}^{2},$
 
-\textcolor{blue}{sage:} I=ideal(set1,set2)
+$x_{3}^{2} + x_{3} x_{4} + x_{4}^{2}, x_{3}^{2} + x_{3} x_{8} + x_{8}^{2}, x_{4}^{2} + x_{4} x_{5} + x_{5}^{2}, x_{4}^{2} + x_{4} x_{7} + x_{7}^{2}, x_{5}^{2} + x_{5} x_{6} + x_{6}^{2}, x_{6}^{2} + x_{6} x_{7} + x_{7}^{2}, x_{7}^{2} + x_{7} x_{8} + x_{8}^{2}]$
+
+\textcolor{blue}{sage:} I=R.ideal(set1 + set2)
 
 \textcolor{blue}{sage:} I.groebner\_basis()
 
+$[x_{1} + x_{5} + x_{6}, x_{2} + x_{3} + x_{8}, x_{3}^{2} + x_{3} x_{8} + x_{8}^{2}, x_{3} x_{5} - x_{3} x_{7} - x_{5} x_{7} - x_{7} x_{8} - x_{8}^{2},$
+
+$x_{3} x_{6} + x_{3} x_{7} + x_{3} x_{8} + x_{5} x_{7} + 2 x_{5} x_{8} + x_{6} x_{7} + x_{6} x_{8} + x_{8}^{2}, x_{4} - x_{8}, x_{5}^{2} + x_{5} x_{8} + x_{8}^{2},$
+
+$x_{5} x_{6} - x_{5} x_{8} - x_{6} x_{7} + x_{7} x_{8}, x_{6}^{2} + x_{6} x_{7} - x_{7} x_{8} - x_{8}^{2}, x_{7}^{2} + x_{7} x_{8} + x_{8}^{2}, x_{8}^{3} - 1]$
+
 \textcolor{blue}{sage:} I.variety()
+
+[]
+
+
 
 \textcolor{blue}{sage:} R=PolynomialRing(QQbar, names=[f'x\{i\}' for i in range(1,9)], order='lex')
 
@@ -434,6 +573,20 @@ be mitigated, as discussed in §2.4, they cannot at present be eliminated.
 \end{itemize}
 \end{frame}
 
+\begin{frame}
+\frametitle{My Question}
+\includegraphics[width=\textwidth]{myquestion.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Rosenfeld-Gr\"obner Algorithm}
+\begin{exampleblock}{Francois Boulier, Daniel Lazard, François Ollivier, Michel Petitot
+Representation for the radical of a finitely generated differential ideal
+}
+\includegraphics[page=2, clip, trim=0in 0in 0in 5.2in, width=\textwidth]{blop.pdf}
+\end{exampleblock}
+\end{frame}
+
 \begin{frame}[fragile]
 \frametitle{Hydrogen ansatz 5}
 \begin{semiverbatim}
@@ -460,8 +613,54 @@ be mitigated, as discussed in §2.4, they cannot at present be eliminated.
 \textcolor{blue}{sage:} multi_expand()
 \textcolor{blue}{sage:} random_numerical(homogenize=1)
 
+-1/2*(((b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*m1 + m0)*DZeta
++ ((b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*n1 + n0)*Zeta)
+   *(b2*r1 + b2*x1^2/r1 + b4*x1*y1/r1 + b6*x1*z1/r1 + b1 + b0*x1/r1)^2
+   /((b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*d1 + d0)
+- 1/2*(((b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*m1 + m0)*DZeta
++ ((b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*n1 + n0)*Zeta)
+   *(b4*r1 + b2*x1*y1/r1 + b4*y1^2/r1 + b6*y1*z1/r1 + b3 + b0*y1/r1)^2
+   /((b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*d1 + d0)
+- 1/2*(((b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*m1 + m0)*DZeta
++ ((b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*n1 + n0)*Zeta)
+   *(b6*r1 + b2*x1*z1/r1 + b4*y1*z1/r1 + b6*z1^2/r1 + b5 + b0*z1/r1)^2
+   /((b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*d1 + d0)
+- E*Zeta - 1/2*DZeta*(3*b2*x1/r1 - b2*x1^3/r1^3 + b4*y1/r1 - b4*x1^2*y1/r1^3 + b6*z1/r1 - b6*x1^2*z1/r1^3 + b0/r1 - b0*x1^2/r1^3) - 1/2*DZeta*(b2*x1/r1 + 3*b4*y1/r1 - b2*x1*y1^2/r1^3 - b4*y1^3/r1^3 + b6*z1/r1 - b6*y1^2*z1/r1^3 + b0/r1 - b0*y1^2/r1^3) - 1/2*DZeta*(b2*x1/r1 + b4*y1/r1 + 3*b6*z1/r1 - b2*x1*z1^2/r1^3 - b4*y1*z1^2/r1^3 - b6*z1^3/r1^3 + b0/r1 - b0*z1^2/r1^3) - Zeta/r1
+
+
 ...
+0.009979418947198756                 0.11 sec
+9.395154242474284e-06                0.11 sec
+6.6733587209712955e-15               0.10 sec
 6.169694306802097e-32                0.12 sec
+
+
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Hydrogen ansatz 5}
+\begin{semiverbatim}
+\tiny
+
+\textcolor{blue}{sage:} eq_a
+
+-1/2*(((b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*m1 + m0)*DZeta
++ ((b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*n1 + n0)*Zeta)
+   *(b2*r1 + b2*x1^2/r1 + b4*x1*y1/r1 + b6*x1*z1/r1 + b1 + b0*x1/r1)^2
+   /((b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*d1 + d0)
+- 1/2*(((b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*m1 + m0)*DZeta
++ ((b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*n1 + n0)*Zeta)
+   *(b4*r1 + b2*x1*y1/r1 + b4*y1^2/r1 + b6*y1*z1/r1 + b3 + b0*y1/r1)^2
+   /((b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*d1 + d0)
+- 1/2*(((b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*m1 + m0)*DZeta
++ ((b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*n1 + n0)*Zeta)
+   *(b6*r1 + b2*x1*z1/r1 + b4*y1*z1/r1 + b6*z1^2/r1 + b5 + b0*z1/r1)^2
+   /((b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*d1 + d0)
+- E*Zeta - 1/2*DZeta*(3*b2*x1/r1 - b2*x1^3/r1^3 + b4*y1/r1 - b4*x1^2*y1/r1^3 + b6*z1/r1
+- b6*x1^2*z1/r1^3 + b0/r1 - b0*x1^2/r1^3) - 1/2*DZeta*(b2*x1/r1 + 3*b4*y1/r1 - b2*x1*y1^2/r1^3
+- b4*y1^3/r1^3 + b6*z1/r1 - b6*y1^2*z1/r1^3 + b0/r1 - b0*y1^2/r1^3) - 1/2*DZeta*(b2*x1/r1
++ b4*y1/r1 + 3*b6*z1/r1 - b2*x1*z1^2/r1^3 - b4*y1*z1^2/r1^3 - b6*z1^3/r1^3 + b0/r1 - b0*z1^2/r1^3) - Zeta/r1
 
 
 \end{semiverbatim}
@@ -491,6 +690,10 @@ sage: roots_to_rs(B)
 
 b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1
 
+sage: roots_to_rs(D)
+
+(b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*d1 + d0
+
 sage: roots_to_rs(M)
 
 (b2*r1*x1 + b4*r1*y1 + b6*r1*z1 + b0*r1 + b1*x1 + b3*y1 + b5*z1)*m1 + m0
@@ -506,9 +709,15 @@ sage: roots_to_rs(N)
 \begin{frame}[fragile]
 \frametitle{Hydrogen ansatz 5}
 
+The ODE:
+\vskip 20pt
 \centerline{$B = r + 0.464918758265 x + 0.5179110625786 y + 0.7180659297529 z$}
 \vskip 20pt
-\centerline{$B \frac{d^2\Psi}{dB^2} - \frac{d^2\Psi}{dB^2} - \Psi = 0$}
+\centerline{$B \frac{d^2\Psi}{dB^2} - \frac{d\Psi}{dB} - \Psi = 0$}
+\vskip 20pt
+
+The PDE:
+
 \vskip 20pt
 
 \centerline{$-\frac{1}{2} \Delta \Psi - \frac{1}{r}\Psi = 0$}
@@ -518,10 +727,35 @@ sage: roots_to_rs(N)
 
 \centerline{$-\frac{1}{2} \left(\frac{\delta^2}{\delta^2 x} + \frac{\delta^2}{\delta^2 y} + \frac{\delta^2}{\delta^2 z}\right) \Psi - \frac{1}{r}\Psi = 0$}
 
-\centerline{$\frac{\delta}{\delta x} \Psi = \frac{\delta B}{\delta x} \frac{\delta}{\delta B}  \Psi$}
 
-\centerline{$\frac{\delta^2}{\delta^2 x} \Psi$}
 
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Hydrogen ansatz 5}
+\scriptsize
+
+\hbox{Claim: this ODE}\centerline{$B \frac{d^2\Psi}{dB^2} - \frac{d\Psi}{dB} - \Psi = 0 \qquad\qquad B = r + x$}
+\vskip 20pt
+
+\hbox{Satisfies this PDE}\centerline{$\frac{1}{2} \left(\frac{\delta^2}{\delta^2 x} + \frac{\delta^2}{\delta^2 y} + \frac{\delta^2}{\delta^2 z}\right) \Psi + \frac{1}{r}\Psi = 0$}
+
+\vskip 20pt
+
+\centerline{$\frac{\delta}{\delta x} \Psi = \frac{\delta B}{\delta x} \frac{\delta}{\delta B}  \Psi = \left(\frac{x}{r} + 1\right)\Psi' \qquad \frac{\delta}{\delta y} \Psi = \frac{y}{r} \Psi' $}
+
+\vskip 20pt
+
+\centerline{$\frac{\delta^2}{\delta^2 x} \Psi = \frac{\delta}{\delta x} \left(\left(\frac{x + r}{r}\right) \Psi'\right) = \left(\frac{r(1 + \frac{x}{r}) - \frac{x}{r}(r+x)}{r^2} \Psi' + \left(\frac{x}{r} + 1\right)^2\Psi''\right)$}
+\centerline{$= \left(\frac{r(r + x) - x(r+x)}{r^3} \Psi' + \left(\frac{x}{r} + 1\right)^2\Psi''\right) = \left(\frac{r^2 - x^2}{r^3} \Psi' + \left(\frac{x}{r} + 1\right)^2\Psi''\right)$}
+
+\vskip 20pt
+
+\centerline{$\frac{\delta^2}{\delta^2 y} \Psi = \frac{\delta}{\delta y} \left(\left(\frac{y}{r}\right) \Psi'\right) = \left(\frac{r - \frac{y}{r}(y)}{r^2} \Psi' + \left(\frac{y}{r}\right)^2\Psi''\right) = \left(\frac{r^2 - y^2}{r^3} \Psi' + \left(\frac{y}{r}\right)^2\Psi''\right)$}
+
+\vskip 20pt
+
+\centerline{$\left(\frac{\delta^2}{\delta^2 x} + \frac{\delta^2}{\delta^2 y} + \frac{\delta^2}{\delta^2 z}\right) \Psi = \left(\frac{2}{r}\Psi' + \left(\frac{x^2}{r^2} + 2\frac{x}{r} + 1 + \frac{y^2}{r^2} + \frac{z^2}{r^2}\right)\Psi''\right)  = \left(\frac{2}{r}\Psi' + \left(2 + 2\frac{x}{r}\right)\Psi''\right)$}
 
 \end{frame}
 
@@ -529,26 +763,127 @@ sage: roots_to_rs(N)
 \frametitle{Hydrogen ansatz 5}
 \small
 
-\centerline{$B = r + x$}
+\centerline{$B \frac{d^2\Psi}{dB^2} - \frac{d\Psi}{dB} - \Psi = 0$}
 \vskip 20pt
-\centerline{$B \frac{d^2\Psi}{dB^2} - \frac{d^2\Psi}{dB^2} - \Psi = 0$}
-\vskip 20pt
+\centerline{Is the solution liovillian?}
+\centerline{Kovacic says no!}
 
-\centerline{$-\frac{1}{2} \Delta \Psi - \frac{1}{r}\Psi = 0$}
-\vskip 20pt
-\centerline{$-\frac{1}{2} \triangledown^2 \Psi - \frac{1}{r}\Psi = 0$}
-\vskip 20pt
+\includegraphics[page=6,clip,trim=0in 0in 0in 5in, width=\textwidth]{Kovacic.pdf}
 
-\centerline{$-\frac{1}{2} \left(\frac{\delta^2}{\delta^2 x} + \frac{\delta^2}{\delta^2 y} + \frac{\delta^2}{\delta^2 z}\right) \Psi - \frac{1}{r}\Psi = 0$}
+\end{frame}
 
-\centerline{$\frac{\delta}{\delta x} \Psi = \frac{\delta B}{\delta x} \frac{\delta}{\delta B}  \Psi = \left(\frac{x}{r} + 1\right)\Psi' \qquad \frac{\delta}{\delta y} \Psi = \frac{y}{r} \Psi' $}
+\begin{frame}[fragile]
+\frametitle{Hydrogen ansatz 5}
+\includegraphics[page=1, clip, trim=0in 0in 0in 1in, width=\textwidth]{Wolfram Alpha.pdf}
+\end{frame}
 
-\centerline{$\frac{\delta^2}{\delta^2 x} \Psi = \frac{\delta}{\delta x} \left(\left(\frac{x + r}{r}\right) \Psi'\right) = \left(\frac{r(1 + \frac{x}{r}) - \frac{x}{r}(r+x)}{r^2} \Psi' + \left(\frac{x}{r} + 1\right)\Psi''\right)$}
-\centerline{$= \left(\frac{r(r + x) - x(r+x)}{r^3} \Psi' + \left(\frac{x}{r} + 1\right)\Psi''\right) = \left(\frac{r^2 - x^2}{r^3} \Psi' + \left(\frac{x}{r} + 1\right)\Psi''\right)$}
+\begin{frame}[fragile]
+\frametitle{Bessel functions}
+\includegraphics[page=1, clip, trim=0in 0in 0in 0in, width=\textwidth]{Bessel function.pdf}
+\end{frame}
 
-\centerline{$\frac{\delta^2}{\delta^2 y} \Psi = \frac{\delta}{\delta y} \left(\left(\frac{y}{r}\right) \Psi'\right) = \left(\frac{r - \frac{y}{r}(y)}{r^2} \Psi' + \left(\frac{y}{r}\right)\Psi''\right)$}
+\begin{frame}[fragile]
+\frametitle{Bessel functions}
+\includegraphics[page=7, clip, trim=0in 0in 0in 0in, width=\textwidth]{Bessel function.pdf}
+\end{frame}
 
+\begin{frame}[fragile]
+\frametitle{numpy code to construct monomials \break (graded lexicographic order)}
+\begin{semiverbatim}
+\tiny
+    # Now we want to evaluate possibly millions of polynomials, as
+    # well as their first derivatives.  Using Sage symbolic
+    # expressions is slow and consumes much memory, so we use scipy
+    # sparse matrices instead.  Each row in the matrix is a polynomial
+    # and each column corresponds to a monomial.  The matrix entry is
+    # that monomial's coefficient.  We can then evaluate all the
+    # polynomials at once by forming a vector of all the monomials (up
+    # to a given maximum degree) and multiplying it by the matrix.
 
+    # Given a vector, generate a multi-vector of the vector itself,
+    # then all the biproducts of the vector elements, then all the
+    # triproducts of the vector elements, etc.
+    #
+    # [a,b,c]
+    # [a,b,c] * a, [b,c] * b, [c] * c = [a^2, a*b, a*c, b^2, b*c, c^2]
+    #
+    # Now we stack them all together, and get our monomials in graded lexicographic order
+    #
+    #   -> [1,a,b,c,a^2,a*b,a*c,b^2,b*c,c^2,a^3,a^2*b,a^2*c,a*b^2,a*b*c,a*c^2,a*b^2,b^2*c,b*c^2,c^3]
+
+    def generate_multi_vector(self, v):
+        npv = np.array(v)
+        stack = [[1], npv]
+        for d in range(1, self.max_degree):
+            stack.append([np.hstack(stack[-1][i:]) * npv[i] for i in range(len(v))])
+        res = np.hstack(tuple(flatten(stack)))
+        return res
+
+\end{semiverbatim}
+\vskip 0pt plus 100fill
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{numpy code to construct monomials \break (graded lexicographic order)}
+
+Same idea, but for first derivatives
+
+\begin{semiverbatim}
+\tiny
+    def generate_multi_D_vector(self, v, var):
+        ind = coeff_vars.index(var)
+
+        npv = np.array(v)
+
+        firsts = np.zeros(npv.size)
+        firsts[ind] = int(1)
+        D_stack = [[0], firsts]
+        stack = [[1], npv]
+
+        for d in range(1, self.max_degree):
+            D_stack.append([np.hstack(stack[-1][i:]) * firsts[i] + np.hstack(D_stack[-1][i:]) * npv[i]
+                            for i in range(len(v))])
+            stack.append([np.hstack(stack[-1][i:]) * npv[i] for i in range(len(v))])
+
+        res = np.hstack(tuple(flatten(D_stack)))
+
+        return res
+\end{semiverbatim}
+\vskip 0pt plus 100fill
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{numpy code to evaluate a system polynomials}
+
+The coefficients of our polynomials have already been assembled into a (sparse) matrix.
+
+Once we've constructed the monomial vector, evaluating them is easy.
+
+\begin{semiverbatim}
+\tiny
+    @async_result
+    def eval_fns(self, vec):
+        r"""
+        Evaluate our polynomials
+
+        INPUT:
+
+        - ``vec`` -- a vector of real values for all coeff_vars
+
+        OUTPUT:
+
+        - a vector of all of our polynomials, evaluated at ``vec``
+        """
+        multivec = self.generate_multi_vector(vec)
+        return self.dot(multivec)
+
+\end{semiverbatim}
+\vskip 0pt plus 100fill
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{scipy sparse matrices}
+\includegraphics[width=\textwidth]{scipy_sparse.png}
 \end{frame}
 
 \begin{frame}[fragile]
