@@ -42,29 +42,6 @@ Part 1: Gr\"obner and Bertini
 \end{frame}
 
 \begin{frame}
-\frametitle{Part 1}
-\begin{itemize}
-\item START A RECORDER
-\item give a simple example of reducing a polynomial mod an ideal using FLINT routine
-\item is this a good idea?
-\item illustrate the problem; it can be solved using Grobner bases
-\item need to specify a monomial ordering: it matters in the multivariate case
-
-\item solving systems of polynomial equations
-\item two examples from Prof. Levin's talk: Lagrange multipliers and graph coloring
-\item one is always a special case: linear algebra, matrix methods, LU decomposition
-\item higher degree polynomials - Gr\"obner bases
-\item demonstrate using two examples
-
-\item performance problems with Buchberger's algorithm: the F4 and F5 algorithms
-\begin{itemize}
-   \item computing a Gr\"obner basis is NP-hard in general
-   \item Faug\'ere's F5 algorithm
-\end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
 \frametitle{Systems of linear polynomials (1 is always a special case)}
 \includegraphics[clip, trim=0in 5.4in 0in 0.5in, width=\textwidth, page=13]{LU decomposition - Wikipedia.pdf}
 {\tiny Source: Wikipedia}
@@ -94,6 +71,76 @@ U = \begin{bmatrix}
 \includegraphics[clip, trim=0in 3in 0in 0.5in, width=\textwidth, page=13]{GrobnerBasis.pdf}
 \end{frame}
 
+\begin{frame}[fragile]
+\frametitle{Prof. Levin's graph coloring problem}
+Can this graph be 3-colored?
+\vskip 20pt
+\includegraphics[page=32, clip, trim=0in 0in 2in 3.5in, width=\textwidth]{Levin-GB-Talk at CUA.pdf}
+\end{frame}
+
+\begin{frame}
+
+\begin{semiverbatim}
+\scriptsize
+\textcolor{blue}{sage:} R=PolynomialRing(QQ, names=[f'x\{i\}' for i in range(1,9)], order='lex')
+
+\textcolor{blue}{sage:} edges = [(1,2), (1,5), (1,6), (2,3), (2,4), (2,8),
+
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \        (3,4), (3,8), (4,5), (4,7), (5,6), (6,7), (7,8)]
+
+
+\textcolor{blue}{sage:} set1 = [g\^{}3 - 1 for g in R.gens()]
+
+$\left[x_{1}^{3} - 1, x_{2}^{3} - 1, x_{3}^{3} - 1, x_{4}^{3} - 1, x_{5}^{3} - 1, x_{6}^{3} - 1, x_{7}^{3} - 1, x_{8}^{3} - 1\right]$
+
+
+\textcolor{blue}{sage:} set2 = [R.gen(i-1)\^{}2 + R.gen(i-1)*R.gen(j-1) + R.gen(j-1)\^{}2 for i,j in edges]
+$[x_{1}^{2} + x_{1} x_{2} + x_{2}^{2}, x_{1}^{2} + x_{1} x_{5} + x_{5}^{2}, x_{1}^{2} + x_{1} x_{6} + x_{6}^{2}, x_{2}^{2} + x_{2} x_{3} + x_{3}^{2}, x_{2}^{2} + x_{2} x_{4} + x_{4}^{2}, x_{2}^{2} + x_{2} x_{8} + x_{8}^{2},$
+
+$x_{3}^{2} + x_{3} x_{4} + x_{4}^{2}, x_{3}^{2} + x_{3} x_{8} + x_{8}^{2}, x_{4}^{2} + x_{4} x_{5} + x_{5}^{2}, x_{4}^{2} + x_{4} x_{7} + x_{7}^{2}, x_{5}^{2} + x_{5} x_{6} + x_{6}^{2}, x_{6}^{2} + x_{6} x_{7} + x_{7}^{2}, x_{7}^{2} + x_{7} x_{8} + x_{8}^{2}]$
+
+\textcolor{blue}{sage:} I=R.ideal(set1 + set2)
+
+\textcolor{blue}{sage:} I.groebner\_basis()
+
+$[x_{1} + x_{5} + x_{6}, x_{2} + x_{3} + x_{8}, x_{3}^{2} + x_{3} x_{8} + x_{8}^{2}, x_{3} x_{5} - x_{3} x_{7} - x_{5} x_{7} - x_{7} x_{8} - x_{8}^{2},$
+
+$x_{3} x_{6} + x_{3} x_{7} + x_{3} x_{8} + x_{5} x_{7} + 2 x_{5} x_{8} + x_{6} x_{7} + x_{6} x_{8} + x_{8}^{2}, x_{4} - x_{8}, x_{5}^{2} + x_{5} x_{8} + x_{8}^{2},$
+
+$x_{5} x_{6} - x_{5} x_{8} - x_{6} x_{7} + x_{7} x_{8}, x_{6}^{2} + x_{6} x_{7} - x_{7} x_{8} - x_{8}^{2}, x_{7}^{2} + x_{7} x_{8} + x_{8}^{2}, x_{8}^{3} - 1]$
+
+\textcolor{blue}{sage:} I.variety()
+
+[]
+
+
+
+\textcolor{blue}{sage:} R=PolynomialRing(QQbar, names=[f'x\{i\}' for i in range(1,9)], order='lex')
+
+\textcolor{blue}{sage:} set1 = [g\^{}3 - 1 for g in R.gens()]
+
+\textcolor{blue}{sage:} set2 = [R.gen(i-1)\^{}2 + R.gen(i-1)*R.gen(j-1) + R.gen(j-1)\^{}2 for i,j in edges]
+
+\textcolor{blue}{sage:} I = R.ideal(set1 + set2)
+
+\textcolor{blue}{sage:} I.groebner\_basis()
+
+\textcolor{blue}{sage:} I.variety()
+
+\textcolor{blue}{sage:} QQbar.options.display\_format = 'radical'
+
+\textcolor{blue}{sage:} len(I.variety())
+
+8
+
+\textcolor{blue}{sage:} I.variety()[0]
+
+$\text{\texttt{{\char`\{}x8:{ }1,{ }x7:{ }{-}1/2*I*sqrt(3){ }{-}{ }1/2,{ }x6:{ }1,{ }x5:{ }{-}1/2*I*sqrt(3){ }{-}{ }1/2,{ }x4:{ }1,{ }x3:{ }1/2*I*sqrt(3){ }{-}{ }1/2,{ }x2:{ }{-}1/2*I*sqrt(3){ }{-}{ }1/2,{ }x1:{ }1/2*I*sqrt(3){ }{-}{ }1/2{\char`\}}}}$
+
+\end{semiverbatim}
+
+
+\end{frame}
 \begin{frame}
 \frametitle{Prof. Levin's Lagrange multipliers problem}
 \includegraphics[page=29, clip, trim=0in 0in 2in 0in, width=\textwidth]{Levin-GB-Talk at CUA.pdf}
@@ -186,178 +233,6 @@ $\left[0, 0, -1, -1, -1, 1, -\frac{28}{27}, -\frac{28}{27}\right]$
 \end{semiverbatim}
 \end{frame}
 
-\begin{frame}[fragile]
-\frametitle{The Lagrange multipliers problem done with Bertini}
-The Bertini input file
-\begin{semiverbatim}\small
-CONFIG
-
-END;
-
-INPUT
-
-variable_group x, y, z, l;
-function f, g, h, i;
-
-f = 3*x^2 + 2*x*l + 2*y*z;
-g = 2*x*z + 2*y*l;
-h = 2*x*y + 2*z*l + (-2)*z;
-i = x^2 + y^2 + z^2 - 1;
-
-END;
-\end{semiverbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{The Lagrange multipliers problem done with Bertini}
-The {\tt finite\_solutions} output file
-\begin{semiverbatim}\tiny
-12                                               
-
--6.666666666666669e-01 -1.387778780781446e-16
-3.333333333333327e-01 -2.081668171172169e-16
-6.666666666666657e-01 -1.942890293094024e-16
-1.333333333333333e+00 1.110223024625157e-16
-
--1.242639553753176e-15 1.037232314986088e-15
--1.086567340276065e-15 1.755622365349657e-15
--9.999999999999994e-01 3.434752482434078e-16
-1.000000000000000e+00 7.068998164605489e-16
-
-...
-
-0.640708586058897743697e-14 -0.312021282000262752677e-14
--0.142713225653312452193e-14 0.479093022537473430205e-14
-0.100000000000000442723e1 0.347026010358297831715e-15
-0.100000000000000125811e1 0.443850685372115805194e-14
-
-0.568153222086140476406e-14 -0.395514379958853185339e-14
--0.822128696941474670143e-15 0.554792978704183544098e-14
-0.999999999999999876672e0 -0.871590126461097014499e-15
-0.999999999999999884261e0 0.498793985715534349268e-14
-
--3.750000000000001e-01 -5.551115123125783e-17
--8.794529549668934e-01 0.000000000000000e+00
-2.931509849889644e-01 6.938893903907228e-18
--1.250000000000000e-01 -8.673617379884035e-17
-
-\end{semiverbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Exactness recovery with {\tt ries}}
-\begin{exampleblock}{{\tt http://mrob.com/pub/ries/index.html}}
-ries (or RIES, an acronym for RILYBOT Inverse Equation Solver) takes any number and produces a list of equations that approximately solve to that number.
-\end{exampleblock}
-\begin{semiverbatim}\tiny
-$ ries -a 2.931509849889644e-01
-
-   Your target value: T = 0.293150984988964                      mrob.com/ries
-
-                    9 x = phi^2                  for x = T - 0.00225832  {65}
-                    9 x = sqrt(7)                for x = T + 0.000821383 {65}
-                1/(x-1) = -sqrt(2)               for x = T - 0.000257766 {66}
-                  1/x-3 = 1/sqrt(6)              for x = T + 0.000254869 {76}
-                  x-1/3 = 1/-(5^2)               for x = T + 0.000182348 {82}
-            x+sqrt(phi) = 4"/6                   for x = T - 8.60544e-05 {87}
-                (8 x)^2 = 1/2+5                  for x = T - 5.55112e-17 {88}
-  (Stopping now because best match is within   1e-15 of target value.)
-
-  phi = the golden ratio, (1+sqrt(5))/2  sqrt(x) = square root
-  A"/B = Ath root of B
-
-                         --LHS--      --RHS--      -Total-
-     max complexity:          47           42           89
-          dead-ends:        8883        17840        26723  Time: 0.006
-        expressions:         484          838         1322
-           distinct:         373          386          759  Memory: 57392 B
-
-        Total equations tested:                  143978 (1.44e+05)
-\end{semiverbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{The Lagrange multipliers problem done with Bertini}
-\begin{semiverbatim}
-\end{semiverbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Prof. Levin's graph coloring problem}
-Can this graph be 3-colored?
-\vskip 20pt
-\includegraphics[page=32, clip, trim=0in 0in 2in 3.5in, width=\textwidth]{Levin-GB-Talk at CUA.pdf}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Bertini - {\tt bertini.nd.edu}}
-\includegraphics[page=1, clip, trim=0in 1.5in 0in 0in, width=\textwidth]{bertini.nd.edu.pdf}
-\end{frame}
-
-\begin{frame}
-
-\begin{semiverbatim}
-\scriptsize
-\textcolor{blue}{sage:} R=PolynomialRing(QQ, names=[f'x\{i\}' for i in range(1,9)], order='lex')
-
-\textcolor{blue}{sage:} edges = [(1,2), (1,5), (1,6), (2,3), (2,4), (2,8),
-
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \        (3,4), (3,8), (4,5), (4,7), (5,6), (6,7), (7,8)]
-
-
-\textcolor{blue}{sage:} set1 = [g\^{}3 - 1 for g in R.gens()]
-
-$\left[x_{1}^{3} - 1, x_{2}^{3} - 1, x_{3}^{3} - 1, x_{4}^{3} - 1, x_{5}^{3} - 1, x_{6}^{3} - 1, x_{7}^{3} - 1, x_{8}^{3} - 1\right]$
-
-
-\textcolor{blue}{sage:} set2 = [R.gen(i-1)\^{}2 + R.gen(i-1)*R.gen(j-1) + R.gen(j-1)\^{}2 for i,j in edges]
-$[x_{1}^{2} + x_{1} x_{2} + x_{2}^{2}, x_{1}^{2} + x_{1} x_{5} + x_{5}^{2}, x_{1}^{2} + x_{1} x_{6} + x_{6}^{2}, x_{2}^{2} + x_{2} x_{3} + x_{3}^{2}, x_{2}^{2} + x_{2} x_{4} + x_{4}^{2}, x_{2}^{2} + x_{2} x_{8} + x_{8}^{2},$
-
-$x_{3}^{2} + x_{3} x_{4} + x_{4}^{2}, x_{3}^{2} + x_{3} x_{8} + x_{8}^{2}, x_{4}^{2} + x_{4} x_{5} + x_{5}^{2}, x_{4}^{2} + x_{4} x_{7} + x_{7}^{2}, x_{5}^{2} + x_{5} x_{6} + x_{6}^{2}, x_{6}^{2} + x_{6} x_{7} + x_{7}^{2}, x_{7}^{2} + x_{7} x_{8} + x_{8}^{2}]$
-
-\textcolor{blue}{sage:} I=R.ideal(set1 + set2)
-
-\textcolor{blue}{sage:} I.groebner\_basis()
-
-$[x_{1} + x_{5} + x_{6}, x_{2} + x_{3} + x_{8}, x_{3}^{2} + x_{3} x_{8} + x_{8}^{2}, x_{3} x_{5} - x_{3} x_{7} - x_{5} x_{7} - x_{7} x_{8} - x_{8}^{2},$
-
-$x_{3} x_{6} + x_{3} x_{7} + x_{3} x_{8} + x_{5} x_{7} + 2 x_{5} x_{8} + x_{6} x_{7} + x_{6} x_{8} + x_{8}^{2}, x_{4} - x_{8}, x_{5}^{2} + x_{5} x_{8} + x_{8}^{2},$
-
-$x_{5} x_{6} - x_{5} x_{8} - x_{6} x_{7} + x_{7} x_{8}, x_{6}^{2} + x_{6} x_{7} - x_{7} x_{8} - x_{8}^{2}, x_{7}^{2} + x_{7} x_{8} + x_{8}^{2}, x_{8}^{3} - 1]$
-
-\textcolor{blue}{sage:} I.variety()
-
-[]
-
-
-
-\textcolor{blue}{sage:} R=PolynomialRing(QQbar, names=[f'x\{i\}' for i in range(1,9)], order='lex')
-
-\textcolor{blue}{sage:} set1 = [g\^{}3 - 1 for g in R.gens()]
-
-\textcolor{blue}{sage:} set2 = [R.gen(i-1)\^{}2 + R.gen(i-1)*R.gen(j-1) + R.gen(j-1)\^{}2 for i,j in edges]
-
-\textcolor{blue}{sage:} I = R.ideal(set1 + set2)
-
-\textcolor{blue}{sage:} I.groebner\_basis()
-
-\textcolor{blue}{sage:} I.variety()
-
-\textcolor{blue}{sage:} QQbar.options.display\_format = 'radical'
-
-\textcolor{blue}{sage:} len(I.variety())
-
-8
-
-\textcolor{blue}{sage:} I.variety()[0]
-
-$\text{\texttt{{\char`\{}x8:{ }1,{ }x7:{ }{-}1/2*I*sqrt(3){ }{-}{ }1/2,{ }x6:{ }1,{ }x5:{ }{-}1/2*I*sqrt(3){ }{-}{ }1/2,{ }x4:{ }1,{ }x3:{ }1/2*I*sqrt(3){ }{-}{ }1/2,{ }x2:{ }{-}1/2*I*sqrt(3){ }{-}{ }1/2,{ }x1:{ }1/2*I*sqrt(3){ }{-}{ }1/2{\char`\}}}}$
-
-\end{semiverbatim}
-
-
-\end{frame}
-
 \begin{frame}
 
 \begin{exampleblock}{Learning a performance metric of Buchberger's algorithm
@@ -448,37 +323,57 @@ DP was a Mathematics PhD student at Cornel
 \end{frame}
 
 \begin{frame}
-\begin{itemize}
-\item alternatives: numerical techniques
-\item witness points: approximate solutions accurate enough to find exact solutions
-\item LLL algorithm
-
-\item Andrew Sommese - Notre Dame
-
-Daniel J. Bates, Jonathan D. Hauenstein, Timothy M. McCoy, Chris Peterson \& Andrew J. Sommese (2013)
-Recovering Exact Results from Inexact Numerical Data in Algebraic Geometry,
-Experimental Mathematics, 22:1, 38-50, DOI: 10.1080/10586458.2013.737640
-
-\item "exactness recovery algorithms"
-\item https://en.wikipedia.org/wiki/Lenstra%E2%80%93Lenstra%E2%80%93Lov%C3%A1sz_lattice_basis_reduction_algorithm
-
-\item Newton's method
-     {\tt https://en.wikipedia.org/wiki/File:NewtonIteration\_Ani.gif}
-
-\item Bertini's homotopy continuation method
-\item {\tt https://en.wikipedia.org/wiki/Homotopy}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
 \frametitle{Hybrid numerical/symbolic techniques}
 \begin{itemize}
 \item Gr\"obner bases are computed using exact (integer) arithmetic
-\item The obvious alternative: a numerical technique, but we lose exactness (or do we?)
+\item An obvious alternative: a numerical technique, but we lose exactness (or do we?)
 \item {\it Witness points} are approximate solutions accurate enough to find exact solutions
 \item "Exactness recovery algorithms" such as LLL
 \end{itemize}
 
+\end{frame}
+
+\begin{frame}
+\begin{exampleblock}{Bates, Hauenstein, McCoy, Peterson, Sommese
+
+Recovering Exact Results from Inexact Numerical Data in Algebraic Geometry,
+
+Experimental Mathematics, 22:1, 38-50 (2013)}
+
+Since the goal of this paper is the application of such methods rather than the
+development of a new algorithm of this type, we will restrict our attention
+to the LLL algorithm as described in [23, 17]. It is worth noting that there
+are improvements to the LLL algorithm [26, 28, 27], as well as alternatives
+(such as BKZ and PSLQ [16, 30]), but a full analysis and description of the
+various options would not significantly enhance the value of this article.
+
+By fixing the required input precision and the maximum degree of rela-
+tions, it is clear that the above process terminates. It should be noted that
+upper bounds do exist on the largest degree generator of P` given the degree
+of the variety V (P`), see [9], but these tend to be impractically large. To
+make matters worse, bounds on the coefficient size may not be known, and
+hence the precision requirements may be ambiguous. While these issues can
+be mitigated, as discussed in §2.4, they cannot at present be eliminated.
+
+\end{exampleblock}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Lenstra Lenstra Lov\'asz lattice basis reduction algorithm}
+\includegraphics[page=1, clip, trim=0in 6.5in 0in 0in, width=\textwidth]{Lenstra–Lenstra–Lovasz_lattice_basis_reduction_algorithm.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{Lenstra Lenstra Lov\'asz lattice basis reduction algorithm}
+\includegraphics[page=1, clip, trim=0in 0in 0in 5in, width=\textwidth]{Lenstra–Lenstra–Lovasz_lattice_basis_reduction_algorithm.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{Lenstra Lenstra Lov\'asz lattice basis reduction algorithm}
+\includegraphics[page=2,clip,trim=0in 0.8in 0in 9in, width=\textwidth]{Lenstra–Lenstra–Lovasz_lattice_basis_reduction_algorithm.pdf}
+%\includegraphics[page=3,clip,trim=0in 11in 0in 0in, width=\textwidth]{Lenstra–Lenstra–Lovasz_lattice_basis_reduction_algorithm.pdf}
+\includegraphics[page=3,clip,trim=0in 7.5in 0in 1in, width=\textwidth]{Lenstra–Lenstra–Lovasz_lattice_basis_reduction_algorithm.pdf}
 \end{frame}
 
 \begin{frame}
@@ -580,51 +475,107 @@ $\left(\begin{array}{rrrrrrrrrrr}
 \end{semiverbatim}
 \end{frame}
 
-\begin{frame}
-\begin{exampleblock}{Bates, Hauenstein, McCoy, Peterson, Sommese
-
-Recovering Exact Results from Inexact Numerical Data in Algebraic Geometry,
-
-Experimental Mathematics, 22:1, 38-50 (2013)}
-
-Since the goal of this paper is the application of such methods rather than the
-development of a new algorithm of this type, we will restrict our attention
-to the LLL algorithm as described in [23, 17]. It is worth noting that there
-are improvements to the LLL algorithm [26, 28, 27], as well as alternatives
-(such as BKZ and PSLQ [16, 30]), but a full analysis and description of the
-various options would not significantly enhance the value of this article.
-
-By fixing the required input precision and the maximum degree of rela-
-tions, it is clear that the above process terminates. It should be noted that
-upper bounds do exist on the largest degree generator of P` given the degree
-of the variety V (P`), see [9], but these tend to be impractically large. To
-make matters worse, bounds on the coefficient size may not be known, and
-hence the precision requirements may be ambiguous. While these issues can
-be mitigated, as discussed in §2.4, they cannot at present be eliminated.
-
-\end{exampleblock}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Lenstra Lenstra Lov\'asz lattice basis reduction algorithm}
-\includegraphics[page=1, clip, trim=0in 6.5in 0in 0in, width=\textwidth]{Lenstra–Lenstra–Lovasz_lattice_basis_reduction_algorithm.pdf}
-\end{frame}
-
-\begin{frame}
-\frametitle{Lenstra Lenstra Lov\'asz lattice basis reduction algorithm}
-\includegraphics[page=1, clip, trim=0in 0in 0in 5in, width=\textwidth]{Lenstra–Lenstra–Lovasz_lattice_basis_reduction_algorithm.pdf}
-\end{frame}
-
-\begin{frame}
-\frametitle{Lenstra Lenstra Lov\'asz lattice basis reduction algorithm}
-\includegraphics[page=2,clip,trim=0in 0.8in 0in 9in, width=\textwidth]{Lenstra–Lenstra–Lovasz_lattice_basis_reduction_algorithm.pdf}
-%\includegraphics[page=3,clip,trim=0in 11in 0in 0in, width=\textwidth]{Lenstra–Lenstra–Lovasz_lattice_basis_reduction_algorithm.pdf}
-\includegraphics[page=3,clip,trim=0in 7.5in 0in 1in, width=\textwidth]{Lenstra–Lenstra–Lovasz_lattice_basis_reduction_algorithm.pdf}
+\begin{frame}[fragile]
+\frametitle{Bertini - {\tt bertini.nd.edu}}
+\includegraphics[page=1, clip, trim=0in 1.5in 0in 0in, width=\textwidth]{bertini.nd.edu.pdf}
 \end{frame}
 
 \begin{frame}
 \includegraphics[width=\textwidth]{Homotopy.pdf}
+\end{frame}
+
+\begin{frame}
+\includegraphics[width=\textwidth]{homotopy.png}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The Lagrange multipliers problem done with Bertini}
+The Bertini input file
+\begin{semiverbatim}\small
+CONFIG
+
+END;
+
+INPUT
+
+variable_group x, y, z, l;
+function f, g, h, i;
+
+f = 3*x^2 + 2*x*l + 2*y*z;
+g = 2*x*z + 2*y*l;
+h = 2*x*y + 2*z*l + (-2)*z;
+i = x^2 + y^2 + z^2 - 1;
+
+END;
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The Lagrange multipliers problem done with Bertini}
+The {\tt finite\_solutions} output file
+\begin{semiverbatim}\tiny
+12                                               
+
+-6.666666666666669e-01 -1.387778780781446e-16
+3.333333333333327e-01 -2.081668171172169e-16
+6.666666666666657e-01 -1.942890293094024e-16
+1.333333333333333e+00 1.110223024625157e-16
+
+-1.242639553753176e-15 1.037232314986088e-15
+-1.086567340276065e-15 1.755622365349657e-15
+-9.999999999999994e-01 3.434752482434078e-16
+1.000000000000000e+00 7.068998164605489e-16
+
+...
+
+0.640708586058897743697e-14 -0.312021282000262752677e-14
+-0.142713225653312452193e-14 0.479093022537473430205e-14
+0.100000000000000442723e1 0.347026010358297831715e-15
+0.100000000000000125811e1 0.443850685372115805194e-14
+
+0.568153222086140476406e-14 -0.395514379958853185339e-14
+-0.822128696941474670143e-15 0.554792978704183544098e-14
+0.999999999999999876672e0 -0.871590126461097014499e-15
+0.999999999999999884261e0 0.498793985715534349268e-14
+
+-3.750000000000001e-01 -5.551115123125783e-17
+-8.794529549668934e-01 0.000000000000000e+00
+2.931509849889644e-01 6.938893903907228e-18
+-1.250000000000000e-01 -8.673617379884035e-17
+
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Exactness recovery with {\tt ries}}
+\begin{exampleblock}{{\tt http://mrob.com/pub/ries/index.html}}
+ries (or RIES, an acronym for RILYBOT Inverse Equation Solver) takes any number and produces a list of equations that approximately solve to that number.
+\end{exampleblock}
+\begin{semiverbatim}\tiny
+$ ries -a 2.931509849889644e-01
+
+   Your target value: T = 0.293150984988964                      mrob.com/ries
+
+                    9 x = phi^2                  for x = T - 0.00225832  {65}
+                    9 x = sqrt(7)                for x = T + 0.000821383 {65}
+                1/(x-1) = -sqrt(2)               for x = T - 0.000257766 {66}
+                  1/x-3 = 1/sqrt(6)              for x = T + 0.000254869 {76}
+                  x-1/3 = 1/-(5^2)               for x = T + 0.000182348 {82}
+            x+sqrt(phi) = 4"/6                   for x = T - 8.60544e-05 {87}
+                (8 x)^2 = 1/2+5                  for x = T - 5.55112e-17 {88}
+  (Stopping now because best match is within   1e-15 of target value.)
+
+  phi = the golden ratio, (1+sqrt(5))/2  sqrt(x) = square root
+  A"/B = Ath root of B
+
+                         --LHS--      --RHS--      -Total-
+     max complexity:          47           42           89
+          dead-ends:        8883        17840        26723  Time: 0.006
+        expressions:         484          838         1322
+           distinct:         373          386          759  Memory: 57392 B
+
+        Total equations tested:                  143978 (1.44e+05)
+\end{semiverbatim}
 \end{frame}
 
 \begin{frame}
@@ -637,28 +588,6 @@ Part 2: Differential Algebra
 \ 
 \end{center}
 \end{exampleblock}
-\end{frame}
-
-\begin{frame}
-\frametitle{Part 2}
-
-\begin{itemize}
-\item ASIDE: Rosenfeld-Grobner in differential algebra
-\item my code: scipy's levenberg-marquet algorithm
-\item my algorithm for fast evaluation of polynomials and Jacobians using sparse matrices
-\item optimization: use shared memory to run computations in parallel
-\item potential scipy optimization for parallel QR decomposition
-\item potential scipy optimization for superscalar sparse multiplication
-     types of matrix storage layouts: dense, sparse (COO, CSC, CSR, DOK)
-%     csr_matvec in ~/src/scipy/scipy/sparse/sparsetools/csr.h
-
-\item example: the f(x+r) solutions
-\item show several examples, lattice reduction by hand, and demonstrate that it's a dot product
-\item why it doesn't solve Schrodinger globally
-\item using Kovacic's algorithm to determine that it's non-elementary
-\item Mathematica says it's related to the Bessel functions
-\item show how
-\end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -1158,6 +1087,74 @@ c:   vmulpd      0x0(%rip),%ymm1,%ymm0  10:  R_X86_64_PC32  tmp2-0x4
 \includegraphics[page=2, clip, trim=0in 5in 0in 2.2in, width=\textwidth]{mulpd.pdf}
 
 \includegraphics[page=3, clip, trim=0in 2.6in 0in 4.2in, width=\textwidth]{mulpd.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{Part 1}
+\begin{itemize}
+\item START A RECORDER
+\item give a simple example of reducing a polynomial mod an ideal using FLINT routine
+\item is this a good idea?
+\item illustrate the problem; it can be solved using Grobner bases
+\item need to specify a monomial ordering: it matters in the multivariate case
+
+\item solving systems of polynomial equations
+\item two examples from Prof. Levin's talk: Lagrange multipliers and graph coloring
+\item one is always a special case: linear algebra, matrix methods, LU decomposition
+\item higher degree polynomials - Gr\"obner bases
+\item demonstrate using two examples
+
+\item performance problems with Buchberger's algorithm: the F4 and F5 algorithms
+\begin{itemize}
+   \item computing a Gr\"obner basis is NP-hard in general
+   \item Faug\'ere's F5 algorithm
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\item alternatives: numerical techniques
+\item witness points: approximate solutions accurate enough to find exact solutions
+\item LLL algorithm
+
+\item Andrew Sommese - Notre Dame
+
+Daniel J. Bates, Jonathan D. Hauenstein, Timothy M. McCoy, Chris Peterson \& Andrew J. Sommese (2013)
+Recovering Exact Results from Inexact Numerical Data in Algebraic Geometry,
+Experimental Mathematics, 22:1, 38-50, DOI: 10.1080/10586458.2013.737640
+
+\item "exactness recovery algorithms"
+\item https://en.wikipedia.org/wiki/Lenstra%E2%80%93Lenstra%E2%80%93Lov%C3%A1sz_lattice_basis_reduction_algorithm
+
+\item Newton's method
+     {\tt https://en.wikipedia.org/wiki/File:NewtonIteration\_Ani.gif}
+
+\item Bertini's homotopy continuation method
+\item {\tt https://en.wikipedia.org/wiki/Homotopy}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Part 2}
+
+\begin{itemize}
+\item ASIDE: Rosenfeld-Grobner in differential algebra
+\item my code: scipy's levenberg-marquet algorithm
+\item my algorithm for fast evaluation of polynomials and Jacobians using sparse matrices
+\item optimization: use shared memory to run computations in parallel
+\item potential scipy optimization for parallel QR decomposition
+\item potential scipy optimization for superscalar sparse multiplication
+     types of matrix storage layouts: dense, sparse (COO, CSC, CSR, DOK)
+%     csr_matvec in ~/src/scipy/scipy/sparse/sparsetools/csr.h
+
+\item example: the f(x+r) solutions
+\item show several examples, lattice reduction by hand, and demonstrate that it's a dot product
+\item why it doesn't solve Schrodinger globally
+\item using Kovacic's algorithm to determine that it's non-elementary
+\item Mathematica says it's related to the Bessel functions
+\item show how
+\end{itemize}
 \end{frame}
 
 \end{document}
