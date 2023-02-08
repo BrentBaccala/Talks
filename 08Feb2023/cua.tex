@@ -71,6 +71,48 @@ U = \begin{bmatrix}
 \includegraphics[clip, trim=0in 3in 0in 0.5in, width=\textwidth, page=13]{GrobnerBasis.pdf}
 \end{frame}
 
+\begin{frame}
+\includegraphics[page=1, clip, trim=0in 5.5in 0in 0in, width=\textwidth]{Monomial order - Wikipedia.pdf}
+\vskip 20pt
+{\bf Examples of Monomial Orders} (all with $x>y>z$)
+\begin{itemize}
+\item Lexicographic
+
+$\qquad x^4 > x^3y > x^3 > x^2y^4 > x > y^3$
+\item Graded Lexicographic
+
+$\qquad x^2y^4 > x^4 > x^3y > x^3 > y^3 > x$
+
+$\qquad x^2 > xy > xz > y^2 > yz > z^2$
+\item Graded Reverse Lexicographic (often the fastest computationally)
+
+$\qquad x^2 > xy > y^2 > xz > yz > z^2$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Cox, Little, O'Shea
+
+{\it Ideals, Varieties, and Algorithms} (4th ed)}
+\includegraphics[page=22, clip, trim=0in 0.9in 0in 7in, width=\textwidth]{IVA.pdf}
+\includegraphics[page=23, clip, trim=0in 7.9in 0in 0.7in, width=\textwidth]{IVA.pdf}
+\hrule
+\includegraphics[page=46, clip, trim=0in 5.2in 0in 2.5in, width=\textwidth]{IVA.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{Cox, Little, O'Shea
+
+{\it Ideals, Varieties, and Algorithms} (4th ed)}
+\includegraphics[page=137, clip, trim=0in 2.8in 0in 5.6in, width=\textwidth]{IVA.pdf}
+\hrule
+\includegraphics[page=144, clip, trim=0in 2.5in 0in 4.9in, width=\textwidth]{IVA.pdf}
+\hrule
+\includegraphics[page=137, clip, trim=0in 0.9in 0in 7.8in, width=\textwidth]{IVA.pdf}
+\includegraphics[page=138, clip, trim=0in 8in 0in 0.65in, width=\textwidth]{IVA.pdf}
+%%\includegraphics[page=146, clip, trim=0in 5in 0in 3in, width=\textwidth]{IVA.pdf}
+\end{frame}
+
 \begin{frame}[fragile]
 \frametitle{Prof. Levin's graph coloring problem}
 Can this graph be 3-colored?
@@ -79,7 +121,7 @@ Can this graph be 3-colored?
 \end{frame}
 
 \begin{frame}
-
+\frametitle{The Graph Coloring Problem done in Sage}
 \begin{semiverbatim}
 \scriptsize
 \textcolor{blue}{sage:} R=PolynomialRing(QQ, names=[f'x\{i\}' for i in range(1,9)], order='lex')
@@ -114,6 +156,13 @@ $x_{5} x_{6} - x_{5} x_{8} - x_{6} x_{7} + x_{7} x_{8}, x_{6}^{2} + x_{6} x_{7} 
 []
 
 
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Graph Coloring Problem done {\it correctly} in Sage}
+\begin{semiverbatim}
+\scriptsize
 
 \textcolor{blue}{sage:} R=PolynomialRing(QQbar, names=[f'x\{i\}' for i in range(1,9)], order='lex')
 
@@ -125,7 +174,13 @@ $x_{5} x_{6} - x_{5} x_{8} - x_{6} x_{7} + x_{7} x_{8}, x_{6}^{2} + x_{6} x_{7} 
 
 \textcolor{blue}{sage:} I.groebner\_basis()
 
-\textcolor{blue}{sage:} I.variety()
+
+$[x_{1} + x_{5} + x_{6}, x_{2} + x_{3} + x_{8}, x_{3}^{2} + x_{3} x_{8} + x_{8}^{2}, x_{3} x_{5} - x_{3} x_{7} - x_{5} x_{7} - x_{7} x_{8} - x_{8}^{2},$
+
+$x_{3} x_{6} + x_{3} x_{7} + x_{3} x_{8} + x_{5} x_{7} + 2 x_{5} x_{8} + x_{6} x_{7} + x_{6} x_{8} + x_{8}^{2}, x_{4} - x_{8}, x_{5}^{2} + x_{5} x_{8} + x_{8}^{2},$
+
+$x_{5} x_{6} - x_{5} x_{8} - x_{6} x_{7} + x_{7} x_{8}, x_{6}^{2} + x_{6} x_{7} - x_{7} x_{8} - x_{8}^{2}, x_{7}^{2} + x_{7} x_{8} + x_{8}^{2}, x_{8}^{3} - 1]$
+
 
 \textcolor{blue}{sage:} QQbar.options.display\_format = 'radical'
 
@@ -135,7 +190,9 @@ $x_{5} x_{6} - x_{5} x_{8} - x_{6} x_{7} + x_{7} x_{8}, x_{6}^{2} + x_{6} x_{7} 
 
 \textcolor{blue}{sage:} I.variety()[0]
 
-$\text{\texttt{{\char`\{}x8:{ }1,{ }x7:{ }{-}1/2*I*sqrt(3){ }{-}{ }1/2,{ }x6:{ }1,{ }x5:{ }{-}1/2*I*sqrt(3){ }{-}{ }1/2,{ }x4:{ }1,{ }x3:{ }1/2*I*sqrt(3){ }{-}{ }1/2,{ }x2:{ }{-}1/2*I*sqrt(3){ }{-}{ }1/2,{ }x1:{ }1/2*I*sqrt(3){ }{-}{ }1/2{\char`\}}}}$
+$\texttt{{\char`\{}x8:{ }1, x7:{ }{-}1/2*I*sqrt(3){ }{-}{ }1/2, x6:{ }1,{ }x5:{ }{-}1/2*I*sqrt(3){ }{-}{ }1/2,{ }}$
+
+$\texttt{x4:{ }1,{ }x3:{ }1/2*I*sqrt(3){ }{-}{ }1/2,{ }x2:{ }{-}1/2*I*sqrt(3){ }{-}{ }1/2,{ }x1:{ }1/2*I*sqrt(3){ }{-}{ }1/2{\char`\}}}$
 
 \end{semiverbatim}
 
@@ -589,6 +646,35 @@ Part 2: Differential Algebra
 \end{center}
 \end{exampleblock}
 \end{frame}
+
+\begin{frame}
+\frametitle{Differential Algebra}
+\includegraphics[page=2, width=\textwidth]{Differential algebra - Wikipedia.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{Examples of Differential Rings}
+
+A field of constants (for which $\delta c = 0$): $\mathbb{Q}, \mathbb{\bar{Q}}, \mathbb{C}$, plus:
+
+\vskip 20pt
+\begin{itemize}
+\item Rational Functions in $x$ with $\delta x = 1$
+
+$\qquad \qquad \delta x^2 = 2 x \qquad \delta x^3 = 3 x^2$
+
+\item Exponentials: $\delta \theta = \theta$
+
+\item Logarithms: $\delta x = 1 \qquad \delta \theta = \frac{1}{x}$
+
+\item Indeterminates: $\delta y = y' \qquad \delta y' = y'' \qquad \delta y'' = y'''$
+\end{itemize}
+
+\vskip 20pt
+
+Example of a differential polynomial: $\delta^2 y + 2 x \delta y + y^2$
+\end{frame}
+
 
 \begin{frame}
 \frametitle{My Question}
