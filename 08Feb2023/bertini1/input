@@ -1,0 +1,16 @@
+
+CONFIG
+
+END;
+
+INPUT
+
+variable_group x, y, z, l;
+function f, g, h, i;
+
+f = 3*x^2 + 2*x*l + 2*y*z;
+g = 2*x*z + 2*y*l;
+h = 2*x*y + 2*z*l + (-2)*z;
+i = x^2 + y^2 + z^2 - 1;
+
+END;

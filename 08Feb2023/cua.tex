@@ -903,21 +903,30 @@ $$E_0 = \{2, 2\pm2\sqrt{2}\}\qquad E_\infty = \{ 1\} $$
 \end{frame}
 
 \begin{frame}
+\frametitle{Verifying Wolfram Alpha (Mathematica)'s result}
 \begin{center}
-%Bessel functions solve $x^2 y'' + x y' + (x^2 - \alpha^2)y = 0$.
-%\vskip 20pt
+\centerline{$\frac{d^2\Psi}{dB^2} + \frac{1}{B}\frac{d\Psi}{dB} + \frac{1}{B}\Psi = 0$}
+\vskip 40pt
+
+Bessel functions solve $x^2 y'' + x y' + (x^2 - \alpha^2)y = 0$.
+\vskip 20pt
 
 $J_0$ and $Y_0$ ($\alpha = 0$) solve $x^2 y'' + x y' + x^2 y = 0$.
 
 \vskip 20pt
 Claim: $z(x) = J_0(2\sqrt{x})$ solves $x z'' + z' + z = 0$
+\end{center}
+\end{frame}
 
-\vskip 20pt
-So, does $z(x) = (y\circ f)(x)$ and $f(x) = 2\sqrt{x}$ solve $x z'' + z' + z = 0$?
+\begin{frame}
+\frametitle{Verifying Wolfram Alpha (Mathematica)'s result}
+\begin{center}
+So, does $z(x) = (y\circ f)(x)$ and $f(x) = 2\sqrt{x}$ solve $x z'' + z' + z = 0$
+if $x^2 y'' + x y' + x^2 y = 0$?
 
 \vskip 20pt 
 
-$z' = \frac{dz}{dx} = y'(2\sqrt{x}) \cdot \frac{1}{\sqrt{x}}$
+$z' = \frac{dz}{dx} = y'(2\sqrt{x}) \cdot \frac{1}{\sqrt{x}} \qquad \Rightarrow \qquad y'(2\sqrt{x}) = \sqrt{x} z'$
 
 $z'' = y''(2\sqrt{x}) \cdot \frac{1}{\sqrt{x}} \cdot \frac{1}{\sqrt{x}} + y'(2\sqrt{x}) \left(-\frac{1}{2x^{3/2}}\right)$
 
