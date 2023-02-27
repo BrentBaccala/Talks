@@ -1,0 +1,36 @@
+Notebook[{Cell[
+BoxData[RowBox[{"Psif"," ",":="," ",RowBox[{"Psi","[",RowBox[{"x",",","y",",","z"}],"]"}]}]],
+"Input",CellLabel -> "In[1]:= ",ExpressionUUID -> "11fc3bae-8a98-4307-857d-b18b28259115"],Cell[
+CellGroupData[
+{Cell[
+BoxData[RowBox[{"eqn"," ","="," ",RowBox[{RowBox[{RowBox[{RowBox[{RowBox[{"-"," ","1"}],"/","2"}],"*",RowBox[
+{"Laplacian","[",RowBox[{"Psif",","," ",RowBox[{"{",RowBox[{"x",",","y",",","z"}],"}"}]}],"]"}]}]," ","-"," "," ",RowBox[
+{RowBox[{"1","/",RowBox[{"Sqrt","[",RowBox[{RowBox[{"x","^","2"}]," ","+"," ",RowBox[
+{"y","^","2"}]," ","+"," ",RowBox[{"z","^","2"}]}],"]"}]}]," ","*"," ","Psif"}]}]," ","=="," ","0","\[NonBreakingSpace]"}]}]],
+"Input",CellLabel -> "In[2]:= ",ExpressionUUID -> "929097da-7e48-457d-a204-8e486959098e"],Cell[
+BoxData[
+RowBox[{RowBox[{RowBox[{"-",FractionBox[RowBox[{"Psi","[",RowBox[{"x",",","y",",","z"}],"]"}],
+SqrtBox[RowBox[{SuperscriptBox["x","2"],"+",SuperscriptBox["y","2"],"+",SuperscriptBox[
+"z","2"]}]]]}],"+",RowBox[{FractionBox["1","2"]," ",RowBox[{"(",RowBox[{RowBox[{"-",RowBox[
+{SuperscriptBox["Psi",TagBox[RowBox[{"(",RowBox[{"0",",","0",",","2"}],")"}],Derivative],
+MultilineFunction -> None],"[",RowBox[{"x",",","y",",","z"}],"]"}]}],"-",RowBox[{SuperscriptBox[
+"Psi",TagBox[RowBox[{"(",RowBox[{"0",",","2",",","0"}],")"}],Derivative],MultilineFunction -> None],"[",RowBox[
+{"x",",","y",",","z"}],"]"}],"-",RowBox[{SuperscriptBox["Psi",TagBox[RowBox[{"(",RowBox[
+{"2",",","0",",","0"}],")"}],Derivative],MultilineFunction -> None],"[",RowBox[{"x",",","y",",","z"}],"]"}]}],")"}]}]}],"\[Equal]","0"}],
+StandardForm],"Output",CellLabel -> "Out[2]= ",ExpressionUUID -> "8e697a0b-9477-4029-9015-3c001bd0ef48"]},
+Open],ExpressionUUID -> "bff2b66b-d7d5-4716-83da-f7e14eabd60a"],Cell[
+BoxData[RowBox[
+{RowBox[{"sol","[",RowBox[{"x_",","," ","y_",","," ","z_"}],"]"}]," ",":="," ",RowBox[
+{"BesselJ","[",RowBox[{"0",",",RowBox[{"2","*",RowBox[{"Sqrt","[",RowBox[{"x","+",RowBox[
+{"Sqrt","[",RowBox[{RowBox[{"x","^","2"}],"+",RowBox[{"y","^","2"}],"+",RowBox[{"z","^","2"}]}],"]"}]}],"]"}]}]}],"]"}]}]],
+"Input",CellLabel -> "In[3]:= ",ExpressionUUID -> "2d24afc7-5a16-41e5-a4bf-74e347f20ae7"],Cell[
+CellGroupData[
+{Cell[
+BoxData[RowBox[{"FullSimplify","[",RowBox[{"eqn"," ","/."," ",RowBox[{"Psi"," ","\[Rule]"," ",RowBox[
+{"(",RowBox[{RowBox[{"{",RowBox[{"x",",","y",",","z"}],"}"}]," ","\[Function]",RowBox[
+{"sol","[",RowBox[{"x",",","y",",","z"}],"]"}]}],")"}]}]}],"]"}]],"Input",CellLabel -> "In[4]:= ",
+ExpressionUUID -> "1a6f9e01-1654-4aef-8c4b-79fe5b4cadde"],Cell[
+BoxData["True",StandardForm],
+"Output",CellLabel -> "Out[4]= ",ExpressionUUID -> "4387a52b-aac6-49d1-980e-355c9397b13e"]},
+Open],ExpressionUUID -> "9bfa0baa-7918-485b-a5ff-68305d55a40f"]},StyleDefinitions -> "Default.nb",
+FrontEndVersion -> "13.2 for Wolfram Cloud 1.64.2 (December 29, 2022)"]
