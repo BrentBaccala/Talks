@@ -5,7 +5,7 @@
 # drag
 
 import numpy as np
-from scipy.integrate import odeint
+from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
 
 # Physical constants
@@ -14,7 +14,7 @@ L = 1.0  # length of pendulum
 m = 1.0  # mass at pendulum end
 
 # System of differential equations
-def double_pendulum(y, t, L, m, g):
+def double_pendulum(t, y):
     theta1, z1, theta2, z2 = y
     c, s = np.cos(theta1-theta2), np.sin(theta1-theta2)
     theta1_dot = z1
@@ -32,7 +32,10 @@ t = np.linspace(0, 10, 1000)
 y0 = [np.pi/4, 0, np.pi/2, 0]
 
 # Solve system of differential equations
-y = odeint(double_pendulum, y0, t, args=(L, m, g))
+bunch = solve_ivp(double_pendulum, [0,10], y0, max_step=0.1)
+
+y = bunch.y
+t = bunch.t
 
 # Unpack theta1 and theta2
 theta1, theta2 = y[:,0], y[:,2]
@@ -45,7 +48,7 @@ y2 = y1 - L * np.cos(theta2)
 
 # Plot the motion of the double pendulum
 plt.figure(figsize=(6,6))
-plt.plot(x1, y1, label='Mass 1')
+plt.plot(x1, y1, 'ro', label='Mass 1')
 plt.plot(x2, y2, label='Mass 2')
 plt.xlabel('x')
 plt.ylabel('y')
