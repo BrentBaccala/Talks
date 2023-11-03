@@ -6,6 +6,8 @@ start one pendulum at pi/2 and the other at pi/4
 
 plot the x-y coordinates of both pendulums
 
+plot for 100 seconds
+
 be sure to include a shebang line
 
 use matplotlib.pyplot
