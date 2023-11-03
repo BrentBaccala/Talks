@@ -2,14 +2,16 @@ write a sage math script to plot the motion of a double pendulum with
 equal point masses and equal length strings, assuming no friction, no
 drag
 
-start one pendulum at pi/2 and the other at pi/4
+start the upper pendulum at pi/2 and the lower one at pi/4
 
 plot the x-y coordinates of both pendulums
 
-plot for 100 seconds
+plot for the number of seconds specified in the environment variable T
 
 be sure to include a shebang line
 
 use matplotlib.pyplot
+
+solve the system of differential equations using odeint from scipy.integrate
 
 output only the script without any commentary
