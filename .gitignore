@@ -1,0 +1,9 @@
+
+# ignore a whole bunch of TeX clutter
+*.aux
+*.log
+*.toc
+*.vrb
+*.snm
+*.out
+*.nav
