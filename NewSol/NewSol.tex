@@ -114,42 +114,111 @@ The square amplitude of its Fourier transform gives the probability density of t
 %% \includegraphics[clip, trim=0in 5.6in 0in 0.75in, width=\textwidth, page=1]{GrobnerBasis.pdf}
 %% \includegraphics[clip, trim=0in 6.25in 0in 0.5in, width=\textwidth, page=9]{GrobnerBasis.pdf}
 %% \includegraphics[clip, trim=0in 3in 0in 0.5in, width=\textwidth, page=13]{GrobnerBasis.pdf}
-\[ \hat{H} \Psi\argt = i \frac{\delta}{\delta t} \Psi\argt \]
+\begin{block}{}
+\[ \hat{H} \Psi\argt = i \hbar \frac{\delta}{\delta t} \Psi\argt \]
+\end{block}
 %\vskip 0.3in
 \begin{center}
 \underline{{\bf Definition of Hamiltonian operator $\hat{H}$}}
 \[ \hat{H} \Psi\argt = \hat{T} \Psi\argt + \hat{V} \Psi\argt \]
 
-$\hat{T}$ is the kinetic energy operator
-
+$\hat{T}$ is the kinetic energy operator \qquad
 $\hat{V}$ is the potential energy operator
+
+\vskip 12pt
+
+Construct $\hat{T}$ and $\hat{V}$ like this:
 
 \[\hat{T} = \sum_i - \frac{\hbar^2}{2m_i}\nabla_i^2 \qquad\qquad \hat{V} = V\argt\]
 
-\[ \nabla_i^2 = \frac{\delta^2}{\delta x_i^2} + \frac{\delta^2}{\delta y_i^2} + \frac{\delta^2}{\delta z_i^2} \quad {\rm (cartesian\ coordinates)}\]
+$\nabla_i^2$ is the {\it Laplacian} with respect to the $i\hspace{0.05em}^{\rm th}$ particle.
+%% \[ \nabla_i^2 = \frac{\delta^2}{\delta x_i^2} + \frac{\delta^2}{\delta y_i^2} + \frac{\delta^2}{\delta z_i^2} \quad {\rm (cartesian\ coordinates)}\]
 
-the sum in $\hat{T}$ is over all particles
+\vskip 12pt
+
+The sum in $\hat{T}$ is over all particles.
 
 \end{center}
 
 \end{frame}
 
 \begin{frame}
-\frametitle{Time Independent Schr\"odinger Equation}
-If the potential energy $V\argt$ has no time dependence, we can 
-use separation of variables and {\it assume} that the wavefunction has the form:
+\frametitle{Vector Derivatives}
 
-\[ \Psi\argt = \psi\arg\phi(t) \]
+In two and three dimensional space, we often prefer to use coordinate-free notation for derivatives:
 
-\[\sum_i - \frac{\hbar^2}{2m_i}\nabla_i^2 \psi\arg\phi(t) + V\arg\psi\arg\phi(t) \]
-\[ = i \frac{\delta}{\delta t} \psi\arg\phi(t) \]
+\vskip 12pt
 
-divide through by $\psi\arg\phi(t)$:
+The {\it gradient} $\nabla f$ of a scalar-valued function is a vector-valued function that gives the direction and rate of greatest increase.
 
-\[ \frac{1}{\psi\arg} \left[ \sum_i - \frac{\hbar^2}{2m_i}\nabla_i^2 \psi\arg + V\arg\psi\arg \right] \]
-\[ = \frac{i}{\phi(t)} \frac{\delta}{\delta t} \phi(t) \]
+\vskip 12pt
 
-\[ \hat{H} \Psi = E \Psi \]
+The {\it divergence} $\nabla \cdot \vec{F}$ of a vector-valued function is a scalar-valued function that gives the strength of a source.
+
+\vskip 12pt
+
+The {\it curl} $\nabla \times \vec{F}$ of a vector-valued function is a (pseudo)vector-valued function that gives the rotational strength of the vector field at each point.
+
+\vskip 12pt
+
+The {\it Laplacian} $\nabla^2 f$ or $\Delta f$ of a scalar-valued function is a second derivative, the divergence of the gradient.
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Vector Derivatives}
+
+\[
+\begin{array}{ccc}
+ {\bf Operation}      & {\bf Cartesian\ coordinates}  & {\bf Spherical\ coordinates} \\
+& & \\
+ {\rm Vector\ field}\\ \vec{A} & A_x \vec{x} + A_y \vec{y} + A_z \vec{z} & A_r \vec{r} + A_\theta \vec{\theta} + A_\phi \vec{\phi} \\
+& & \\
+ {\rm Gradient} \\ \nabla f & \frac{\delta f}{\delta x}\vec{x} + \frac{\delta f}{\delta y}\vec{y} + \frac{\delta f}{\delta z}\vec{z} & \frac{\delta f}{\delta r}\vec{r} + \frac{1}{r} \frac{\delta f}{\delta \theta}\vec{\theta} + \frac{1}{r \sin\theta}\frac{\delta f}{\delta \phi}\vec{\phi} \\
+
+& & \\
+ {\rm Divergence}  & \frac{\delta A_x}{\delta x} + \frac{\delta A_y}{\delta y} + \frac{\delta A_z}{\delta z} & \frac{1}{r^2} \frac{\delta (r^2 A_r)}{\delta r} + \frac{1}{r \sin \theta} \frac{\delta}{\delta \theta}\left(A_\theta \sin\theta\right)\\
+\nabla \cdot \vec{A}  & & + \frac{1}{r \sin\theta}\frac{\delta A_\phi}{\delta \phi} \\
+
+& & \\
+ {\rm Laplacian} & \frac{\delta^2 f}{\delta x^2} + \frac{\delta^2 f}{\delta y^2} + \frac{\delta^2 f}{\delta z^2} &   \frac{1}{r^2} \frac{\delta}{\delta r}\left(r^2\frac{\delta f}{\delta r}\right) + \frac{1}{r^2\sin\theta} \frac{\delta}{\delta \theta}\left(\sin\theta\frac{\delta f}{\delta\theta}\right) \\
+\nabla^2 f  & & + \frac{1}{r^2 \sin^2\theta}\frac{\delta^2 f}{\delta \phi^2} \\
+
+\end{array}
+\]
+
+Source: Wikipedia, {\it Del in cylindrical and spherical coordinates}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Aside: Tensor Derivatives}
+
+In higher dimensional spaces, vector derivative concepts fail and we prefer to use tensor calculus, the {\it exterior derivative},
+the {\it musical isomorphisms} and the {\it Hodge star operator}.
+
+\vskip 12pt
+
+An {\it $n$-form} is (roughly) a $n$-dimensional differential.
+
+The {\it exterior derivative} maps an $n$-form to an $(n+1)$-form.
+
+The {\it musical isomorphisms} map back and forth between the tangent space and the cotangent space.
+
+The {\it Hodge star operator} maps an $n$-form to an $(r-n)$-form, in $r$-dimensional space.
+
+\[
+\begin{array}{rcccl}
+  \operatorname{grad} f &\equiv& \nabla f        &=& \left( d f \right)^\sharp \\
+  \operatorname{div} F  &\equiv& \nabla \cdot F  &=& {\star d {\star} \mathord{\left( F^\flat \right)}} \\
+  \operatorname{curl} F &\equiv& \nabla \times F &=& \left( {\star} d \mathord{\left( F^\flat \right)} \right)^\sharp \\
+  \Delta f              &\equiv& \nabla^2 f      &=& {\star} d {\star} d f \\
+                        &      & \nabla^2 F      &=& \left(d{\star}d{\star}\mathord{\left(F^{\flat}\right)} - {\star}d{\star}d\mathord{\left(F^{\flat}\right)}\right)^{\sharp} \\
+\end{array}
+\]
+
+Source: Wikipedia, {\it Exterior derivative}
+
 \end{frame}
 
 \begin{frame}
@@ -160,12 +229,12 @@ use separation of variables and {\it assume} that the wavefunction has the form:
 \[ \Psi\argt = \psi\arg\phi(t) \]
 
 \[\sum_i - \frac{\hbar^2}{2m_i}\nabla_i^2 \psi\arg\phi(t) + V\arg\psi\arg\phi(t) \]
-\[ = i \frac{\delta}{\delta t} \psi\arg\phi(t) \]
+\[ = i \hbar\frac{\delta}{\delta t} \psi\arg\phi(t) \]
 
 divide through by $\psi\arg\phi(t)$:
 
 \[ \frac{1}{\psi\arg} \left[ \sum_i - \frac{\hbar^2}{2m_i}\nabla_i^2 \psi\arg + V\arg\psi\arg \right] \]
-\[ = \frac{i}{\phi(t)} \frac{\delta}{\delta t} \phi(t) \]
+\[ = \frac{i\hbar}{\phi(t)} \frac{\delta}{\delta t} \phi(t) \]
 
 \end{frame}
 
@@ -173,8 +242,8 @@ divide through by $\psi\arg\phi(t)$:
 \frametitle{Time Independent Schr\"odinger Equation}
 The time part:
 
-\[ E = \frac{i}{\phi(t)} \frac{\delta}{\delta t} \phi(t) \qquad\Rightarrow\qquad - i E \delta t = \frac{\delta\phi(t)}{\phi(t)} \qquad\Rightarrow\qquad - i E t + C = \ln \phi(t) \]
-\[ \phi(t) = e^C e^{-iEt}\]
+\[ E = \frac{i\hbar}{\phi(t)} \frac{\delta}{\delta t} \phi(t) \quad\Rightarrow\quad - \frac{i E \delta t}{\hbar} = \frac{\delta\phi(t)}{\phi(t)} \quad\Rightarrow\quad - \frac{i E t}{\hbar} + C = \ln \phi(t) \]
+\[ \phi(t) = e^C e^{-iEt/\hbar}\]
 
 The position part:
 
@@ -184,7 +253,7 @@ The position part:
 
 The combined time independent Schr\"odinger equation:
 
-\[ \hat{H} \psi\arg = E \psi\arg \qquad\qquad \Psi\argt = e^{-iEt} \psi\arg\]
+\[ \hat{H} \psi\arg = E \psi\arg \qquad\qquad \Psi\argt = e^{-iEt/\hbar} \psi\arg\]
 \end{frame}
 
 \begin{frame}
@@ -883,19 +952,6 @@ as you approach a known solution
 
 \begin{frame}
 \frametitle{The Euclidean Distance Function}
-
-Let $X \in {\mathbb R}^n$ be an algebraic variety.
-
-\vskip 12pt
-
-The Euclidean Distance function from $u \in {\mathbb R}^n$ to X is
-\[ d_X (u) := \min_{x\in X}\ |u - x| \]
-
-
-\end{frame}
-
-\begin{frame}
-\frametitle{The Euclidean Distance Function}
 \includegraphics[page=3, clip, trim=0in 1in 0in 0in, width=\textwidth]{The_distance_function_from_a_real_algebraic_variety_]_Giorgio_Ottaviani,_University_of_Florence.pdf}
 \begin{block}{}
 Source: Giorgio Ottaviani, {\it The distance function from an algebraic variety}, {\it Nonlinear Algebra in Applications}, ICERM workshop, 2018
@@ -910,12 +966,6 @@ Source: Giorgio Ottaviani, {\it The distance function from an algebraic variety}
 \begin{frame}
 \frametitle{The Euclidean Distance Function}
 \includegraphics[page=15, clip, trim=0in 0in 0in 0in, width=\textwidth]{The_distance_function_from_a_real_algebraic_variety_]_Giorgio_Ottaviani,_University_of_Florence.pdf}
-\end{frame}
-
-\begin{frame}
-\frametitle{The Euclidean Distance Function}
-\includegraphics[page=16, clip, trim=0in 0in 0in 0in, width=\textwidth]{The_distance_function_from_a_real_algebraic_variety_]_Giorgio_Ottaviani,_University_of_Florence.pdf}
-Source: Ottaviani, {\it The distance function from an algebraic variety}, {\it Nonlinear Algebra in Applications}, ICERM workshop, 2018
 \end{frame}
 
 \begin{frame}
@@ -995,20 +1045,9 @@ sage: [N(sol[0]) for sol in SRbwb.roots()]
 \end{center}
 \end{frame}
 
-
 \begin{frame}
-\frametitle{Computing the Euclidean Distance Function}
-Let $q(x) = \sum_{i=0}^{n} x_i^2$ be the Euclidean quadratical form.
-\begin {enumerate}
-\item Pick the ring $\mathbb{Q}[u_0, ..., u_n, x_0 , ... , x_n , t]$
-\item Input is the ideal $I_X$ with generators $f=(f_1,...,f_m)$
-\item Let $c={\rm codim\ } X$
-\item Compute $I_{X_{sing}}$ singular locus, by $c$-minors of $Jac(f)$
-\item Compute the critical ideal as
-\[ I u := \left( I_X + (c+1)-{\rm minors\ of} \left(\genfrac{}{}{0pt}{0}{u-x}{Jac(f)}\right)\right) : (I_{X_{sing}})^\infty \]
-\item Eliminate $x_0,...,x_n$ in $I_u + (t^2 - q(x-u))$, get ${\rm EDpoly}_{X ,u} (t^2 )$
-\end{enumerate}
-
+\frametitle{The Euclidean Distance Function}
+\includegraphics[page=16, clip, trim=0in 0in 0in 0in, width=\textwidth]{The_distance_function_from_a_real_algebraic_variety_]_Giorgio_Ottaviani,_University_of_Florence.pdf}
 Source: Ottaviani, {\it The distance function from an algebraic variety}, {\it Nonlinear Algebra in Applications}, ICERM workshop, 2018
 \end{frame}
 
