@@ -23,6 +23,8 @@
 
 \usepackage{tabularx}
 
+\usepackage{fancyvrb}
+
 \usepackage{tikz}
 \usetikzlibrary{positioning}
 \usetikzlibrary{fit}
@@ -873,11 +875,170 @@ Part 3: Moving the Research Project Forward
 \item Ex: 1.0000057 is approximately 1
 \item This works well for finding a single prime component
 \item The problem is how to remove a prime component so you can find all the prime components
+\item The best way I've found to remove prime components is to use the {\it Euclidean Distance} function
+to drive solutions away from known components by introducing an extra function whose value becomes large
+as you approach a known solution
 \end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{The Euclidean Distance Function}
+
+Let $X \in {\mathbb R}^n$ be an algebraic variety.
+
+\vskip 12pt
+
+The Euclidean Distance function from $u \in {\mathbb R}^n$ to X is
+\[ d_X (u) := \min_{x\in X}\ |u - x| \]
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{The Euclidean Distance Function}
+\includegraphics[page=3, clip, trim=0in 1in 0in 0in, width=\textwidth]{The_distance_function_from_a_real_algebraic_variety_]_Giorgio_Ottaviani,_University_of_Florence.pdf}
+\begin{block}{}
+Source: Giorgio Ottaviani, {\it The distance function from an algebraic variety}, {\it Nonlinear Algebra in Applications}, ICERM workshop, 2018
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Euclidean Distance Function}
+\includegraphics[page=7, clip, trim=0in 0in 0in 0in, width=\textwidth]{The_distance_function_from_a_real_algebraic_variety_]_Giorgio_Ottaviani,_University_of_Florence.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Euclidean Distance Function}
+\includegraphics[page=15, clip, trim=0in 0in 0in 0in, width=\textwidth]{The_distance_function_from_a_real_algebraic_variety_]_Giorgio_Ottaviani,_University_of_Florence.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Euclidean Distance Function}
+\includegraphics[page=16, clip, trim=0in 0in 0in 0in, width=\textwidth]{The_distance_function_from_a_real_algebraic_variety_]_Giorgio_Ottaviani,_University_of_Florence.pdf}
+Source: Ottaviani, {\it The distance function from an algebraic variety}, {\it Nonlinear Algebra in Applications}, ICERM workshop, 2018
+\end{frame}
+
+\begin{frame}
+\frametitle{Euclidean Distance polynomial for the ellipse $4x^2 + y^2 = 1$}
+\scriptsize
+\[ 144 \, t^{8} - 24 \, {\left(28 \, x^{2} + 8 \, y^{2} + 15\right)} t^{6} \]
+\[ + {\left(1168 \, x^{4} + 992 \, x^{2} y^{2} - 32 \, y^{4} + 1080 \, x^{2} - 360 \, y^{2} + 297\right)} t^{4} \]
+\[ - 2 \, {\left(448 \, x^{6} + 720 \, x^{4} y^{2} + 240 \, x^{2} y^{4} - 32 \, y^{6} + 496 \, x^{4} - 280 \, x^{2} y^{2} + 124 \, y^{4} + 180 \, x^{2} - 135 \, y^{2} + 45\right)} t^{2} \]
+\[ + 256 \, x^{6} - 480 \, x^{4} y^{2} - 360 \, x^{2} y^{4} - 56 \, y^{6} + 256 \, x^{8} + 640 \, x^{6} y^{2} + 528 \, x^{4} y^{4} + 160 \, x^{2} y^{6} + 16 \, y^{8} \]
+\[ - 32 \, x^{4} + 248 \, x^{2} y^{2} + 73 \, y^{4} - 48 \, x^{2} - 42 \, y^{2} + 9 = 0 \]
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Euclidean Distance from $(1,1)$ to the ellipse $4x^2 + y^2 = 1$}
+To find the distance from the point $(1,1)$ to the ellipse $4x^2 + y^2 = 1$, we substitute $x=1$ and $y=1$ into
+the Euclidean Distance polynomial:
+
+\[ 144 t^{8} - 1224 t^{6} + 3145 t^{4} - 3612 t^{2} + 1168 \]
+
+We want the smallest positive real root of this polynomial
+
+\begin{verbatim}
+sage: [N(sol[0]) for sol in SRbwb.roots()]                                                                                         
+[-2.26742176878493,
+ 2.26742176878493,
+ -0.709400520758237,
+ 0.709400520758237,
+ -1.26458649349997 - 0.414010009237062*I,
+ 1.26458649349997 + 0.414010009237062*I,
+ -1.26458649349997 + 0.414010009237062*I,
+ 1.26458649349997 - 0.414010009237062*I]
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Euclidean Distance from $(1,1)$ to the ellipse $4x^2 + y^2 = 1$}
+\begin{center}
+\makebox[.3\linewidth][l]{
+\begin{tikzpicture}[baseline={(0,1.6)}]
+    % Draw axes
+    \draw[thick,->] (-2,0) -- (4,0) node[anchor=north west, font=\tiny] {$x$};
+    \draw[thick,->] (0,-2) -- (0,4) node[anchor=south east, font=\tiny] {$y$};
+
+    % Draw grid with labels
+    \foreach \x in {-1,1,2,3} {
+        \draw (\x,1pt) -- (\x,-3pt) node[anchor=north, font=\tiny] {$\x$};
+        \draw (1pt,\x) -- (-3pt,\x) node[anchor=east, font=\tiny] {$\x$};
+    }
+
+    \draw [red] (0,0) ellipse (0.5 and 1);
+    \fill [blue] (1,1) circle (1pt);
+    \draw [blue] (1,1) circle (0.7094);
+    \draw [blue] (1,1) circle (2.2674);
+\end{tikzpicture}
+}%
+\begin{minipage}[b]{.8\linewidth}
+\tiny
+\begin{verbatim}
+\begin{tikzpicture}
+    % Draw axes
+    \draw[thick,->] (-2,0) -- (4,0) node[anchor=north west, font=\tiny] {$x$};
+    \draw[thick,->] (0,-2) -- (0,4) node[anchor=south east, font=\tiny] {$y$};
+
+    % Draw grid with labels
+    \foreach \x in {-1,1,2,3} {
+        \draw (\x,1pt) -- (\x,-3pt) node[anchor=north, font=\tiny] {$\x$};
+        \draw (1pt,\x) -- (-3pt,\x) node[anchor=east, font=\tiny] {$\x$};
+    }
+
+    \draw [red] (0,0) ellipse (0.5 and 1);
+    \fill [blue] (1,1) circle (1pt);
+    \draw [blue] (1,1) circle (0.7094);
+    \draw [blue] (1,1) circle (2.2674);
+\end{tikzpicture}
+\end{verbatim}
+\end{minipage}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Computing the Euclidean Distance Function}
+Let $q(x) = \sum_{i=0}^{n} x_i^2$ be the Euclidean quadratical form.
+\begin {enumerate}
+\item Pick the ring $\mathbb{Q}[u_0, ..., u_n, x_0 , ... , x_n , t]$
+\item Input is the ideal $I_X$ with generators $f=(f_1,...,f_m)$
+\item Let $c={\rm codim\ } X$
+\item Compute $I_{X_{sing}}$ singular locus, by $c$-minors of $Jac(f)$
+\item Compute the critical ideal as
+\[ I u := \left( I_X + (c+1)-{\rm minors\ of} \left(\genfrac{}{}{0pt}{0}{u-x}{Jac(f)}\right)\right) : (I_{X_{sing}})^\infty \]
+\item Eliminate $x_0,...,x_n$ in $I_u + (t^2 - q(x-u))$, get ${\rm EDpoly}_{X ,u} (t^2 )$
+\end{enumerate}
+
+Source: Ottaviani, {\it The distance function from an algebraic variety}, {\it Nonlinear Algebra in Applications}, ICERM workshop, 2018
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Computing EDpoly$_{4x^2+y^2-1}$ using Sage}
+\scriptsize
+\begin{verbatim}
+import itertools
+
+RED.<x,y,ux,uy,t> = PolynomialRing(QQ, 5, order='degrevlex(2), degrevlex(3)')
+I=ideal(4*x^2 + y^2 - 1)
+Jacobian = matrix([[g.derivative(RED(cv)) for g in I.gens()] for cv in [x,y]])
+extendedJacobian = Jacobian.transpose().stack(matrix([RED('u' + str(cv)) - RED(cv)
+    for cv in [x,y]]))
+\end{verbatim}
+\[
+\left(\begin{array}{rr}
+8 x & 2 y \\
+-x + \mathit{ux} & -y + \mathit{uy}
+\end{array}\right)
+\]
+\begin{verbatim}
+minors = [extendedJacobian.determinant()]
+critical_ideal_generators = [g for g in itertools.chain(minors, I.gens())]
+distance_function = t^2 - sum((RED(cv) - RED('u'+str(cv)))^2 for cv in [x,y])
+elimination_ideal = ideal(critical_ideal_generators + [distance_function])
+GB = elimination_ideal.groebner_basis()
+GB[-1].numerator()
+GB[-1].numerator().subs(ux=1,uy=1)
+\end{verbatim}
 \end{frame}
 
 \begin{frame}
