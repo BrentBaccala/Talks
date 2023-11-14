@@ -302,18 +302,27 @@ Source: Szabo and Ostlund, {\it Modern Quantum Chemistry}, eq (2.2), p.41
 \begin{frame}
 \frametitle{Hydrogen Schr\"odinger Equation}
 
-\[ \psi(x,y,z) \]
+\begin{center}
 
-\[ r = \sqrt{x^2+y^2+z^2} \]
+Assume an infinitely massive nucleus at the origin
 
-\[ \hat{H} = \frac{1}{2} \nabla^2 - \frac{1}{r}  \]
+\[ \hat{H} = - \frac{1}{2} \nabla^2 - \frac{1}{r}  \qquad\qquad\qquad - \frac{1}{2} \nabla^2 \psi - \frac{1}{r} \psi = E \psi \]
 
-\[ \frac{1}{2} \nabla^2 \psi(x,y,z) - \frac{1}{r} \psi(x,y,z) = E \psi(x,y,z) \]
+Cartesian coordinates:
 
-\[ \frac{1}{2} \frac{\delta^2 \psi(x,y,z)}{\delta x^2} + \frac{1}{2} \frac{\delta^2 \psi(x,y,z)}{\delta y^2} + \frac{1}{2} \frac{\delta^2 \psi(x,y,z)}{\delta z^2} - \frac{1}{r} \psi(x,y,z) = E \psi(x,y,z) \]
+\[ - \frac{1}{2} \left( \frac{\delta^2 \psi(x,y,z)}{\delta x^2} + \frac{\delta^2 \psi(x,y,z)}{\delta y^2} + \frac{\delta^2 \psi(x,y,z)}{\delta z^2} \right) - \frac{1}{r} \psi(x,y,z) = E \psi(x,y,z) \]
+
+Spherical coordinates:
+
+\scriptsize
+\[ - \frac{1}{2} \left( \frac{1}{r^2} \frac{\delta}{\delta r}\left(r^2\frac{\delta \psi(r,\theta,\phi)}{\delta r}\right) + \frac{1}{r^2\sin\theta} \frac{\delta}{\delta \theta}\left(\sin\theta\frac{\delta \psi(r,\theta,\phi)}{\delta\theta}\right) + \frac{1}{r^2 \sin^2\theta}\frac{\delta^2 \psi(r,\theta,\phi)}{\delta \phi^2} \right) \]
+\[ - \frac{1}{r} \psi(r,\theta,\phi) = E \psi(r,\theta,\phi) \]
+
+\end{center}
 
 \end{frame}
 
+\begin{comment}
 \begin{frame}
 \frametitle{Helium Schr\"odinger Equation}
 
@@ -326,6 +335,7 @@ Source: Szabo and Ostlund, {\it Modern Quantum Chemistry}, eq (2.2), p.41
 
 
 \end{frame}
+\end{comment}
 
 \begin{frame}
 \frametitle{The Classical Solutions to Hydrogen}
@@ -371,7 +381,13 @@ $-\frac{1}{18}$		& $(27-18r+2r^2)e^{-r/3}$	& 3s \\
 \begin{frame}
 \frametitle{The New Solution to Hydrogen}
 
+\[ - \frac{1}{2} \nabla^2 \psi - \frac{1}{r} \psi = E \psi \]
+
 \[ \psi(x,y,z) = J_0(2\sqrt{x+r}) \]
+
+%% \[ r = \sqrt{x^2+y^2+z^2} \]
+
+\[ E = 0 \]
 
 \vskip 0.5in
 
@@ -553,7 +569,15 @@ Let's make a different assumption (and see if it's lucky, too):
 \frametitle{Jet Notation}
 
 \begin{center}
-$\frac{\delta^2 \Psi(x,y,z)}{\delta x^2}$ is written as $\Psi_{xx}(x,y,z)$ or just $\Psi_{xx}$
+Newton notation: $\Psi''$ or $\ddot \Psi$
+
+\vskip 12pt
+
+Leibnitz notation: $\frac{\delta^2 \Psi(x,y,z)}{\delta x^2}$
+
+\vskip 12pt
+
+Jet notation: $\Psi_{xx}(x,y,z)$ or just $\Psi_{xx}$
 \end{center}
 \end{frame}
 
@@ -564,7 +588,7 @@ $\frac{\delta^2 \Psi(x,y,z)}{\delta x^2}$ is written as $\Psi_{xx}(x,y,z)$ or ju
 
 The Hydrogen PDE:
 
-\[ \frac{1}{2} \Psi_{xx} + \frac{1}{2} \Psi_{yy} + \frac{1}{2} \Psi_{zz} - \frac{1}{r} \Psi = E \Psi \]
+\[ - \frac{1}{2} \Psi_{xx} - \frac{1}{2} \Psi_{yy} - \frac{1}{2} \Psi_{zz} - \frac{1}{r} \Psi = E \Psi \]
 
 \vskip 10pt
 
@@ -608,79 +632,97 @@ For example, consider the first term in the PDE, $\Psi_{xx}$:
 \[ \Psi_{xx} = (\Psi_x)_x = (\Psi_v v_x)_x = \Psi_{vx} v_x + \Psi_v v_{xx} = \Psi_{vv} (v_x)^2 + \Psi_v v_{xx} \]
 
 \[ v_x = \frac{\delta}{\delta x}\left(v_1 x + v_2 y + v_3 z + v_4 r\right) = v_1 + v_4 \frac{x}{r} \]
-\[ v_{xx} = v_4 \left(\frac{x^2-r^2}{r^3}\right) \]
+%% \[ v_{xx} = v_4 \left(\frac{x^2-r^2}{r^3}\right) \]
+\[ v_{xx} = v_4 \left(\frac{x^2-r^2}{r^3}\right) = v_4 \left(\frac{-y^2-z^2}{(x^2+y^2+z^2)r}\right) \]
 
 \[ \Psi_{vv} = - \frac{ (b_0 + b_1 v) \Psi_v + (c_0 + c_1 v) \Psi } {a_0 + a_1 v} \]
 
-\[ \Psi_{xx} = - \frac{ (b_0 + b_1 v) \Psi_v + (c_0 + c_1 v) \Psi } {a_0 + a_1 v} \left( v_1 + v_4 \frac{x}{r} \right)^2 + v_4 \left(\frac{x^2-r^2}{r^3}\right) \Psi_v \]
+%%\[ \Psi_{xx} = - \frac{ (b_0 + b_1 v) \Psi_v + (c_0 + c_1 v) \Psi } {a_0 + a_1 v} \left( v_1 + v_4 \frac{x}{r} \right)^2 + v_4 \left(\frac{x^2-r^2}{r^3}\right) \Psi_v \]
+
+\small
+\[ \Psi_{xx} = - \frac{ (b_0 + b_1 v) \Psi_v + (c_0 + c_1 v) \Psi } {a_0 + a_1 v} \left( v_1 + v_4 \frac{x}{r} \right)^2 + v_4 \left(\frac{-y^2-z^2}{(x^2+y^2+z^2)r}\right) \Psi_v \]
 
 \end{frame}
 
 \begin{frame}
 \frametitle{The Expanded Numerator}
 \tiny
+\vskip -15pt
 \[
--2 r^4 \Psi E v_0 a_1-r^4 \Psi v_0 v_1^2 c_1-r^4 \Psi v_0 v_2^2 c_1-r^4 \Psi v_0 v_3^2 c_1-r^4 \Psi_v v_0 v_1^2 b_1
--r^4 \Psi_v v_0 v_2^2 b_1-r^4 \Psi_v v_0 v_3^2 b_1
--2 r^3 \Psi x E v_1 a_1
-\] \[
--2 r^3 \Psi x v_0^2 v_1 c_1
--r^3 \Psi x v_1^3 c_1-r^3 \Psi x v_1 v_2^2 c_1-r^3 \Psi x v_1 v_3^2 c_1-2 r^3 \Psi y E v_2 a_1
--2 r^3 \Psi y v_0^2 v_2 c_1-r^3 \Psi y v_1^2 v_2 c_1
-\] \[
--r^3 \Psi y v_2^3 c_1-r^3 \Psi y v_2 v_3^2 c_1
--2 r^3 \Psi z E v_3 a_1-2 r^3 \Psi z v_0^2 v_3 c_1
--r^3 \Psi z v_1^2 v_3 c_1
--r^3 \Psi z v_2^2 v_3 c_1 -r^3 \Psi z v_3^3 c_1-2 r^3 \Psi E a_0
-\] \[
--2 r^3 \Psi v_0 a_1-r^3 \Psi v_1^2 c_0-r^3 \Psi v_2^2 c_0-r^3 \Psi v_3^2 c_0
--2 r^3 \Psi_v x v_0^2 v_1 b_1
--r^3 \Psi_v x v_1^3 b_1-r^3 \Psi_v x v_1 v_2^2 b_1
--r^3 \Psi_v x v_1 v_3^2 b_1
-\] \[
--2 r^3 \Psi_v y v_0^2 v_2 b_1-r^3 \Psi_v y v_1^2 v_2 b_1
--r^3 \Psi_v y v_2^3 b_1-r^3 \Psi_v y v_2 v_3^2 b_1-2 r^3 \Psi_v z v_0^2 v_3 b_1-r^3 \Psi_v z v_1^2 v_3 b_1-r^3 \Psi_v z v_2^2 v_3 b_1
-\] \[
--r^3 \Psi_v z v_3^3 b_1
--3 r^3 \Psi_v v_0^2 a_1-r^3 \Psi_v v_1^2 b_0-r^3 \Psi_v v_2^2 b_0-r^3 \Psi_v v_3^2 b_0-r^2 \Psi x^2 v_0^3 c_1-2 r^2 \Psi x^2 v_0 v_1^2 c_1
--4 r^2 \Psi x y v_0 v_1 v_2 c_1
-\] \[
--4 r^2 \Psi x z v_0 v_1 v_3 c_1
--2 r^2 \Psi x v_0 v_1 c_0-2 r^2 \Psi x v_1 a_1-r^2 \Psi y^2 v_0^3 c_1
--2 r^2 \Psi y^2 v_0 v_2^2 c_1
--4 r^2 \Psi y z v_0 v_2 v_3 c_1
-\] \[
--2 r^2 \Psi y v_0 v_2 c_0-2 r^2 \Psi y v_2 a_1-r^2 \Psi z^2 v_0^3 c_1-2 r^2 \Psi z^2 v_0 v_3^2 c_1
--2 r^2 \Psi z v_0 v_3 c_0-2 r^2 \Psi z v_3 a_1-2 r^2 \Psi a_0-r^2 \Psi_v x^2 v_0^3 b_1
-\] \[
--2 r^2 \Psi_v x^2 v_0 v_1^2 b_1
--4 r^2 \Psi_v x y v_0 v_1 v_2 b_1
--4 r^2 \Psi_v x z v_0 v_1 v_3 b_1-3 r^2 \Psi_v x v_0 v_1 a_1-2 r^2 \Psi_v x v_0 v_1 b_0
--4 r^2 \Psi_v x z v_0 v_1 v_3 b_1
-\] \[
--3 r^2 \Psi_v x v_0 v_1 a_1-2 r^2 \Psi_v x v_0 v_1 b_0
--r^2 \Psi_v y^2 v_0^3 b_1-2 r^2 \Psi_v y^2 v_0 v_2^2 b_1-4 r^2 \Psi_v y z v_0 v_2 v_3 b_1-3 r^2 \Psi_v y v_0 v_2 a_1-2 r^2 \Psi_v y v_0 v_2 b_0
-\] \[
--r^2 \Psi_v z^2 v_0^3 b_1-2 r^2 \Psi_v z^2 v_0 v_3^2 b_1-3 r^2 \Psi_v z v_0 v_3 a_1
--2 r^2 \Psi_v z v_0 v_3 b_0
--3 r^2 \Psi_v v_0 a_0
--r \Psi x^3 v_0^2 v_1 c_1-r \Psi x^2 y v_0^2 v_2 c_1
-\] \[
--r \Psi x^2 z v_0^2 v_3 c_1
--r \Psi x^2 v_0^2 c_0-r \Psi x y^2 v_0^2 v_1 c_1-r \Psi x z^2 v_0^2 v_1 c_1-r \Psi y^3 v_0^2 v_2 c_1-r \Psi y^2 z v_0^2 v_3 c_1-r \Psi y^2 v_0^2 c_0-r \Psi y z^2 v_0^2 v_2 c_1
-\] \[
--r \Psi z^3 v_0^2 v_3 c_1
--r \Psi z^2 v_0^2 c_0
--r \Psi_v x^3 v_0^2 v_1 b_1-r \Psi_v x^2 y v_0^2 v_2 b_1-r \Psi_v x^2 z v_0^2 v_3 b_1+r \Psi_v x^2 v_0^2 a_1-r \Psi_v x^2 v_0^2 b_0
--r \Psi_v x y^2 v_0^2 v_1 b_1
-\] \[
--r \Psi_v x z^2 v_0^2 v_1 b_1-r \Psi_v y^3 v_0^2 v_2 b_1-r \Psi_v y^2 z v_0^2 v_3 b_1+r \Psi_v y^2 v_0^2 a_1-r \Psi_v y^2 v_0^2 b_0
--r \Psi_v y z^2 v_0^2 v_2 b_1-r \Psi_v z^3 v_0^2 v_3 b_1
-\] \[
-+r \Psi_v z^2 v_0^2 a_1-r \Psi_v z^2 v_0^2 b_0
-+\Psi_v x^3 v_0 v_1 a_1+\Psi_v x^2 y v_0 v_2 a_1+\Psi_v x^2 z v_0 v_3 a_1+\Psi_v x^2 v_0 a_0+\Psi_v x y^2 v_0 v_1 a_1+\Psi_v x z^2 v_0 v_1 a_1
-\] \[
-+\Psi_v y^3 v_0 v_2 a_1+\Psi_v y^2 z v_0 v_3 a_1+\Psi_v y^2 v_0 a_0+\Psi_v y z^2 v_0 v_2 a_1+\Psi_v z^3 v_0 v_3 a_1+\Psi_v z^2 v_0 a_0
+\hskip -10pt
+\begin{array}{l}
+-2 r \Psi x^3 E v_1 a_1-3 r \Psi x^3 v_0^2 v_1 c_1-r \Psi x^3 v_1^3 c_1-r \Psi x^3 v_1 v_2^2 c_1-r \Psi x^3 v_1 v_3^2 c_1-2 r \Psi x^2 y E v_2 a_1-3 r \Psi x^2 y v_0^2 v_2 c_1 \\
+-r \Psi x^2 y v_1^2 v_2 c_1-r \Psi x^2 y v_2^3 c_1-r \Psi x^2 y v_2 v_3^2 c_1-2 r \Psi x^2 z E v_3 a_1-3 r \Psi x^2 z v_0^2 v_3 c_1-r \Psi x^2 z v_1^2 v_3 c_1-r \Psi x^2 z v_2^2 v_3 c_1 \\
+-r \Psi x^2 z v_3^3 c_1
+-2 r \Psi x^2 E a_0-r \Psi x^2 v_0^2 c_0-2 r \Psi x^2 v_0 a_1-r \Psi x^2 v_1^2 c_0-r \Psi x^2 v_2^2 c_0-r \Psi x^2 v_3^2 c_0-2 r \Psi x y^2 E v_1 a_1 \\
+-3 r \Psi x y^2 v_0^2 v_1 c_1
+-r \Psi x y^2 v_1^3 c_1
+-r \Psi x y^2 v_1 v_2^2 c_1-r \Psi x y^2 v_1 v_3^2 c_1-2 r \Psi x z^2 E v_1 a_1-3 r \Psi x z^2 v_0^2 v_1 c_1-r \Psi x z^2 v_1^3 c_1 \\
+-r \Psi x z^2 v_1 v_2^2 c_1
+-r \Psi x z^2 v_1 v_3^2 c_1-2 r \Psi y^3 E v_2 a_1
+-3 r \Psi y^3 v_0^2 v_2 c_1-r \Psi y^3 v_1^2 v_2 c_1-r \Psi y^3 v_2^3 c_1-r \Psi y^3 v_2 v_3^2 c_1
+-2 r \Psi y^2 z E v_3 a_1
+\\
+-3 r \Psi y^2 z v_0^2 v_3 c_1-r \Psi y^2 z v_1^2 v_3 c_1-r \Psi y^2 z v_2^2 v_3 c_1
+-r \Psi y^2 z v_3^3 c_1-2 r \Psi y^2 E a_0
+-r \Psi y^2 v_0^2 c_0-2 r \Psi y^2 v_0 a_1-r \Psi y^2 v_1^2 c_0
+\\
+-r \Psi y^2 v_2^2 c_0-r \Psi y^2 v_3^2 c_0-2 r \Psi y z^2 E v_2 a_1 -3 r \Psi y z^2 v_0^2 v_2 c_1
+-r \Psi y z^2 v_1^2 v_2 c_1-r \Psi y z^2 v_2^3 c_1-r \Psi y z^2 v_2 v_3^2 c_1-2 r \Psi z^3 E v_3 a_1
+\\
+-3 r \Psi z^3 v_0^2 v_3 c_1-r \Psi z^3 v_1^2 v_3 c_1-r \Psi z^3 v_2^2 v_3 c_1-r \Psi z^3 v_3^3 c_1-2 r \Psi z^2 E a_0
+-r \Psi z^2 v_0^2 c_0-2 r \Psi z^2 v_0 a_1-r \Psi z^2 v_1^2 c_0
+\\
+-r \Psi z^2 v_2^2 c_0
+-r \Psi z^2 v_3^2 c_0
+-3 r \Psi_v x^3 v_0^2 v_1 b_1-r \Psi_v x^3 v_1^3 b_1-r \Psi_v x^3 v_1 v_2^2 b_1-r \Psi_v x^3 v_1 v_3^2 b_1
+-3 r \Psi_v x^2 y v_0^2 v_2 b_1
+\\
+-r \Psi_v x^2 y v_1^2 v_2 b_1-r \Psi_v x^2 y v_2^3 b_1-r \Psi_v x^2 y v_2 v_3^2 b_1-3 r \Psi_v x^2 z v_0^2 v_3 b_1-r \Psi_v x^2 z v_1^2 v_3 b_1-r \Psi_v x^2 z v_2^2 v_3 b_1
+-2 r \Psi_v y^2 v_0^2 a_1 \\
+-r \Psi_v x^2 z v_3^3 b_1-2 r \Psi_v x^2 v_0^2 a_1-r \Psi_v x^2 v_0^2 b_0-r \Psi_v x^2 v_1^2 b_0-r \Psi_v x^2 v_2^2 b_0-r \Psi_v x^2 v_3^2 b_0-3 r \Psi_v x y^2 v_0^2 v_1 b_1-r \Psi_v x y^2 v_1^3 b_1 \\
+-r \Psi_v x y^2 v_1 v_2^2 b_1
+-r \Psi_v x y^2 v_1 v_3^2 b_1-3 r \Psi_v x z^2 v_0^2 v_1 b_1-r \Psi_v x z^2 v_1^3 b_1-r \Psi_v x z^2 v_1 v_2^2 b_1-r \Psi_v x z^2 v_1 v_3^2 b_1
+-3 r \Psi_v y^3 v_0^2 v_2 b_1 \\
+-r \Psi_v y^3 v_1^2 v_2 b_1-r \Psi_v y^3 v_2^3 b_1-r \Psi_v y^3 v_2 v_3^2 b_1-3 r \Psi_v y^2 z v_0^2 v_3 b_1-r \Psi_v y^2 z v_1^2 v_3 b_1-r \Psi_v y^2 z v_2^2 v_3 b_1-r \Psi_v y^2 z v_3^3 b_1 \\
+-r \Psi_v y^2 v_0^2 b_0-r \Psi_v y^2 v_1^2 b_0-r \Psi_v y^2 v_2^2 b_0-r \Psi_v y^2 v_3^2 b_0-3 r \Psi_v y z^2 v_0^2 v_2 b_1-r \Psi_v y z^2 v_1^2 v_2 b_1-r \Psi_v y z^2 v_2^3 b_1
+\\
+-3 r \Psi_v z^3 v_0^2 v_3 b_1-r \Psi_v z^3 v_1^2 v_3 b_1-r \Psi_v z^3 v_2^2 v_3 b_1-r \Psi_v z^3 v_3^3 b_1-2 r \Psi_v z^2 v_0^2 a_1-r \Psi_v z^2 v_0^2 b_0-r \Psi_v z^2 v_1^2 b_0-r \Psi_v z^2 v_2^2 b_0 \\
+-r \Psi_v z^2 v_3^2 b_0-2 \Psi x^4 E v_0 a_1-\Psi x^4 v_0^3 c_1-3 \Psi x^4 v_0 v_1^2 c_1-\Psi x^4 v_0 v_2^2 c_1-\Psi x^4 v_0 v_3^2 c_1-4 \Psi x^3 y v_0 v_1 v_2 c_1-4 \Psi x^3 z v_0 v_1 v_3 c_1 \\
+-2 \Psi x^3 v_0 v_1 c_0-2 \Psi x^3 v_1 a_1-4 \Psi x^2 y^2 E v_0 a_1-2 \Psi x^2 y^2 v_0^3 c_1-4 \Psi x^2 y^2 v_0 v_1^2 c_1-4 \Psi x^2 y^2 v_0 v_2^2 c_1
+-2 \Psi x^2 y^2 v_0 v_3^2 c_1
+\\
+-4 \Psi x^2 y z v_0 v_2 v_3 c_1-2 \Psi x^2 y v_0 v_2 c_0-2 \Psi x^2 y v_2 a_1-4 \Psi x^2 z^2 E v_0 a_1-2 \Psi x^2 z^2 v_0^3 c_1
+-4 \Psi x^2 z^2 v_0 v_1^2 c_1-2 \Psi x^2 z^2 v_0 v_2^2 c_1
+\\
+-4 \Psi x^2 z^2 v_0 v_3^2 c_1
+-2 \Psi x^2 z v_0 v_3 c_0-2 \Psi x^2 z v_3 a_1-2 \Psi x^2 a_0-4 \Psi x y^3 v_0 v_1 v_2 c_1-4 \Psi x y^2 z v_0 v_1 v_3 c_1-2 \Psi x y^2 v_0 v_1 c_0
+\\
+-2 \Psi x y^2 v_1 a_1-4 \Psi x y z^2 v_0 v_1 v_2 c_1-4 \Psi x z^3 v_0 v_1 v_3 c_1-2 \Psi x z^2 v_0 v_1 c_0-2 \Psi x z^2 v_1 a_1-2 \Psi y^4 E v_0 a_1-\Psi y^4 v_0^3 c_1
+-\Psi y^4 v_0 v_1^2 c_1
+\\
+-3 \Psi y^4 v_0 v_2^2 c_1-\Psi y^4 v_0 v_3^2 c_1-4 \Psi y^3 z v_0 v_2 v_3 c_1-2 \Psi y^3 v_0 v_2 c_0-2 \Psi y^3 v_2 a_1-4 \Psi y^2 z^2 E v_0 a_1-2 \Psi y^2 z^2 v_0^3 c_1
+-r \Psi_v y z^2 v_2 v_3^2 b_1 \\
+-2 \Psi y^2 z^2 v_0 v_1^2 c_1-4 \Psi y^2 z^2 v_0 v_2^2 c_1-4 \Psi y^2 z^2 v_0 v_3^2 c_1-2 \Psi y^2 z v_0 v_3 c_0-2 \Psi y^2 z v_3 a_1-2 \Psi y^2 a_0-4 \Psi y z^3 v_0 v_2 v_3 c_1
+\\
+-2 \Psi y z^2 v_0 v_2 c_0-2 \Psi y z^2 v_2 a_1-2 \Psi z^4 E v_0 a_1-\Psi z^4 v_0^3 c_1-\Psi z^4 v_0 v_1^2 c_1-\Psi z^4 v_0 v_2^2 c_1-3 \Psi z^4 v_0 v_3^2 c_1-2 \Psi z^3 v_0 v_3 c_0
+\\
+-2 \Psi z^3 v_3 a_1-2 \Psi z^2 a_0-\Psi_v x^4 v_0^3 b_1-3 \Psi_v x^4 v_0 v_1^2 b_1-\Psi_v x^4 v_0 v_2^2 b_1-\Psi_v x^4 v_0 v_3^2 b_1-4 \Psi_v x^3 y v_0 v_1 v_2 b_1-4 \Psi_v x^3 z v_0 v_1 v_3 b_1
+\\
+-2 \Psi_v x^3 v_0 v_1 a_1-2 \Psi_v x^3 v_0 v_1 b_0-2 \Psi_v x^2 y^2 v_0^3 b_1-4 \Psi_v x^2 y^2 v_0 v_1^2 b_1-4 \Psi_v x^2 y^2 v_0 v_2^2 b_1-2 \Psi_v x^2 y^2 v_0 v_3^2 b_1
+\\
+-4 \Psi_v x^2 y z v_0 v_2 v_3 b_1-2 \Psi_v x^2 y v_0 v_2 a_1-2 \Psi_v x^2 y v_0 v_2 b_0-2 \Psi_v x^2 z^2 v_0^3 b_1-4 \Psi_v x^2 z^2 v_0 v_1^2 b_1-2 \Psi_v x^2 z^2 v_0 v_2^2 b_1
+\\
+-2 \Psi_v x^2 z v_0 v_3 a_1-2 \Psi_v x^2 z v_0 v_3 b_0-2 \Psi_v x^2 v_0 a_0-4 \Psi_v x y^3 v_0 v_1 v_2 b_1-4 \Psi_v x y^2 z v_0 v_1 v_3 b_1-2 \Psi_v x y^2 v_0 v_1 a_1-4 \Psi_v x^2 z^2 v_0 v_3^2 b_1
+\\
+-2 \Psi_v x y^2 v_0 v_1 b_0-4 \Psi_v x y z^2 v_0 v_1 v_2 b_1-4 \Psi_v x z^3 v_0 v_1 v_3 b_1-2 \Psi_v x z^2 v_0 v_1 a_1-2 \Psi_v x z^2 v_0 v_1 b_0-\Psi_v y^4 v_0^3 b_1-\Psi_v y^4 v_0 v_1^2 b_1
+\\
+-3 \Psi_v y^4 v_0 v_2^2 b_1-\Psi_v y^4 v_0 v_3^2 b_1-4 \Psi_v y^3 z v_0 v_2 v_3 b_1-2 \Psi_v y^3 v_0 v_2 a_1-2 \Psi_v y^3 v_0 v_2 b_0-2 \Psi_v y^2 z^2 v_0^3 b_1-2 \Psi_v y^2 z^2 v_0 v_1^2 b_1
+\\
+-4 \Psi_v y^2 z^2 v_0 v_2^2 b_1-4 \Psi_v y^2 z^2 v_0 v_3^2 b_1-2 \Psi_v y^2 z v_0 v_3 a_1-2 \Psi_v y^2 z v_0 v_3 b_0-2 \Psi_v y^2 v_0 a_0-4 \Psi_v y z^3 v_0 v_2 v_3 b_1-2 \Psi_v y z^2 v_0 v_2 a_1
+\\
+-2 \Psi_v y z^2 v_0 v_2 b_0-\Psi_v z^4 v_0^3 b_1-\Psi_v z^4 v_0 v_1^2 b_1-\Psi_v z^4 v_0 v_2^2 b_1-3 \Psi_v z^4 v_0 v_3^2 b_1-2 \Psi_v z^3 v_0 v_3 a_1-2 \Psi_v z^3 v_0 v_3 b_0-2 \Psi_v z^2 v_0 a_0
+\end{array}
 \]
 \end{frame}
 
