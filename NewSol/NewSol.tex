@@ -29,6 +29,8 @@
 \usetikzlibrary{positioning}
 \usetikzlibrary{fit}
 \usetikzlibrary{backgrounds}
+\usetikzlibrary{angles,quotes,3d}
+\usepackage{tikz-3dplot}
 
 \usepackage{adjustbox}
 
@@ -321,21 +323,6 @@ Spherical coordinates:
 \end{center}
 
 \end{frame}
-
-\begin{comment}
-\begin{frame}
-\frametitle{Helium Schr\"odinger Equation}
-
-\[ \psi(x_1,y_1,z_1,x_2,y_2,z_2) \]
-
-\[ r_1 = \sqrt{x_1^2+y_1^2+z_1^2}   \qquad\qquad r_2 = \sqrt{x_2^2+y_2^2+z_2^2} \]
-\[ r_{12} = \sqrt{(x_2-x_1)^2+(y_2-y_1)^2+(z_2-z_1)^2} \]
-
-\[ \hat{H} = \frac{1}{2} \nabla_1^2 + \frac{1}{2} \nabla_2^2 - \frac{1}{r_1} - \frac{1}{r_2} + \frac{1}{r_{12}}  \]
-
-
-\end{frame}
-\end{comment}
 
 \begin{frame}
 \frametitle{The Classical Solutions to Hydrogen}
@@ -970,6 +957,101 @@ Part 3: Moving the Research Project Forward
 \end{frame}
 
 \begin{frame}
+\frametitle{Helium Schr\"odinger Equation}
+
+\begin{center}
+%% \[ \psi(x_1,y_1,z_1,x_2,y_2,z_2) \]
+
+%% \[ r_1 = \sqrt{x_1^2+y_1^2+z_1^2}   \qquad\qquad r_2 = \sqrt{x_2^2+y_2^2+z_2^2} \]
+%% \[ r_{12} = \sqrt{(x_2-x_1)^2+(y_2-y_1)^2+(z_2-z_1)^2} \]
+
+\[ \hat{H} = - \frac{1}{2} \nabla_1^2 - \frac{1}{2} \nabla_2^2 - \frac{1}{r_1} - \frac{1}{r_2} + \frac{1}{r_{12}}  \]
+
+\begin{tikzpicture}[scale=1]
+
+% Define parameters
+\pgfmathsetmacro{\rvec}{3}
+\pgfmathsetmacro{\thetavec}{30}
+\pgfmathsetmacro{\phivec}{60}
+
+\pgfmathsetmacro{\rtwovec}{10}
+\pgfmathsetmacro{\thetatwovec}{60}
+\pgfmathsetmacro{\phitwovec}{30}
+
+% Set rotation angles for 3D visualization
+\tdplotsetmaincoords{60}{110}
+
+% Start drawing in 3D
+\begin{scope}[tdplot_main_coords]
+
+% Draw axes
+\draw[thick,->] (0,0,0) -- (3,0,0) node[anchor=north east]{$x$};
+\draw[thick,->] (0,0,0) -- (0,3,0) node[anchor=north west]{$y$};
+\draw[thick,->] (0,0,0) -- (0,0,3) node[anchor=south]{$z$};
+
+% Draw vector and its projections (with dashed lines)
+\tdplotsetcoord{P}{\rvec}{\thetavec}{\phivec}
+\draw[color=red] (0,0,0) -- (P) node[midway, above] {$r_1$};
+\draw[dashed, color=red] (0,0,0) -- (Pxy);
+\draw[dashed, color=red] (P) -- (Pxy);
+\fill [red] (P) circle (0.05cm);
+
+% Draw second electron
+\tdplotsetcoord{P2}{\rtwovec}{\thetatwovec}{\phitwovec}
+\draw[color=red] (0,0,0) -- (P2) node[midway, above] {$r_2$};
+\fill [red] (P2) circle (0.05cm);
+
+% Draw r12
+\draw[color=red] (P) -- (P2) node[midway, above right] {$r_{12}$};
+
+% Draw angle phi
+\tdplotdrawarc{(0,0,0)}{0.5}{0}{\phivec}{anchor=north}{$\phi$}
+
+% Draw angle theta
+\tdplotsetthetaplanecoords{\phivec}
+\tdplotdrawarc[tdplot_rotated_coords]{(0,0,0)}{0.5}{0}{\thetavec}{above}{$\theta$}
+
+% this doesn't line up right
+%\tdplotdrawarc[tdplot_rotated_coords]{(0,0,0)}{0.7}{\thetavec}{\thetatwovec}{anchor=south west}{$\psi$}
+\tdplotdrawarc[tdplot_rotated_coords]{(0,0,0)}{0.7}{\thetavec}{66}{anchor=south west}{$\psi$}
+
+\end{scope}
+\end{tikzpicture}
+
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Helium Ground State Ansatz 16.6}
+\begin{center}
+\scalebox{0.9}{%
+  \begin{tikzpicture}[remember picture,out=315,in=225,distance=0.4cm,node distance=40pt]
+    \node (Psi) [poly, text width=100pt] {$\framebox(10,10){}\tikzmark{a}\,\Psi'' + \framebox(10,10){}\tikzmark{b}\,\Psi' + \coeff\tikzmark{c}\,\Psi$};
+    \node (Qv) [ring, below of=Psi, text width=100pt] {$\mathbf{Q}[v]$};
+    \node (v) [poly, right=of Qv] {$v$};
+    \draw[degree] (a.west) -- (a.west|-Qv.north) node[right,pos=0.6] {2};
+    \draw[degree] (b.west) -- (b.west|-Qv.north) node[right,pos=0.6] {2};
+    \draw[degree] (c.west) -- (c.west|-Qv.north) node[right,pos=0.6] {2};
+    \node (Psi label) [at=(v.east|-Psi.north), anchor=north east] {\Large$\Psi$};
+    \begin{scope}[on background layer]
+        \node (Psi block)[fit=(Psi) (Qv) (v), inner sep=10pt, element] {};
+    \end{scope}
+    \node (alg ext) [poly, node distance=150pt, below=of Psi.east, anchor=east, text width=100pt] {$\gamma^2 = \framebox(10,10){}\tikzmark{a}$};
+    \begin{scope}[on background layer]
+        \node (alg ext element) [algebraic, fit=(alg ext) (Psi label.east|-alg ext.north), inner sep=10pt] {};
+        \node (alg ext title) [node distance=20pt, above=of alg ext element.north, anchor=center, text centered, text width=250pt] {$\mathbf{Q}[r_1,r_2,r_{12},\gamma]/(\gamma^2 - \coeff\,)$};
+        \node (alg ext field) [ring, fill=none, fit=(alg ext title) (alg ext element), node distance=70pt, text width=250pt] {};
+    \end{scope}
+    \draw[degree] (v.south) -- (v.south|-alg ext field.north) node[right,pos=0.7] {2};
+    \node (base) [ring, below=of alg ext field.south east, anchor=east, text width=250pt] {$\mathbf{Q}[r_1,r_2,r_{12}]$};
+    \draw[degree] (a.west) -- (a.west|-base.north) node[right,pos=0.8] {2};
+  \end{tikzpicture}
+}
+\end{center}
+\end{frame}
+
+\begin{frame}
 \frametitle{Methods of Solving Systems of Polynomial Equations}
 \begin{itemize}
 \item Primary Decomposition with Gr\"obner Bases
@@ -1122,8 +1204,35 @@ GB[-1].numerator().subs(ux=1,uy=1)
 \end{verbatim}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
 \frametitle{Use of Large Language Models in Software Development}
+\scriptsize
+\begin{verbatim}
+include(common)
+
+Function buchberger_naive maintains two local vectors of polynomials,
+ called the basis and the s-pairs.  Start by copying the vector of
+ generators to the basis.  For each pair of generators, construct their
+ s-pair and insert it into the s-pairs if it is unique.  Then work through
+ the vector of s-pairs from beginning to end, reducing each one by the
+ basis.  Use reduce_by_vector with lead reduction enabled.  If the result
+ is not zero, then append the result to the basis, and loop over all of the
+ other basis polynomials, constructing the s-pair of it and the new basis
+ polynomial, and appending it to the s-pairs if it is unique.  Make sure to
+ process all of the s-pairs, even the ones added during processing.
+
+Function buchberger_naive puts the basis in the output vector
+once the loop has terminated, and returns void.
+
+You can not add items to a polynomial vector by calling fmpz_mpoly_set
+ with an fmpz_mpoly_vec_entry as your destination; you have to use
+ fmpz_mpoly_vec_append.
+
+Output the header, any required function declarations, the code for
+ buchberger_naive, and nothing else, without any explaination.
+
+Output no function defintions except the code for buchberger_naive.
+\end{verbatim}
 \end{frame}
 
 \end{document}
