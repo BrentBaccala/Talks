@@ -32,6 +32,12 @@
 \usetikzlibrary{angles,quotes,3d}
 \usepackage{tikz-3dplot}
 
+\usepackage{pgfplots}
+
+\pgfmathdeclarefunction{gauss}{2}{%
+  \pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
+}
+
 \usepackage{adjustbox}
 
 \def\coeff{\framebox(10,10){}}
@@ -85,6 +91,46 @@ Part 1: Schr\"odinger's Equation
 
 \begin{frame}
 \frametitle{Probability Density Functions}
+
+\begin{center}
+In quantum mechanics, we can't compute the exact location of a particle;
+we can only compute its {\it probability density function}.
+
+\vskip 12pt
+
+\begin{tikzpicture}
+\begin{axis}[
+  no markers,
+  domain=0:10,
+  samples=100,
+  ymin=0,
+  axis lines*=middle,
+  xlabel=$x$,
+  height=5cm,
+  width=12cm,
+  xtick={-1,1},
+  xticklabels={$a$,$b$},
+  ytick=\empty,
+  enlargelimits=false,
+  clip=false,
+  axis on top,
+  grid = major,
+  grid style={dashed, gray!30},
+]
+
+\addplot [fill=cyan!20, draw=none, domain=-1:1] {gauss(0,1)} \closedcycle;
+
+\addplot [very thick,cyan!50!black, domain=-5:5] {gauss(0,1)};
+
+%% \draw [yshift=-0.6cm, latex-latex](axis cs:4,0) -- node [fill=white] {$1\sigma$} (axis cs:6,0);
+
+\end{axis}
+\end{tikzpicture}
+
+The shaded area is the probability that the particle's measured x-coordinate will be between $a$ and $b$,
+assuming that the total area under the curve is 1.
+\end{center}
+
 \end{frame}
 
 \def\argt{(\vec{x}_1,...,\vec{x}_n,t)}
@@ -98,6 +144,7 @@ The {\bf wave function} is a complex-valued function of position and time that e
 probability density functions for both the position and momentum of all particles.
 It is a function of the coordinates of {\it all} particles.
 
+\vskip 12pt
 \begin{quotation}
 Example: The wavefunction of a two particle system:
 
@@ -1013,10 +1060,44 @@ Part 3: Moving the Research Project Forward
 
 % this doesn't line up right
 %\tdplotdrawarc[tdplot_rotated_coords]{(0,0,0)}{0.7}{\thetavec}{\thetatwovec}{anchor=south west}{$\psi$}
-\tdplotdrawarc[tdplot_rotated_coords]{(0,0,0)}{0.7}{\thetavec}{66}{anchor=south west}{$\psi$}
+
+% this isn't the angle we need
+%\tdplotdrawarc[tdplot_rotated_coords]{(0,0,0)}{0.7}{\thetavec}{66}{anchor=south west}{$\psi$}
 
 \end{scope}
 \end{tikzpicture}
+
+% \begin{tikzpicture}
+% \begin{axis}[
+%     hide axis,
+%     view={40}{-30},
+%     samples=50
+% ]
+% \addplot3 [
+%     surf,
+% %    shader=interp,
+%     domain=0:360,
+%     y domain=-1:1,
+%     fill opacity=0.1,
+% ] (
+%     {cos(x)*sqrt(1-y^2)},
+%     {sin(x)*sqrt(1-y^2)},
+%     y
+% );
+% 
+% \addplot3 [
+%     surf,
+% %    shader=interp,
+%     domain=0:360,
+%     y domain=-1:1,
+%     fill opacity=0.1,
+% ] (
+%     {0.5+cos(x)*sqrt(1-y^2)},
+%     {0.5+sin(x)*sqrt(1-y^2)},
+%     0.5+y
+% );
+% \end{axis}
+% \end{tikzpicture}
 
 \end{center}
 
