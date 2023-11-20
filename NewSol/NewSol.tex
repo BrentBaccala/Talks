@@ -70,18 +70,22 @@ Part 1: Schr\"odinger's Equation
 \begin{tikzpicture}[node distance=60pt]
 \node (force) [draw, text width=120pt, align=center] {Force\\(N = kg m s$^{-2}$)};
 
-\node (field) [below=of force.south, draw, text width=120pt, align=center] {Field\\(N/C = kg m s$^{-3}$ A$^{-1}$)};
+\node (field) [below=of force.south, draw, text width=120pt, align=center] {Field\\(N/C = kg m s$^{-2}$ C$^{-1}$)};
 
 \node (energy) [right=of force.east, draw, text width=140pt, align=center] {Potential Energy\\(joule = N m = kg m$^2$ s$^{-2}$)};
 
-\node (potential) [below=of energy.south, draw, text width=140pt, align=center] {Potential\\(volt = kg m$^2$ s$^{-3}$ A$^{-1}$)};
+\node (potential) [below=of energy.south, draw, text width=140pt, align=center] {Potential\\(volt = kg m$^2$ s$^{-2}$ C$^{-1}$)};
 
-\draw [very thick, ->] (force.south) -- (field.north) node[pos=0.5,right] {$\div$ charge/mass};
-\draw [very thick, ->] (energy.south) -- (potential.north) node[pos=0.5,right] {$\div$ charge/mass};
+\draw [very thick, ->] (force.south) -- (field.north) node[pos=0.5,right] {$\div$ charge};
+\draw [very thick, ->] (energy.south) -- (potential.north) node[pos=0.5,right] {$\div$ charge};
 \draw [very thick, ->] (force.east) -- (energy.west) node [pos=0.5, below] {$\times$ distance};
-\draw [very thick, ->] ([yshift=10]field.east) -- ([yshift=10]potential.west) node [pos=0.5, below] {$\times$ distance};
-\draw [very thick, <-] ([yshift=-10]field.east) -- ([yshift=-10]potential.west) node [pos=0.5, below] {gradient};
+\draw [very thick, ->] (field.east) -- (potential.west) node [pos=0.5, below] {$\times$ distance};
 
+\draw [very thick, ->] ([yshift=-50]field.east) -- ([yshift=-50]potential.west) node [pos=0.5, below] {$\int_C \cdot d\vec{r}$};
+\draw [very thick, <-] ([yshift=-80]field.east) -- ([yshift=-80]potential.west) node [pos=0.5, below] {gradient ($\nabla$)};
+
+\node [above of=force, node distance=30pt] {\bf Vectors};
+\node [above of=energy, node distance=30pt] {\bf Scalars};
 \end{tikzpicture}
 \end{frame}
 
