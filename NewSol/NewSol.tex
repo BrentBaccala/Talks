@@ -28,6 +28,7 @@
 \usepackage{tikz}
 \usetikzlibrary{positioning}
 \usetikzlibrary{fit}
+\usetikzlibrary{calc,arrows.meta}
 \usetikzlibrary{backgrounds}
 \usetikzlibrary{angles,quotes,3d}
 \usepackage{tikz-3dplot}
@@ -90,7 +91,99 @@ Part 1: Schr\"odinger's Equation
 \end{frame}
 
 \begin{frame}
+\frametitle{Lagrangian Mechanics}
+\begin{definition}[the Lagrangian]
+\[ L = T - V \]
+%\[ S = \int_{t_1}^{t_2} L(x, \dot x, t) dt \]
+\begin{center}
+T is kinetic energy \qquad\qquad V is potential energy
+\end{center}
+\end{definition}
+
+\begin{block}{The Euler-Langrange (E-L) equation}
+\[ \frac{d}{dt}\left( \frac{\delta L}{\delta \dot x} \right) = \frac{\delta L}{\delta x} \]
+\end{block}
+
+\begin{center}
+
+In one dimension:
+
+\[ L = \frac{1}{2} m \dot x^2 - V(x) \]
+
+\[ \frac{d}{dt}\left( m \dot x \right) = - \frac{d V}{d x} = F\]
+
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Lagrangian Mechanics}
+\begin{definition}[the action]
+\[ S = \int_{t_1}^{t_2} L(x, \dot x, t) dt \]
+\end{definition}
+
+\[ L = T - V \]
+
+\[ \frac{d}{dt}\left( \frac{\delta L}{\delta \dot x} \right) = \frac{\delta L}{\delta x} \]
+
+\[ L = \frac{1}{2} m \dot x^2 = - \frac{dV}{dx} \]
+
+\end{frame}
+
+\begin{frame}
 \frametitle{Hamiltonian Mechanics}
+
+\begin{block}{Hamilton's equations}
+\[ \dot q = \frac{\delta H(q,p)}{\delta p} \qquad\qquad \dot p = - \frac{\delta H(q,p)}{\delta q} \]
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Classical Mechanics}
+
+\begin{center}
+\begin{tikzpicture}
+    % Define the parameters of the ellipse
+    \pgfmathsetmacro{\majorAxis}{3}
+    \pgfmathsetmacro{\minorAxis}{2}
+    \pgfmathsetmacro{\angle}{40}
+    \pgfmathsetmacro{\focusShift}{sqrt(\majorAxis^2 - \minorAxis^2)}
+
+    % Draw the ellipse
+    \draw (0,0) ellipse (\majorAxis cm and \minorAxis cm);
+
+    % Define the point on the ellipse
+    \coordinate (P) at (\angle:\majorAxis cm and \minorAxis cm);
+
+    % Define the focus of the ellipse
+    \coordinate (F) at (-\focusShift, 0);
+
+    % Draw the points
+    \fill[red] (P) circle (2pt) node[above right] {Planet};
+    \fill[blue] (F) circle (2pt) node[below] {Sun};
+
+    % Define a style for the large arrow
+    \tikzset{large arrow/.style={-{Latex[length=3mm, width=2mm]}}}
+
+    % Draw the tangent vector at point P
+    \draw[large arrow, red] (P) -- ($(P)!1.5cm!90+\angle:(F)$) node [right] {$\vec{v}$};
+
+    % Draw the vector from F to P
+    \draw[large arrow, purple] (F) -- (P) node [midway, below right] {$\vec{r}$};
+\end{tikzpicture}
+
+\end{center}
+
+Specify:
+\begin{itemize}
+\item Initial Position
+\item Initial Velocity
+\item One of: Force, Field, Potential, Potential Energy
+\end{itemize}
+
+\[ F = ma \qquad\qquad \frac{G m_1 m_2}{r^2} = m_1 a \]
+
 \end{frame}
 
 \begin{frame}
