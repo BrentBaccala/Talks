@@ -23,7 +23,11 @@
 
 \usepackage{tabularx}
 
+\usepackage{listings}
+
 \usepackage{fancyvrb}
+
+\usepackage{soul}
 
 \usepackage{tikz}
 \usetikzlibrary{positioning}
@@ -421,8 +425,12 @@ are assigned the value of 1:
 \item the Coulumb constant ($k_e$)
 \end{itemize}
 
+\vskip 12pt
+
 The unit of distance (Bohr radii) is approximately half an angstrom.\\
 \qquad \AA = $10^{-10}$ m (NaCl inter-atomic distance is about 2.8 \AA)
+
+\vskip 12pt
 
 The unit of time is 24 as (1 attosecond = $10^{-18}$ s).
 
@@ -464,7 +472,9 @@ Assume an infinitely massive nucleus at the origin
 
 Cartesian coordinates:
 
+{\small
 \[ - \frac{1}{2} \left( \frac{\delta^2 \psi(x,y,z)}{\delta x^2} + \frac{\delta^2 \psi(x,y,z)}{\delta y^2} + \frac{\delta^2 \psi(x,y,z)}{\delta z^2} \right) - \frac{1}{r} \psi(x,y,z) = E \psi(x,y,z) \]
+}
 
 Spherical coordinates:
 
@@ -478,22 +488,24 @@ Spherical coordinates:
 
 \begin{frame}
 \frametitle{The Classical Solutions to Hydrogen}
-This equation is amenable to seperation of variables.
-Using spherical coordinates and writing $\Psi$ as $\Psi=R(r)Y(\theta, \psi) = R(r)P(\theta)F(\psi)$,
-substituting into \eqref{schrodinger hydrogen}, we obtain the following expansion\footnote{hyperphysics}:
+Using spherical coordinates, writing $\Psi=R(r)Y(\theta, \psi) = R(r)P(\theta)F(\psi)$,
+substituting this into the hydrogen Schr\"odinger equation, and dividing through by $\Psi$,
+we obtain the following expansion:
 
 \begin{equation*}
 \frac{1}{R} \frac{d}{dr}\left[ r^2 \frac{dR}{dr}\right] + 2(Er^2 + r)
 + \left[\frac{1}{P\sin\theta} \frac{d}{d\theta}\left[\sin\theta\frac{dP}{d\theta}\right]+\frac{1}{F\sin^2\theta}\frac{d^2 F}{d\psi^2}\right] = 0
 \end{equation*}
 
-The first part, dependant on $r$, is the {\it radical equation}, whose solutions are, in general.
+The first part, dependant on $r$, is the {\it radical equation}, whose solutions are, in general,
 hypergeometric functions, but which, in the case of specific energy values,
 simplify to polynomials in $r$
 times an exponential of $r$.  It is these solutions, combined with the solution
 of the second part of the equation (the colatitude equation, solved by the associated Laguerre polynomials,
 and the azimuthal equation), which have been known for a hundred years, and are
 hence referred to as the {\it classical solutions} to hydrogen.
+
+Source: Hydrogen Atom Schr\"odinger Equation on {\tt http://hyperphysics.phy-astr.gsu.edu/}
 \end{frame}
 
 \begin{frame}
@@ -1238,12 +1250,282 @@ Part 3: Moving the Research Project Forward
 \end{frame}
 
 \begin{frame}
-\frametitle{Methods of Solving Systems of Polynomial Equations}
+\frametitle{Helium Ground State Ansatz 16.6}
+\begin{center}
+\bf
+System of Polynomial Equations
+\end{center}
+\begin{itemize}
+\item 33 variables
+\item 3486 equations
+\item 16,517,523 terms
+\end{itemize}
+
+\vskip 24pt
+
+\begin{center}
+\bf
+Methods of Solving Systems of Polynomial Equations
+\end{center}
+
 \begin{itemize}
 \item Primary Decomposition with Gr\"obner Bases
 \item Numerical Optimization
 \item Homotopy Continuation
 \end{itemize}
+\end{frame}
+
+\lstset{
+    basicstyle=\ttfamily,
+    columns=fullflexible,
+    keepspaces=true,
+    showstringspaces=false,
+    commentstyle=\color{gray},
+    keywordstyle=\color{black},
+    frame=none,
+    framerule=0pt,
+    aboveskip=0pt,
+    belowskip=0pt,
+    xleftmargin=0pt,
+    xrightmargin=0pt,
+    breaklines=true,
+    breakatwhitespace=true,
+    escapeinside={{*@}{@*}}
+}
+
+\begin{frame}[fragile]
+\frametitle{Sage's {\tt primary_decomposition} doc string}
+\tiny
+\begin{adjustbox}{raise=10pt}
+\begin{minipage}{\linewidth}
+\begin{lstlisting}
+*@\textcolor{blue}{sage:}@* ? I.primary_decomposition
+*@\textcolor{red}{Call signature:}@*   I.primary_decomposition(*args, **kwds)
+*@\textcolor{red}{Type:}@*            RequireField
+*@\textcolor{red}{String form:}@*     <sage.rings.polynomial.multi_polynomial_ideal.RequireField object at 0x7fa439a00f70>
+*@\textcolor{red}{File:}@*            /usr/lib/python3/dist-packages/sage/rings/polynomial/multi_polynomial_ideal.py
+*@\textcolor{red}{Docstring:}@*
+   Return a list of primary ideals such that their intersection is
+   "self".
+
+   An ideal Q is called primary if it is a proper ideal of the ring R,
+   and if whenever ab in Q and a notin Q, then b^n in Q for some n
+   in ZZ.
+
+   If Q is a primary ideal of the ring R, then the radical ideal P of
+   Q (i.e. the ideal consisting of all a in R with a^n in Q` for some
+   n in ZZ), is called the associated prime of Q.
+
+   If I is a proper ideal of a Noetherian ring R, then there exists a
+   finite collection of primary ideals Q_i such that the following
+   hold:
+
+   * the intersection of the Q_i is I;
+
+   * none of the Q_i contains the intersection of the others;
+
+   * the associated prime ideals of the Q_i are pairwise distinct.
+
+   INPUT:
+
+   * "algorithm" -- string:
+
+     * "'sy'" -- (default) use the Shimoyama-Yokoyama algorithm
+
+     * "'gtz'" -- use the Gianni-Trager-Zacharias algorithm
+
+   OUTPUT:
+
+   * a list of primary ideals Q_i forming a primary decomposition of
+     "self".
+
+
+\end{lstlisting}
+\end{minipage}
+\end{adjustbox}
+\end{frame}
+
+\begin{frame}
+%% \frametitle{Primary Decomposition with Gr\"obner Bases}
+\frametitle{\tt https://www.singular.uni-kl.de/}
+\includegraphics[page=1, clip, trim=0in 1in 0in 0in, width=\textwidth]{Singular Manual Singular Manual.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{Singular's Primary Decomposition Library}
+\includegraphics[page=1, clip, trim=0in 1in 0in 0in, width=\textwidth]{Singular Manual primdec_lib.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{Shimoyama and Yokoyama Algorithm}
+% left bottom right top
+\includegraphics[page=9, clip, trim=1.3in 4in 0in 5.1in, scale=0.9]{1-s2.0-S0747717196900528-main.pdf}
+
+\vfill
+\small
+\begin{tabular}{ll}
+Source: & Takeshi Shimoyama and Kazuhiro Yokoyama, \\
+        & {\it Localization and Primary Decomposition of Polynomial Ideals}, \\
+        & J. Symbolic Computation (1996) {\bf 22}, 247–277 \\
+\end{tabular}
+\end{frame}
+
+\begin{frame}
+\frametitle{Gr\"obner Bases}
+\begin{definition}[Gr\"obner Basis]
+Given a ring with a specified monomial order,
+a {\it Gr\"obner Basis} or {\it standard basis} for an ideal $I$ is a set of
+polynomials $G$ such that:
+\begin{enumerate}
+\item The polynomials in $G$ form a basis for the ideal $I$
+\item The leading terms in $G$ form a basis for the ideal ${\rm lt}(I)$ formed by the leading terms in $I$.
+\end{enumerate}
+\end{definition}
+
+\begin{example}
+In the ring ${\mathbb Z}[x,y,z]$ with lexicographic ordering $x>y>z$, the ideal $(2x+3y+4z-5, 3x+4y+5z-2)$
+has a reduced Gr\"obner basis given by
+\begin{align*}
+2x-2z+28 \\
+3x-3z+42 \\
+y+2z-11
+\end{align*}
+\end{example}
+\end{frame}
+
+\begin{frame}
+\frametitle{Buchberger's Algorithm}
+
+{\bf Input:} A set of polynomials $F$ that generates $I$
+
+{\bf Output:} A Gröbner basis $G$ for $I$
+
+\begin{enumerate}
+\item $G := F$
+\item For every $f_i,f_j$ in $G$, denote by $g_i$ the leading term of $f_i$ with respect to the given monomial ordering,
+and by $a_{ij}$ the least common multiple of $g_i$ and $g_j$
+\item Choose two polynomials in $G$ and let $S_{ij}=\frac{a_{ij}}{g_i}f_i  - \frac{a_{ij}}{g_j}f_j $
+
+(Note that the leading terms here will cancel by construction).
+\item Reduce $S_{ij}$, with the multivariate division algorithm relative to the set $G$ until the result is not further reducible.
+
+If the result is non-zero, add it to $G$.
+\item Repeat steps 2-4 until all possible pairs are considered, including those involving the new polynomials added in step 4.
+\item Output $G$
+\end{enumerate}
+
+Source: Wikipedia, {\it Buchberger's Algorithm}
+\end{frame}
+
+\begin{frame}
+\frametitle{Desired features of a Gr\"obner basis algorithm}
+\begin{itemize}
+\item Selection of s-pairs guided by a machine learning algorithm
+\item Modular: operate modulo primes and lift results back to $\mathbb Z$
+\item Fall back on disk efficiently when RAM exhausted
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Disk based Gr\"obner basis algorithm}
+
+\begin{tikzpicture}
+  % Define the dimensions of the array
+  \def\numRows{3}
+  \def\sliceHeight{0.5}
+  \def\sliceWidth{2}
+  \def\labelOffset{0.1}
+
+  % Draw the array (the disk copy)
+  \foreach \j in {0,...,\numRows} {
+    \draw (0,\j*\sliceHeight) rectangle (\sliceWidth,\j*\sliceHeight+\sliceHeight);
+  }
+  \node[right] (disk0) at (\sliceWidth+\labelOffset,3*\sliceHeight+0.5*\sliceHeight) {[0]};
+  \node[right] (disk1) at (\sliceWidth+\labelOffset,2*\sliceHeight+0.5*\sliceHeight) {[1]};
+
+  \node[above=0.4, align=center] at (\sliceWidth/2,3*\sliceHeight+0.5*\sliceHeight) {basis polynomials};
+
+  \draw (0,-10*\sliceHeight) rectangle (\sliceWidth,0);
+
+% another array (the in-memory copy)
+\begin{scope}[xshift=4.1cm]
+  \foreach \j in {0,...,\numRows} {
+    \draw (0,\j*\sliceHeight) rectangle (\sliceWidth,\j*\sliceHeight+\sliceHeight);
+  }
+  \node[left] (mem0) at (-\labelOffset,3*\sliceHeight+0.5*\sliceHeight) {[0]};
+  \node[left] (mem1) at (-\labelOffset,2*\sliceHeight+0.5*\sliceHeight) {[1]};
+
+  \node[above=0.4, align=center] at (\sliceWidth/2,3*\sliceHeight+0.5*\sliceHeight) {cached data};
+
+  \node[below=2, align=center] at (\sliceWidth/2,3*\sliceHeight+0.5*\sliceHeight) {\small F5 monomial};
+  \node[below=2.4, align=center] at (\sliceWidth/2,3*\sliceHeight+0.5*\sliceHeight) {\small F5 index};
+  \node[below=2.8, align=center] at (\sliceWidth/2,3*\sliceHeight+0.5*\sliceHeight) {\small highest term};
+  \node[below=3.2, align=center] at (\sliceWidth/2,3*\sliceHeight+0.5*\sliceHeight) {\small size};
+
+
+  \draw (0,-10*\sliceHeight) rectangle (\sliceWidth,0);
+\end{scope}
+
+% another array (the older Grobner bases)
+  \def\sliceWidth{3}
+\begin{scope}[xshift=7.5cm]
+  \draw (0,0*\sliceHeight) rectangle (\sliceWidth,0*\sliceHeight+\sliceHeight) node [midway] {$\cdots$};
+  \draw (0,1*\sliceHeight) rectangle (\sliceWidth,1*\sliceHeight+\sliceHeight) node [midway] {$(f_{m-2}, f_{m-1}, f_m)$};
+  \draw (0,2*\sliceHeight) rectangle (\sliceWidth,2*\sliceHeight+\sliceHeight) node [midway] {$(f_{m-1}, f_m)$};
+  \draw (0,3*\sliceHeight) rectangle (\sliceWidth,3*\sliceHeight+\sliceHeight) node [midway] {$(f_m)$} node [midway, above=0.4] {Gr\"obner bases};
+%  \node[left] (mem0) at (-\labelOffset,3*\sliceHeight+0.5*\sliceHeight) {[0]};
+%  \node[left] (mem1) at (-\labelOffset,2*\sliceHeight+0.5*\sliceHeight) {[1]};
+\end{scope}
+
+  % dashed lines between the disk and the memory
+  \draw [dashed] (disk0.east) -- (mem0.west);
+  \draw [dashed] (disk1.east) -- (mem1.west);
+
+  % lines dividing disk from memory
+  \draw [purple,thick] (3.05cm,3) -- (3.05cm,-6);
+  \node [purple,align=center] at (1,3) {\bf DISK};
+  \node [purple,align=center] at (7,3) {\bf MEMORY};
+
+  \node [draw, align=center, text width=100pt] at (9,-1) {SPAIRS TO BUILD\break indices only};
+
+  \node [draw, align=center, text width=100pt] at (9,-2.5) {SUBSET OF DISK POLYS};
+
+  \node [draw, align=center, text width=100pt] at (9,-4) {SPAIRS\break BEING REDUCED};
+
+
+\end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Use of Large Language Models in Software Development}
+\scriptsize
+\begin{verbatim}
+include(common)
+
+Function buchberger_naive maintains two local vectors of polynomials,
+ called the basis and the s-pairs.  Start by copying the vector of
+ generators to the basis.  For each pair of generators, construct their
+ s-pair and insert it into the s-pairs if it is unique.  Then work through
+ the vector of s-pairs from beginning to end, reducing each one by the
+ basis.  Use reduce_by_vector with lead reduction enabled.  If the result
+ is not zero, then append the result to the basis, and loop over all of the
+ other basis polynomials, constructing the s-pair of it and the new basis
+ polynomial, and appending it to the s-pairs if it is unique.  Make sure to
+ process all of the s-pairs, even the ones added during processing.
+
+Function buchberger_naive puts the basis in the output vector
+once the loop has terminated, and returns void.
+
+You can not add items to a polynomial vector by calling fmpz_mpoly_set
+ with an fmpz_mpoly_vec_entry as your destination; you have to use
+ fmpz_mpoly_vec_append.
+
+Output the header, any required function declarations, the code for
+ buchberger_naive, and nothing else, without any explaination.
+
+Output no function defintions except the code for buchberger_naive.
+\end{verbatim}
 \end{frame}
 
 \begin{frame}
@@ -1387,37 +1669,6 @@ elimination_ideal = ideal(critical_ideal_generators + [distance_function])
 GB = elimination_ideal.groebner_basis()
 GB[-1].numerator()
 GB[-1].numerator().subs(ux=1,uy=1)
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Use of Large Language Models in Software Development}
-\scriptsize
-\begin{verbatim}
-include(common)
-
-Function buchberger_naive maintains two local vectors of polynomials,
- called the basis and the s-pairs.  Start by copying the vector of
- generators to the basis.  For each pair of generators, construct their
- s-pair and insert it into the s-pairs if it is unique.  Then work through
- the vector of s-pairs from beginning to end, reducing each one by the
- basis.  Use reduce_by_vector with lead reduction enabled.  If the result
- is not zero, then append the result to the basis, and loop over all of the
- other basis polynomials, constructing the s-pair of it and the new basis
- polynomial, and appending it to the s-pairs if it is unique.  Make sure to
- process all of the s-pairs, even the ones added during processing.
-
-Function buchberger_naive puts the basis in the output vector
-once the loop has terminated, and returns void.
-
-You can not add items to a polynomial vector by calling fmpz_mpoly_set
- with an fmpz_mpoly_vec_entry as your destination; you have to use
- fmpz_mpoly_vec_append.
-
-Output the header, any required function declarations, the code for
- buchberger_naive, and nothing else, without any explaination.
-
-Output no function defintions except the code for buchberger_naive.
 \end{verbatim}
 \end{frame}
 
