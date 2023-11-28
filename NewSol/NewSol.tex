@@ -1672,4 +1672,38 @@ GB[-1].numerator().subs(ux=1,uy=1)
 \end{verbatim}
 \end{frame}
 
+\begin{frame}
+\frametitle{Homotopy Continuation}
+\begin{tikzpicture}[scale=1.5, x={(1cm,0.2cm)}, y={(1cm,-0.15cm)}, z={(0cm,1cm)}]
+
+  % the three coordinate planes
+  \foreach \z in {0,2,4} {
+     \draw[fill=blue!20] (-2,-2,\z) -- (2,-2,\z) -- (2,2,\z) -- (-2,2,\z) -- cycle;
+     \draw (2,0,\z) -- (-2,0,\z);
+     \draw (0,2,\z) -- (0,-2,\z);
+     \foreach \x in {-1.5,-1,-0.5,0.5,1,1.5} {
+        \draw [dotted] (\x,-2,\z) -- (\x,2,\z);
+        \draw [dotted] (-2,\x,\z) -- (2,\x,\z);
+     }
+  }
+
+  % Draw the planes
+  %\draw[fill=blue!20] (A) -- (B) -- (D) -- (C) -- cycle;
+  %\draw[fill=red!20] (E) -- (F) -- (H) -- (G) -- cycle;
+  %\draw[fill=green!20] (I) -- (J) -- (L) -- (K) -- cycle;
+
+  % Draw the axes labels
+  \node[inner sep=1pt, above right] at (2,0,2) {Re(z)};
+  \node[inner sep=1pt, below right] at (0,2,2) {Im(z)};
+
+  % Draw the t labels
+  \node[above] at (0,-2,0) {t=0};
+  \node[above] at (0,-2,2) {t=1/2};
+  \node[above] at (0,-2,4) {t=1};
+
+  \draw[domain=0:2*pi, samples=100, thick] plot ({cos(deg(\x))}, {sin(deg(\x))}, {2*\x/pi});
+\end{tikzpicture}
+
+\end{frame}
+
 \end{document}
