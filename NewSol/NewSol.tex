@@ -729,9 +729,9 @@ $-\frac{1}{18}$		& $(27-18r+2r^2)e^{-r/3}$	& 3s \\
 \begin{frame}
 \frametitle{The New Solution to Hydrogen}
 
-\[ - \frac{1}{2} \nabla^2 \psi - \frac{1}{r} \psi = E \psi \]
+\[ - \frac{1}{2} \nabla^2 \Psi - \frac{1}{r} \Psi = E \Psi \]
 
-\[ \psi(x,y,z) = J_0(2\sqrt{x+r}) \]
+\[ \Psi(x,y,z) = J_0(2\sqrt{x+r}) \]
 
 %% \[ r = \sqrt{x^2+y^2+z^2} \]
 
@@ -803,11 +803,11 @@ $Y_\alpha(x)$ has a pole at $x=0$, i.e, $\lim_{x\to 0} Y_\alpha(x) = \infty$.
 %% Source: Wikipedia, {\it Bessel function}
 %% \end{block}
 
-To be a valid wavefunction, $\psi(x,y,z) = J_0(2\sqrt{x+r})$ must be square integrable:
+To be a valid wavefunction, $\Psi(x,y,z) = J_0(2\sqrt{x+r})$ must be square integrable:
 
-\[ \int |\psi|^2\ dV = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \left|J_0(2\sqrt{x+r})\right|^2\ dx\ dy\ dz  < \infty\]
+\[ \int |\Psi|^2\ dV = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \left|J_0(2\sqrt{x+r})\right|^2\ dx\ dy\ dz  < \infty\]
 
-Aside: $\int |\psi|^2\ dV$ is the {\bf L$^2$-norm} of $\psi$.  It shows up a lot.  The L$^2$-norm of
+Aside: $\int |\Psi|^2\ dV$ is the {\bf L$^2$-norm} of $\psi$.  It shows up a lot.  The L$^2$-norm of
 a function is the same as the L$^2$-norm of its Fourier transform, so if the position component of the
 wavefunction is square integrable, then the momentum component will also be square integrable.
 
