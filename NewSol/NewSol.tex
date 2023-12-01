@@ -560,14 +560,14 @@ Multiplying through by $\sin^2\theta$ and rearranging:
 \end{equation*}
 
 Again, all $\theta$ dependence is on the left while all $\phi$ dependence is on the right, so both sides
-must be equal to another constant that we'll call $-C_\phi$
+must be equal to another constant that we'll call $C_\phi$
 
 \begin{equation*}
-\frac{\sin\theta}{P} \frac{d}{d\theta}\left[\sin\theta\frac{dP}{d\theta}\right] + C_r \sin^2\theta = - C_\phi
+\frac{\sin\theta}{P} \frac{d}{d\theta}\left[\sin\theta\frac{dP}{d\theta}\right] + C_r \sin^2\theta = C_\phi
 \end{equation*}
 
 \begin{equation*}
-C_\phi = \frac{1}{F}\frac{d^2 F}{d\phi^2}
+C_\phi = - \frac{1}{F}\frac{d^2 F}{d\phi^2}
 \end{equation*}
 
 The first equation is the {\it colatitude equation}; the second is the {\it azimuthal equation}.
@@ -576,18 +576,64 @@ The first equation is the {\it colatitude equation}; the second is the {\it azim
 \begin{frame}
 \frametitle{The azimuthal equation}
 
-\[ C_\phi = \frac{1}{F}\frac{d^2 F}{d\phi^2} \]
+\begin{minipage}{.6\linewidth}
 
-\[ \frac{d^2 F}{d\phi^2} - C_\phi F = 0 \]
+\[ C_\phi = - \frac{1}{F}\frac{d^2 F}{d\phi^2} \]
 
-\[ F=e^{a\phi} \qquad \frac{d^2 F}{d\phi^2} = a^2 e^{a\phi} \]
+\[ \frac{d^2 F}{d\phi^2} + C_\phi F = 0 \]
 
-\[ a^2 e^{a\phi} - C_\phi e^{a\phi} = 0 \qquad\Longrightarrow\qquad a^2 = C_\phi \]
+\[ F=e^{mi\phi} \qquad \frac{d^2 F}{d\phi^2} = - m^2 e^{a\phi} \]
 
-\[ e^{a\phi} = e^{a(\phi+2\pi)} \qquad\Longrightarrow\qquad e^{2a\pi} = 1 \qquad\Longrightarrow\qquad ia \in {\mathbb Z} \]
+\end{minipage}%
+\begin{minipage}{.4\linewidth}
+\begin{tikzpicture}[scale=0.75]
+
+% Define parameters
+\pgfmathsetmacro{\rvec}{3}
+\pgfmathsetmacro{\thetavec}{30}
+\pgfmathsetmacro{\phivec}{60}
+
+\pgfmathsetmacro{\rtwovec}{10}
+\pgfmathsetmacro{\thetatwovec}{60}
+\pgfmathsetmacro{\phitwovec}{30}
+
+% Set rotation angles for 3D visualization
+\tdplotsetmaincoords{60}{110}
+
+% Start drawing in 3D
+\begin{scope}[tdplot_main_coords]
+
+% Draw axes
+\draw[thick,->] (0,0,0) -- (3,0,0) node[anchor=north east]{$x$};
+\draw[thick,->] (0,0,0) -- (0,3,0) node[anchor=north west]{$y$};
+\draw[thick,->] (0,0,0) -- (0,0,3) node[anchor=south]{$z$};
+
+% Draw vector and its projections (with dashed lines)
+\tdplotsetcoord{P}{\rvec}{\thetavec}{\phivec}
+\draw[color=red] (0,0,0) -- (P) node[midway, above] {$r$};
+\draw[dashed, color=red] (0,0,0) -- (Pxy);
+\draw[dashed, color=red] (P) -- (Pxy);
+\fill [red] (P) circle (0.05cm);
+
+% Draw angle phi
+\tdplotdrawarc{(0,0,0)}{0.5}{0}{\phivec}{anchor=north}{$\phi$}
+
+% Draw angle theta
+\tdplotsetthetaplanecoords{\phivec}
+\tdplotdrawarc[tdplot_rotated_coords]{(0,0,0)}{0.5}{0}{\thetavec}{above}{$\theta$}
+
+\end{scope}
+\end{tikzpicture}
+\end{minipage}
+
+\vskip 12pt
+
+\[ m^2 e^{m\phi} - C_\phi e^{m\phi} = 0 \qquad\Longrightarrow\qquad m^2 = C_\phi \]
+
+\[ e^{mi\phi} = e^{mi(\phi+2\pi)} \qquad\Longrightarrow\qquad e^{2\pi mi} = 1 \qquad\Longrightarrow\qquad m \in {\mathbb Z} \]
 
 %% \[ a=im \qquad m \in {\mathbb Z} \qquad C_\phi = - m^2 \]
-\[ m \in {\mathbb Z} \qquad C_\phi = - m^2 \qquad F(\phi) = e^{im\phi}\]
+\[ m \in {\mathbb Z} \qquad C_\phi = m^2 \qquad F(\phi) = e^{im\phi}\]
 
 \end{frame}
 
