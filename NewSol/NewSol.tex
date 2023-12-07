@@ -4,7 +4,7 @@
 \documentclass{beamer}
 \usetheme{Madrid}
 
-\title{A New Solution to Hydrogen}
+\title{A New Pseudo-Solution to Hydrogen}
 \author{Brent Baccala}
 \institute{\tt cosine@freesoft.org}
 %% \date{February 8, 2023}
@@ -52,14 +52,17 @@
 
 
 \begin{frame}
+\vskip -12pt
 \titlepage
 \begin{block}{Abstract}
-\begin{itemize}
-\item An Introduction to Wave Mechanics
-\item The Classical Solutions to the Hydrogen Schr\"odinger Equation
-\item A New Solution to the Hydrogen Schr\"odinger Equation
-\item Further Research Directions: Helium's Ground State
-\end{itemize}
+In this talk, I'll start with an introduction to wave mechanics,
+presenting the concept of a wave function, the Schr\"odinger Equation as a PDE,
+stationary solutions, and deriving the classical solutions the Hydrogen Schr\"odinger Equation.
+Then I'll exhibit a new pseudo-solution that solves the hydrogen
+differential equation but doesn't meet the global square-integrability
+requirement, show how I found this solution and discuss further
+research directions, with the particular goal of finding a similar
+solution to helium's ground state.
 \end{block}
 \end{frame}
 
@@ -111,7 +114,7 @@ T is kinetic energy \qquad\qquad V is potential energy
 \end{center}
 \end{definition}
 
-\begin{block}{The Euler-Langrange (E-L) equation}
+\begin{block}{The Euler-Lagrange (E-L) equation}
 \[ \frac{d}{dt}\left( \frac{\delta L}{\delta \dot x} \right) = \frac{\delta L}{\delta x} \]
 \end{block}
 
@@ -256,7 +259,7 @@ It is a function of the coordinates of {\it all} particles.
 
 \vskip 12pt
 \begin{quotation}
-Example: The wavefunction of a two particle system:
+Example: The wave function of a two particle system:
 
 \[ \Psi(x_1,y_1,z_1,x_2,y_2,z_2,t) \]
 \end{quotation}
@@ -387,7 +390,7 @@ Source: Wikipedia, {\it Exterior derivative}
 \begin{frame}
 \frametitle{Time Independent Schr\"odinger Equation}
 If the potential energy $V\argt$ has no time dependence, we can 
-use separation of variables and {\it assume} that the wavefunction has the form:
+use separation of variables and {\it assume} that the wave function has the form:
 
 \[ \Psi\argt = \psi\arg\phi(t) \]
 
@@ -427,7 +430,7 @@ are assigned the value of 1:
 \item the reduced Planck constant ($\hbar$)
 \item the elementary charge ($e$)
 \item the electron rest mass ($m_e$)
-\item the Coulumb constant ($k_e$)
+\item the Coulomb constant ($k_e$)
 \end{itemize}
 
 \vskip 12pt
@@ -503,7 +506,7 @@ we obtain the following expansion:
 + \left[\frac{1}{P\sin\theta} \frac{d}{d\theta}\left[\sin\theta\frac{dP}{d\theta}\right]+\frac{1}{F\sin^2\theta}\frac{d^2 F}{d\phi^2}\right] = 0
 \end{equation*}
 
-The first part, dependant on $r$, is the {\it radical equation}, whose solutions are, in general,
+The first part, dependent on $r$, is the {\it radical equation}, whose solutions are, in general,
 hypergeometric functions, but which, in the case of specific energy values,
 simplify to polynomials in $r$
 times an exponential of $r$.  It is these solutions, combined with the solution
@@ -531,7 +534,7 @@ we obtain the following expansion:
 = - \left[\frac{1}{P\sin\theta} \frac{d}{d\theta}\left[\sin\theta\frac{dP}{d\theta}\right]+\frac{1}{F\sin^2\theta}\frac{d^2 F}{d\phi^2}\right]
 \end{equation*}
 
-The L.H.S. is dependant only on $r$, while the R.H.S. is dependent only on $\theta$ and $\phi$, so the
+The L.H.S. is dependent only on $r$, while the R.H.S. is dependent only on $\theta$ and $\phi$, so the
 two sides must be equal to a constant that we'll call $C_r$.
 
 \begin{equation*}
@@ -814,7 +817,7 @@ Source: Wikipedia, {\it Regular Singular Point}
 \frametitle{The Classical Solutions to Hydrogen}
 \begin{center}
 \begin{tabular}{ccc}
-{\bf Energy}		& {\bf Wavefunction}		& {\bf Shell} \\
+{\bf Energy}		& {\bf Wave function}		& {\bf Shell} \\
 {\bf (Hartrees)}	& & \\
 \\
 $-\frac{1}{2}$		& $e^{-r}$			& 1s \\
@@ -832,7 +835,7 @@ $-\frac{1}{18}$		& $(27-18r+2r^2)e^{-r/3}$	& 3s \\
 \end{frame}
 
 \begin{frame}
-\frametitle{The New Solution to Hydrogen}
+\frametitle{The New Pseudo-Solution to Hydrogen}
 
 \[ - \frac{1}{2} \nabla^2 \Psi - \frac{1}{r} \Psi = E \Psi \]
 
@@ -908,13 +911,13 @@ $Y_\alpha(x)$ has a pole at $x=0$, i.e, $\lim_{x\to 0} Y_\alpha(x) = \infty$.
 %% Source: Wikipedia, {\it Bessel function}
 %% \end{block}
 
-To be a valid wavefunction, $\Psi(x,y,z) = J_0(2\sqrt{x+r})$ must be square integrable:
+To be a valid wave function, $\Psi(x,y,z) = J_0(2\sqrt{x+r})$ must be square integrable:
 
 \[ \int |\Psi|^2\ dV = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \left|J_0(2\sqrt{x+r})\right|^2\ dx\ dy\ dz  < \infty\]
 
 Aside: $\int |\Psi|^2\ dV$ is the {\bf L$^2$-norm} of $\psi$.  It shows up a lot.  The L$^2$-norm of
 a function is the same as the L$^2$-norm of its Fourier transform, so if the position component of the
-wavefunction is square integrable, then the momentum component will also be square integrable.
+wave function is square integrable, then the momentum component will also be square integrable.
 
 
 \end{frame}
@@ -1026,7 +1029,7 @@ Newton notation: $\Psi''$ or $\ddot \Psi$
 
 \vskip 12pt
 
-Leibnitz notation: $\frac{\delta^2 \Psi(x,y,z)}{\delta x^2}$
+Leibniz notation: $\frac{\delta^2 \Psi(x,y,z)}{\delta x^2}$
 
 \vskip 12pt
 
@@ -1282,7 +1285,7 @@ sage: I.radical().primary_decomposition()
 & \left(v_{3}, v_{2}, v_{1}, m_{1}, m_{0} - n_{0} v_{0}, 2 d_{1} + n_{0} v_{0}, d_{0}, E n_{0} - n_{1} v_{0}\right)\label{ideal:2}\\
 & \qquad \text{the classical solution} \nonumber \\
 & \left(v_{0}^{2} - v_{1}^{2} - v_{2}^{2} - v_{3}^{2}, n_{1}, m_{1}, m_{0} - n_{0} v_{0}, d_{1} + n_{0} v_{0}, d_{0}, E\right)\label{ideal:1}\\
-& \qquad \text{the new solution} \nonumber
+& \qquad \text{the new pseudo-solution} \nonumber
 \end{align}
 \end{subequations}
 \end{frame}
@@ -1312,7 +1315,7 @@ v \Psi'' + 2 \Psi' + 2(1 + E v) \Psi = 0
 \end{gathered}
 \end{equation*}
 
-This is the classical radial equation obtained by seperation of variables,
+This is the classical radial equation obtained by separation of variables,
 with the orbital quantum number $l=0$,
 though it is more commonly written in this form:
 
@@ -1323,7 +1326,7 @@ though it is more commonly written in this form:
 
 \begin{frame}
 \frametitle{Ideal \eqref{ideal:1}}
-Ideal \eqref{ideal:1} was not expected, and contains our new solution.
+Ideal \eqref{ideal:1} was not expected, and contains the new pseudo-solution.
 $a_0$ is an ideal generator,
 so $a_0=0$, and we can set $a_1=1$, by the same logic as above.
 Our coordinates are in real space, so our $v_i$ coefficients must be real (why?), so all of their squares must
@@ -1402,7 +1405,7 @@ Plugging in $v=x+r$, we obtain:
 \frametitle{Key Takeaway Points}
 \begin{itemize}
 \item Separation of variables only finds separable solutions\\ (there may be others)
-\item It's not enough to solve the Schr\"odinger differential equation\\The wavefunction also has to be square integrable
+\item It's not enough to solve the Schr\"odinger differential equation\\The wave function also has to be square integrable
 \item Ideals are the principal algebraic tool for analyzing systems of polynomial equations
 \item Forming the radical of an ideal introduces the additional axiom that there are no zero divisors
 \item The preferred approach to analyzing a difficult ideal
