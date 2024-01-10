@@ -60,13 +60,99 @@ A survey of Large Language Models
 \end{frame}
 
 \begin{frame}
+\frametitle{Floating Point Formats}
+\begin{center}
+% IEEE half-precision 16-bit float
+% \begin{tikzpicture}[node distance=0pt,outer sep=0pt]
+%
+% % Row 1
+% \node [draw, text width=1cm, align=center, fill=white] (sign) {sign};
+% \node [draw, text width=4cm, align=center, fill=white, right=of sign] (exponent) {exponent (5 bit)};
+% \node [draw, text width=6cm, align=center, fill=white, right=of exponent] (fraction) {fraction (10 bit)};
+%
+% % Row 2
+% \node [draw, text width=1cm, align=center, fill=white, below=of sign] (sign_val) {0};
+% \node [draw, text width=4cm, align=center, fill=white, right=of sign_val] (exponent_val) {0 \quad 0 \quad 1 \quad 1 \quad 0};
+% \node [draw, text width=6cm, align=center, fill=white, right=of exponent_val] (fraction_val) {0 0 0 0 0 0 0 0 0 0};
+%
+% \end{tikzpicture}
+%
+% \vskip 12pt
+
+IEEE single-precision 32-bit float (most CPUs)
+
+\begin{tikzpicture}[node distance=0pt,outer sep=0pt]
+
+% Row 1
+\node [draw, text width=1cm, align=center, fill=white] (sign) {sign};
+\node [draw, text width=4cm, align=center, fill=white, right=of sign] (exponent) {exponent (8 bit)};
+\node [draw, text width=6cm, align=center, fill=white, right=of exponent] (fraction) {fraction (23 bit)};
+
+% Row 2
+\node [draw, text width=1cm, align=center, fill=white, below=of sign] (sign_val) {0};
+\node [draw, text width=4cm, align=center, fill=white, right=of sign_val] (exponent_val) {0 0 1 1 0 0 0 0};
+\node [draw, text width=6cm, align=center, fill=white, right=of exponent_val] (fraction_val) {\tiny 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0};
+
+\end{tikzpicture}
+
+bfloat16 (most GPUs and AVX-512 CPUs)
+
+\begin{tikzpicture}[node distance=0pt,outer sep=0pt]
+
+% Row 1
+\node [draw, text width=1cm, align=center, fill=white] (sign) {sign};
+\node [draw, text width=4cm, align=center, fill=white, right=of sign] (exponent) {exponent (8 bit)};
+\node [draw, text width=6cm, align=center, fill=white, right=of exponent] (fraction) {fraction (7 bit)};
+
+% Row 2
+\node [draw, text width=1cm, align=center, fill=white, below=of sign] (sign_val) {0};
+\node [draw, text width=4cm, align=center, fill=white, right=of sign_val] (exponent_val) {0 0 1 1 0 0 0 0};
+\node [draw, text width=6cm, align=center, fill=white, right=of exponent_val] (fraction_val) {0 0 0 0 0 0 0};
+
+\end{tikzpicture}
+
+\vskip 12pt
+
+\end{center}
+
+Source: Wikipedia, {\it bfloat16 floating-point format}
+\end{frame}
+
+\begin{frame}
 \frametitle{Heatmap token representations}
-\includegraphics[width=0.3\textwidth]{4321.png}
+\includegraphics[width=0.3\textwidth]{14614.png}
 \includegraphics[width=0.3\textwidth]{248.png}
+\includegraphics[width=0.3\textwidth]{772.png}
+\includegraphics[width=0.3\textwidth]{3020.png}
 \includegraphics[width=0.3\textwidth]{4169.png}
-\includegraphics[width=0.3\textwidth]{440.png}
-\includegraphics[width=0.3\textwidth]{14721.png}
-\includegraphics[width=0.3\textwidth]{19935.png}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Heatmap token representations}
+After extracting the tokens to {\tt words.torch}:
+\tiny\begin{verbatim}
+import torch
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+from transformers import AutoTokenizer
+
+tokenizer = AutoTokenizer.from_pretrained('tiiuae/falcon-40b-instruct')
+
+with open('words.torch', 'rb') as f:
+    words=torch.load(f)
+
+def tword(num):
+    return words[num].float().view(64,71)
+
+for token in tokenizer.tokenize("Print the first ten numbers"):
+    id = tokenizer.convert_tokens_to_ids(token)
+    plt.clf()
+    sns.heatmap(tword(id).numpy(), center=0, cmap='coolwarm')
+    plt.title(f'{id}: {token}', fontsize=20)
+    plt.savefig(f'{id}.png')
+
+\end{verbatim}
 \end{frame}
 
 \begin{frame}
@@ -311,9 +397,14 @@ Source: falcon {\tt modelling_RW.py}
 \end{frame}
 
 \begin{frame}
-Hugging Face
+\frametitle{Parallelizing the MLP across multiple nodes}
 
-MLP - the code
+\begin{itemize}
+\item {\tt Linear} is just a matrix (tensor) multiplication
+\item Split the {\tt Linear} tensors into slices, one for each node
+\item {\tt torch.distributed} has a Remote Procedure Call (RPC) mechanism
+\item figure how to do distributed training
+\end{itemize}
 \end{frame}
 
 \end{document}
