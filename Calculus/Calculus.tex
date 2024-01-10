@@ -15,6 +15,8 @@
 \usepackage{amsmath}
 \usepackage{tabularx}
 
+\usepackage{mdframed}
+
 \usepackage{breqn}
 
 \usepackage{xcolor}
@@ -572,6 +574,90 @@ Their cardinality in the ``continuum''
 \frametitle{Henri Lebesgue - ``Integral, Length, Area'' (1902)}
 
 
+\end{frame}
+
+\begin{frame}
+\frametitle{Nonstandard Analysis (1960)}
+\end{frame}
+
+\begin{frame}
+\frametitle{Richardson's Theorem}
+\begin{mdframed}[backgroundcolor=yellow!20]
+\tiny
+Let $E$ be a set of expressions representing real, single valued,
+partially defined functions of one real variable. $E^*$ will be the set of functions
+represented by expressions in $E$.
+
+If $A$ is an expression in $E$, $A(x)$ is the function denoted by $A$.
+
+It is assumed that $E^*$ contains the identity function and the rational numbers as
+constant functions and that $E^*$ is closed under addition, subtraction, multiplication and composition.
+In every case it is also supposed that given $A$ and $B$ in $E$
+there is an effective procedure for finding expressions in $E$ to represent:
+
+$$A(x) + B(x)$$
+$$A(x) - B(x)$$
+$$A(x) \cdot B(x)$$
+$$A(B(x))$$
+
+$A(x) \equiv B(x)$ will mean that $A(x)$ and $B(x)$ are defined at the same points and are equal wherever they are defined.
+
+The integration problem for $(E, E^*)$ is the problem of deciding, given $A$ in $E$,
+whether there is a function $f(x)$ in $E^*$ so that $f'(x) \equiv A(x)$.
+
+If $E^*$ satisfies conditions 1, 2, and 3, the integration problem for $(E, E^*)$ will be unsolvable.
+\begin{enumerate}
+\item $E^*$ contains $\ln 2$, $\pi$, $e^x$, $\sin x$.
+\item There is a function, $\mu(x)$, in $E^*$ so that $\mu(x)= |x|$ for $x \ne 0$.
+\item There is a totally defined function, $\mathcal{B}(x)$, in $E^*$ so that for no function, $f(x)$,
+in $E^*$ and no interval $I$, is $f'(x) = \mathcal{B}(x)$ on $I$.
+\end{enumerate}
+Daniel Richardson,\\
+{\it Some Undecidable Problems involving Elementary Functions of a Real Variable},
+\\
+The Journal of Symbolic Logic, Volume 33, Number 4, Dec. 1968
+
+\end{mdframed}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Risch Algorithm}
+\end{frame}
+
+\begin{frame}
+\frametitle{Typical University Course Sequence}
+\begin{center}
+\begin{tikzpicture}[node distance=2cm]
+\node [draw] (calc) {Calculus};
+\node [draw, below=of calc] (mv) {Multivariate Calculus};
+\node [draw, node distance=3cm, right=of calc] (ca) {Complex Analysis};
+\node [draw, below=of ca] (scv) {Several Complex Variables};
+\node [draw, below=of mv] (diffeq) {Differential Equations};
+\node [draw, right=of diffeq] (diffgeo) {Differential Geometry};
+\node [below=of diffeq] (p) {};
+\node [draw, node distance=1cm, left=of p] (ode) {ODEs};
+\node [draw, node distance=1cm, right=of p] (pde) {PDEs};
+\node [draw, right of=pde] (real) {Real Analysis};
+\node [draw, node distance=3cm, right of=real] {Complex Analysis};
+
+% Calculate halfway point
+\path (diffeq) -- node[midway] (midpoint) {} (p);
+
+% Draw line
+\draw [dashed] (diffeq.west |- midpoint) -- (diffgeo.east |- midpoint) node[below] {M.S.} node[above] {B.S.};
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{A classic multivariate ``trick''}
+\[ \int_{-\infty}^{\infty} e^{-x^2} dx \]
+\end{frame}
+
+\begin{frame}
+\frametitle{A classic complex analysis ``trick''}
+maybe
+\[ \int_{0}^{\infty} \frac{\sin x}{x} dx \]
 \end{frame}
 
 \end{document}
