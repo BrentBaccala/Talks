@@ -128,7 +128,37 @@ Source: Wikipedia, {\it bfloat16 floating-point format}
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Heatmap token representations}
+\frametitle{How to construct heatmap token representations}
+The falcon models store their weights in pytorch files.
+\vskip 12pt
+These files contain dictionaries that map strings to tensors.
+\vskip 12pt
+The strings are variable names
+{\tiny\begin{verbatim}
+
+class RWModel(RWPreTrainedModel):
+    def __init__(self, config: RWConfig):
+        ...
+        self.word_embeddings = nn.Embedding(config.vocab_size, self.embed_dim)
+
+class RWForCausalLM(RWPreTrainedModel):
+    def __init__(self, config: RWConfig):
+        ...
+        self.transformer = RWModel(config)
+
+import torch
+bwb=torch.load('pytorch_model-00001-of-00002.bin', map_location=torch.device('cpu'))
+\end{verbatim}}
+List the tensors by name with {\tt bwb.keys()}
+\vskip 12pt
+Copy the token embedding weights to a file like this:
+{\tiny\begin{verbatim}
+torch.save(bwb['transformer.word_embeddings.weight'], 'words.torch')
+\end{verbatim}}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{How to construct heatmap token representations}
 After extracting the tokens to {\tt words.torch}:
 \tiny\begin{verbatim}
 import torch
