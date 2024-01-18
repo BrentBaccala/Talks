@@ -1555,15 +1555,56 @@ Part 3: Moving the Research Project Forward
 \end{frame}
 
 \begin{frame}
-\frametitle{Helium Ground State Ansatz 16.6}
+\frametitle{Helium Ground State Ansatz 16.3}
+\begin{center}
+\scalebox{0.9}{%
+  \begin{tikzpicture}[remember picture,out=315,in=225,distance=0.4cm,node distance=40pt]
+    \node (Psi) [poly, text width=100pt] {$\framebox(10,10){}\tikzmark{a}\,\Psi'' + \framebox(10,10){}\tikzmark{b}\,\Psi' + \coeff\tikzmark{c}\,\Psi$};
+    \node (Qv) [ring, below of=Psi, text width=100pt] {$\mathbf{Q}[v]$};
+    \node (v) [poly, right=of Qv] {$v$};
+    \draw[degree] (a.west) -- (a.west|-Qv.north) node[right,pos=0.6] {1};
+    \draw[degree] (b.west) -- (b.west|-Qv.north) node[right,pos=0.6] {1};
+    \draw[degree] (c.west) -- (c.west|-Qv.north) node[right,pos=0.6] {1};
+    \node (Psi label) [at=(v.east|-Psi.north), anchor=north east] {\Large$\Psi$};
+    \begin{scope}[on background layer]
+        \node (Psi block)[fit=(Psi) (Qv) (v), inner sep=10pt, element] {};
+    \end{scope}
+    \node (alg ext) [poly, node distance=150pt, below=of Psi.east, anchor=east, text width=100pt] {$\gamma^2 = \framebox(10,10){}\tikzmark{a}$};
+    \begin{scope}[on background layer]
+        \node (alg ext element) [algebraic, fit=(alg ext) (Psi label.east|-alg ext.north), inner sep=10pt] {};
+        \node (alg ext title) [node distance=20pt, above=of alg ext element.north, anchor=center, text centered, text width=250pt] {$\mathbf{Q}[r_1,r_2,r_{12},\gamma]/(\gamma^2 - \coeff\,)$};
+        \node (alg ext field) [ring, fill=none, fit=(alg ext title) (alg ext element), node distance=70pt, text width=250pt] {};
+    \end{scope}
+    \draw[degree] (v.south) -- (v.south|-alg ext field.north) node[right,pos=0.7] {1};
+    \node (base) [ring, below=of alg ext field.south east, anchor=east, text width=250pt] {$\mathbf{Q}[r_1,r_2,r_{12}]$};
+    \draw[degree] (a.west) -- (a.west|-base.north) node[right,pos=0.8] {2};
+  \end{tikzpicture}
+}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Complexity of Helium Ground State Ansatz 16}
 \begin{center}
 \bf
-System of Polynomial Equations
+Ansatz 16.6
 \end{center}
 \begin{itemize}
 \item 33 variables
 \item 3486 equations
 \item 16,517,523 terms
+\end{itemize}
+
+\vskip 24pt
+
+\begin{center}
+\bf
+Ansatz 16.3
+\end{center}
+\begin{itemize}
+\item 21 variables (19 if we used ansatz 16.31)
+\item 1236 equations
+\item 61,227 terms
 \end{itemize}
 
 \vskip 24pt
