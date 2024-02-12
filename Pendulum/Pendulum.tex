@@ -20,6 +20,10 @@
 
 \usepackage{fancyvrb}
 
+\usepackage{tikz}
+\usetikzlibrary{angles,quotes}
+\usetikzlibrary{calc}
+
 \begin{document}
 
 
@@ -44,9 +48,36 @@ Part 1: The Double Pendulum
 
 \begin{frame}
 \frametitle{Free Body Diagram}
-%% \includegraphics[clip, trim=0in 5.6in 0in 0.75in, width=\textwidth, page=1]{GrobnerBasis.pdf}
-%% \includegraphics[clip, trim=0in 6.25in 0in 0.5in, width=\textwidth, page=9]{GrobnerBasis.pdf}
-%% \includegraphics[clip, trim=0in 3in 0in 0.5in, width=\textwidth, page=13]{GrobnerBasis.pdf}
+
+\begin{tikzpicture}[scale=0.75]
+
+% Define the main coordinates
+\coordinate (O) at (0,0);
+\coordinate (A) at (3,-4);
+\coordinate (B) at (4,-8);
+
+% Draw the pendulum
+\draw[thick] (O) -- (A) -- (B);
+\draw[dashed] (O) -- +(0,-5);
+\draw[dashed] (A) -- +(0,-5);
+
+% Draw the forces
+\draw[red,->,thick] (A) -- +(0,-2) node[midway,right] {$m_1g$};
+\draw[red,->,thick] (B) -- +(0,-2) node[midway,right] {$m_2g$};
+\draw[blue,->,thick] (A) -- (O) node[midway,above] {$T_1$};
+\draw[blue,->,thick] (B) -- (A) node[midway,above] {$T_2$};
+
+% Draw the angles
+% \draw[->, red, thick] (A) arc (-90:-180:0.75) node {$\theta$};
+% \draw[->, red, thick] let \p1 = ($ (A) + (-90:0.75) $) in (A) ++(\p1) arc (-90:-180:0.75) node[midway, below right] {$\theta$};
+\draw [->, thick] (O) arc (0:90:2);
+
+% Draw the masses
+\fill (A) circle (3pt) node[above left] {$m_1$};
+\fill (B) circle (3pt) node[above left] {$m_2$};
+
+\end{tikzpicture}
+
 \end{frame}
 
 \begin{frame}
