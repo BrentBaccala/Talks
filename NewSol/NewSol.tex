@@ -1242,15 +1242,66 @@ Collect like terms in $\Psi$, $\Psi_v$, $x$, $y$, $z$, and $r$.
 \end{frame}
 
 \begin{frame}
+\frametitle{Commutative Algebra and Algebraic Geometry}
+
+\begin{center}
+\begin{tikzpicture}[node distance=50pt]
+\node (commutative algebra) [draw, text width=200pt] {Commutative algebra
+\vskip 12pt
+      \begin{itemize}
+        \item rings, ideals, fields, algebraic extensions
+        \item indeterminates are simply objects that obey the commutative, associative, distributive axioms
+        \item Ex: $x^2-1=(x+1)(x-1)$
+      \end{itemize}
+};
+\node (algebraic geometry) [draw, node distance=120pt, below of=commutative algebra, text width=200pt] {Algebraic Geometry
+\vskip 12pt
+      \begin{itemize}
+        \item indeterminates now take values in a field like $\mathbf{C}, \mathbf{R}, \mathbf{Q}, \overline{\mathbf{Q}}, \mathbf{F}_p$
+        \item $x^2-1=0$ when $x=1$ or $x=-1$
+      \end{itemize}
+};
+
+\draw [very thick, ->] (commutative algebra.south) -- (algebraic geometry.north);
+
+\end{tikzpicture}
+\end{center}
+
+\end{frame}
+
+\begin{frame}
 \frametitle{Rings, Ideals and Varieties}
 \begin{definition}[commutative algebra]
-A {\it commutative ring} is a set of objects closed under two binary operations, addition and multiplication,
+A {\it commutative ring} $R$ is a set of objects closed under two binary operations, addition and multiplication,
 that satisfies the following axioms:
+\vskip 12pt
+\begin{tabular}{lll}
+$\forall a,b \in R $ & $a+b = b+a$ & commutative addition\\
+$\forall a,b,c \in R $ & $ a+(b+c) = (a+b)+c$ & associative addition\\
+$\exists 0 \in R, \forall a\in R $ & $ 0 + a = a$ &additive identity\\
+$\forall a \in R $ & $\exists b \in R, a + b = 0$ &additive inverse\\
+$\forall a,b \in R $ & $ ab = ba$ & commutative multiplication\\
+$\forall a,b,c \in R $ & $ (ab)c = a(bc)$ & associative multiplication\\
+$\exists 1 \in R, \forall a\in R $ & $ 1a = a$ & multiplicative identity\\
+$\forall a,b,c \in R $ & $ a(b+c) = ab+ac$ & distributive property\\
+\end{tabular}
 \end{definition}
+{\bf Note:} No multiplicative inverse is required
+
+{\bf Ex:} integers, rational numbers, real and complex numbers, polynomials
+\end{frame}
+
+\begin{frame}
+\frametitle{Rings, Ideals and Varieties}
 
 \begin{definition}[commutative algebra]
 An {\it ideal} $I$ of a ring $R$ is a subring of $R$ closed under multiplication with elements from $R$:
 \[ \forall r \in R, \forall a \in I, ra \in I \]
+\end{definition}
+
+\begin{definition}[commutative algebra]
+The {\it radical} of an ideal $I$ of a ring $R$ is:
+\[ \sqrt{I} = \{ a \in R \ | \ \exists n \in {\mathbb Z}, a^n \in I \} \]
 \end{definition}
 
 \begin{definition}[algebraic geometry]
@@ -1260,16 +1311,112 @@ An {\it algebraic variety} $V$ is the zero locus of some set of polynomials $S$:
 \end{frame}
 
 \begin{frame}
-\frametitle{Radical Ideals}
+\frametitle{Prime Ideals and Irreducible Varieties}
 \begin{definition}[commutative algebra]
-The {\it radical} of an ideal $I$ of a ring $R$ is:
-\[ \sqrt{I} = \{ a \in R \ | \ \exists n \in {\mathbb Z}, a^n \in I \} \]
+An ideal $I$ of a ring $R$ is a {\it prime ideal} if
+for any two elements $a,b \in R$,
+\[ ab \in I \implies a \in I {\rm\, or\,} b \in I \]
 \end{definition}
+
 \end{frame}
+
+\begin{frame}
+\frametitle{A Simple Irreducible Decomposition}
+
+\[ xz = 0 \qquad yz = 0 \]
+
+The Prime Decomposition of the Ideal
+
+\[ (xz,yz) = (x,y) \cup (z) \]
+
+The irreducible varieties
+
+\begin{itemize}
+\item The $x-y$ plane
+\item The $z$ axis
+\end{itemize}
+
+\begin{center}
+
+\begin{tikzpicture}
+\begin{axis}[
+    hide axis,
+    view={10}{-30},
+    samples=20
+]
+\addplot3 [
+    mesh,
+    domain=-10:10,
+    y domain=-10:10,
+] (
+    x, y, 0
+);
+
+\pgfmathsetmacro\slice{.4}
+
+\addplot3 [
+    mesh,
+    domain=-10:10,
+    color=black,
+    line width=1pt,
+] (
+    0, 0, x
+);
+
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{comment}
+\begin{frame}
+\frametitle{Algebraic Geometry and Differential Algebra}
+
+\scalebox{0.75}{
+\begin{tikzpicture}[node distance=50pt]
+\node (commutative algebra) [draw, text width=200pt] {Commutative algebra
+      \begin{itemize}
+        \item rings, ideals, fields, algebraic extensions
+        \item indeterminates are simply objects that obey the commutative, associative, distributive axioms
+        \item Ex: $x^2+y^2+z^2=1$
+      \end{itemize}
+};
+\node (algebraic geometry) [draw, node distance=100pt, below of=commutative algebra, text width=200pt] {Algebraic Geometry
+      \begin{itemize}
+        \item indeterminates now take values in a field like $\mathbf{C}, \mathbf{R}, \mathbf{Q}, \overline{\mathbf{Q}}, \mathbf{F}_p$
+      \end{itemize}
+};
+\node (differential algebra) [draw, node distance=225pt, right of=commutative algebra, text width=200pt] {Differential algebra
+      \begin{itemize}
+        \item a third primitive operator (derivation) is added to addition and multiplication
+        \item differential rings, differential ideals, differential transcendental extensions
+        \item Ex: $\Psi_{xx}+\Psi_{yy}+\Psi_{zz}=\Psi_{tt}$
+      \end{itemize}
+};
+\node (differential algebraic geometry) [draw, node distance=100pt, below of=differential algebra, text width=200pt] {Differential Algebraic Geometry
+      \begin{itemize}
+        \item indeterminates now take values in function fields like $C^2(\mathbf{R})$,
+$C^\infty(\mathbf{R}^3)$, or $H^2(\mathbf{C})$
+      \end{itemize}
+};
+
+\draw [very thick, ->] (commutative algebra.south) -- (algebraic geometry.north);
+\draw [very thick, ->] (differential algebra.south) -- (differential algebraic geometry.north);
+
+\draw [very thick, ->] (differential algebraic geometry.south) to[out=-135, in=-45] (algebraic geometry.south);
+
+\node at (4,-6.5) {\bf We can do this!};
+
+\end{tikzpicture}
+}
+
+\end{frame}
+\end{comment}
 
 \begin{frame}[fragile]
 \frametitle{The Prime Decomposition of the System of Equations}
 \begin{verbatim}
+sage: I = ideal(eqns_RQQ)
 sage: I.radical().primary_decomposition()
 \end{verbatim}
 
