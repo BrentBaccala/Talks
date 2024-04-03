@@ -657,8 +657,17 @@ Changing the variable to $u=\cos \theta$, multiplying through by $P$ and dividin
 \frametitle{Legendre's differential equation}
 \[ (1-u^2) \frac{d^2 P}{du^2} - 2u\frac{dP}{du} + \left[C_r - \frac{m^2}{1-u^2}\right]P = 0 \]
 % left bottom right top
-\includegraphics[page=1, clip, trim=0in 3.7in 0in 3.5in, width=\textwidth]{Legendre function - Wikipedia.pdf}
+\includegraphics[page=1, clip, trim=0in 4.7in 0in 3.5in, width=\textwidth]{Legendre function - Wikipedia.pdf}
+\includegraphics[page=3, clip, trim=0in 3.8in 0in 5.8in, width=\textwidth]{Legendre function - Wikipedia.pdf}
 \vfill
+Source: Wikipedia, {\it Legendre function}
+\end{frame}
+
+\begin{frame}
+\frametitle{First five Legendre functions of the second kind}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{mplwp_legendreQ04.png}
+\end{center}
 Source: Wikipedia, {\it Legendre function}
 \end{frame}
 
@@ -719,9 +728,13 @@ In the limit as $r$ becomes large, this is approximately:
 
 \[ \frac{d^2R}{dr^2} + 2E R = 0 \]
 
-suggesting an asymptotic exponential solution of the form:
+suggesting an asymptotic exponential solution.
 
-\[ R(r) \sim e^{\pm \sqrt{2E}ir} \qquad R(r) = e^{\pm \sqrt{2E}ir} L(r) \]
+% of the form:
+% \[ R(r) \sim e^{\pm \sqrt{2E}ir} \qquad R(r) = e^{\pm \sqrt{2E}ir} L(r) \]
+
+\vfill
+Source: Sommerfeld (Brose, Trans.). {\it Wave Mechanics}, 1930. Chap 1 \S 7.
 
 \end{frame}
 
@@ -827,19 +840,23 @@ In our case,
 
 \end{frame}
 
+\begin{comment}
 \begin{frame}
 \frametitle{Hypergeometric Function}
 % left bottom right top
 \includegraphics[page=1, clip, trim=0in 0in 0in 0in, width=\textwidth]{Hypergeometric Function - Wikipedia.pdf}
 Source: Wikipedia, {\it Regular Singular Point}
 \end{frame}
+\end{comment}
 
+\begin{comment}
 \begin{frame}
 \frametitle{Regular Singular Point of an ODE}
 % left bottom right top
 \includegraphics[page=1, clip, trim=0in 0in 0in 6in, width=\textwidth]{Regular singular point - Wikipedia.pdf}
 Source: Wikipedia, {\it Regular Singular Point}
 \end{frame}
+\end{comment}
 
 \begin{frame}
 \frametitle{The Classical Solutions to Hydrogen}
@@ -2634,6 +2651,45 @@ Source: Wikipedia, {\it Buchberger's Algorithm}
 
 \end{tikzpicture}
 
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{I've already added an 'encoding' option to Sage}
+\tiny
+\begin{verbatim}
+# Create a polynomial ring to hold our expressions.
+#
+# Sage does this using Singular, which stores polynomials internally in standard
+# form (i.e, fully expanded).  Singular is the default, while FLINT is available
+# as an option, which I tend to use because I've worked on the FLINT code and
+# found it more accessible than Singular.
+#
+# The variables are listed from most significant to least significant.  We use lexicographic
+# ordering to group terms together conveniently.
+#
+# I want 'roots' to be first in the ordering, because they're going to be substituted for,
+# so making them the most significant variables groups like 'roots' terms together.
+#
+# I want the coeff_vars to be last in the ordering, because the system we're going to solve
+# will be grouped by coordinates and ODE_vars.
+#
+# 'encoding' is an option that I've added to the Sage/FLINT implementation to describe
+# how the polynomial terms will be written out to disk.  dexlex64(N) encodes N variables
+# using 64-bit deglex encoding (see M. Gastineau, Storage of Multivariate Polynomials,
+# Advanced School on Specific Algebraic Manipulators, 2007); sint64 encodes the coefficient
+# as a signed 64-bit integer, so this encoding encodes each polynomial term using
+# three 64-bit words.  If things don't fit, it throws an exception.
+
+def create_polynomial_rings(alg_exts):
+    global convertRing,idealRing,reduceRing,RQQ,RZZflint,R32003,convertField,num_rvars,num_cvars
+    # we need to add gamma to this to make ansatz 11 (algebraic extension) work
+    roots_names = list(map(varName, roots))
+    alg_exts_names = [p[0] for p in alg_exts]
+    num_rvars = len(alg_exts_names) + len(roots_names) + len(ODE_vars) + len(coordinates)
+    num_cvars = len(coeff_vars)
+    # encoding isn't used except for writing FLINT polynomials to disk with my custom code
+    encoding = 'deglex64({}),deglex64({}),sint64'.format(num_rvars, num_cvars)
+\end{verbatim}
 \end{frame}
 
 \end{document}
