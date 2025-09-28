@@ -10,6 +10,7 @@
 \usepackage{amsmath, amssymb, amsfonts}
 \usepackage{tikz}
 \usetikzlibrary{shapes.geometric, arrows}
+\usepackage{fancyvrb}
 
 % Flowchart styles
 \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
@@ -189,6 +190,157 @@
       \item Parallelization.
     \end{itemize}
 \end{itemize}
+\end{frame}
+
+%----------------------------------
+\begin{frame}[fragile]{Profiling Singular (data collection)}
+
+A large polynomial system (33 variables, 3486 equations, 16,517,523 terms) over $\mathbb{F}_{536870909}$ is in {\tt helium-16.6-R536870909}
+
+\vskip 12pt
+
+In one window, we run the calculation:
+
+{\tiny\begin{verbatim}
+baccala@samsung:~/src/helium$ ../sage/sage
+sage: import pickle
+sage: with open('helium-16.6-R536870909', 'rb') as f:
+....:     eqns = pickle.load(f)
+....: 
+sage: I = ideal(eqns)
+sage: bwb = I.minimal_associated_primes()
+\end{verbatim}}
+
+In another window, we profile it:
+
+{\tiny\begin{verbatim}
+baccala@samsung:~/src/helium$ ps ax | grep sage
+ 148747 pts/4    S+     0:00 /bin/sh /home/baccala/src/sage/src/bin/sage-python /home/baccala/src/sage/src/bin/sage-ipython -i
+ 148818 pts/4    S+     0:00 /bin/sh /home/baccala/src/sage/src/bin/sage-python /home/baccala/src/sage/src/bin/sage-cleaner
+ 148819 pts/4    S+     0:00 python3 /home/baccala/src/sage/src/bin/sage-cleaner
+ 148820 pts/4    Rl+    0:51 python3 /home/baccala/src/sage/src/bin/sage-ipython -i
+ 148985 pts/1    S+     0:00 grep --color=auto sage
+baccala@samsung:~/src/helium$ perf record --call-graph dwarf -g -p 148820 sleep 30
+\end{verbatim}}
+\end{frame}
+
+
+%----------------------------------
+\begin{frame}[fragile]{Profiling Singular (data analysis)}
+\tiny\begin{verbatim}
+baccala@samsung:~/src/helium$ perf report
+
+    99.86%     0.00%  python3  libSingular-4.4.1.so                      [.] yyparse()
+            |
+            ---yyparse()
+               iiExprArithM(sleftv*, sleftv*, int)
+               iiExprArith1Tab(sleftv*, sleftv*, int, sValCmd1 const*, int, sConvertTypes const*)
+               jjSTD(sleftv*, sleftv*)
+               kStd_internal(sip_sideal*, sip_sideal*, tHomog, intvec**, bigintmat*, int, int, intvec*, int (*)(skStrategy*))
+               bba(sip_sideal*, sip_sideal*, intvec*, bigintmat*, skStrategy*)
+               |          
+                --99.34%--enterpairs(spolyrec*, int, int, int, skStrategy*, int)
+                          |          
+                           --99.34%--initenterpairs(spolyrec*, int, int, int, skStrategy*, int)
+                                     |          
+                                     |--84.24%--chainCritNormal(spolyrec*, int, skStrategy*)
+                                     |          |          
+                                     |          |--81.56%--kMergeBintoL(skStrategy*)
+                                     |          |          |          
+                                     |          |           --81.40%--__memcpy_avx_unaligned_erms (inlined)
+                                     |          |          
+                                     |           --2.68%--deleteIfCompareChain(spolyrec*, int, skStrategy*, int (*)(spolyrec*, spolyrec*, spolyrec*, spolyrec*, ip_sring*), bool, bool, bool)
+                                     |                     |          
+                                     |                      --2.60%--pCompareChain(spolyrec*, spolyrec*, spolyrec*, spolyrec*, ip_sring*)
+                                     |          
+                                     |--13.77%--deleteIfAble(spolyrec*, skStrategy*, bool)
+                                     |          |          
+                                     |           --4.17%--isPairsetInL(std::reverse_iterator<__gnu_cxx::__normal_iterator<sLObject*, std::vector<sLObject, std::allocator<sLObject> > > >&, spolyrec*, spolyrec*, skStrategy*)
+                                     |          
+                                      --1.32%--enterOnePairNormal(int, spolyrec*, int, int, skStrategy*, int)
+\end{verbatim}
+\end{frame}
+
+
+%----------------------------------
+\begin{frame}[fragile]{A Buggy Comparator}
+\tiny\begin{verbatim}
+int posInL110 (const LSet set, const int length, LObject* p,const kStrategy) {
+  if (length<0) return 0;
+
+  int o = p->GetpFDeg();
+  int op = set[length].GetpFDeg();
+  int cmp_int= -currRing->OrdSgn;
+
+  if ((op > o)
+  || ((op == o) && (set[length].length >p->length))
+  || ((op == o) && (set[length].length <= p->length) && (pLmCmp(set[length].p,p->p) != cmp_int)))
+    return length+1;
+  int i;
+  int an = 0;
+  int en= length;
+  loop
+  {
+    if (an >= en-1)
+    {
+      op = set[an].GetpFDeg();
+      if ((op > o)
+      || ((op == o) && (set[an].length >p->length))
+      || ((op == o) && (set[an].length <=p->length) && (pLmCmp(set[an].p,p->p) != cmp_int)))
+        return en;
+      return an;
+    }
+    i=(an+en) / 2;
+    op = set[i].GetpFDeg();
+    if ((op > o)
+    || ((op == o) && (set[i].length > p->length))
+    || ((op == o) && (set[i].length <= p->length) && (pLmCmp(set[i].p,p->p) != cmp_int)))
+      an=i;
+    else
+      en=i;
+  }
+}
+\end{verbatim}
+\end{frame}
+
+%----------------------------------
+\begin{frame}{The Big Picture}
+\small
+\begin{tikzpicture}[node distance=20pt]
+\node (commutative algebra) [draw, text width=150pt] {Commutative algebra
+      \begin{itemize}
+        \item rings, ideals, fields, algebraic extensions
+        \item indeterminates are simply objects that obey the commutative, associative, distributive axioms
+        \item Ex: $x^2+y^2+z^2=1$
+      \end{itemize}
+};
+\node (algebraic geometry) [draw, node distance=100pt, below of=commutative algebra, text width=150pt] {Algebraic Geometry
+      \begin{itemize}
+        \item indeterminates now take values in a field like $\mathbf{C}, \mathbf{R}, \mathbf{Q}, \overline{\mathbf{Q}}, \mathbf{F}_p$
+      \end{itemize}
+};
+\node (differential algebra) [draw, node distance=175pt, right of=commutative algebra, text width=150pt] {Differential algebra
+      \begin{itemize}
+        \item a third primitive operator (derivation) is added to addition and multiplication
+        \item differential rings, differential ideals, differential transcendental extensions
+        \item Ex: $\Psi_{xx}+\Psi_{yy}+\Psi_{zz}=\Psi_{tt}$
+      \end{itemize}
+};
+\node (differential algebraic geometry) [draw, node distance=100pt, below of=differential algebra, text width=150pt] {Differential Algebraic Geometry
+      \begin{itemize}
+        \item indeterminates now take values in function fields like $C^2(\mathbf{R})$,
+$C^\infty(\mathbf{R}^3)$, or $H^2(\mathbf{C})$
+      \end{itemize}
+};
+
+\draw [very thick, ->] (commutative algebra.south) -- (algebraic geometry.north);
+\draw [very thick, ->] (differential algebra.south) -- (differential algebraic geometry.north);
+
+\draw [very thick, ->] (differential algebraic geometry.south) to[out=-135, in=-45] (algebraic geometry.south);
+
+\node at (3,-6) {\bf We can do this!};
+
+\end{tikzpicture}
 \end{frame}
 
 %----------------------------------
