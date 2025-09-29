@@ -12,6 +12,8 @@
 \usetikzlibrary{shapes.geometric, arrows}
 \usepackage{fancyvrb}
 
+\usepackage{pgfplots}
+
 % Flowchart styles
 \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
 \tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!20]
@@ -312,6 +314,175 @@ Source: & Takeshi Shimoyama and Kazuhiro Yokoyama, \\
 \end{frame}
 
 \begin{frame}
+\frametitle{A Simple Irreducible Decomposition}
+
+Consider this system of equations:
+\[ xz = 0 \qquad yz = 0 \]
+
+The Prime Decomposition of the Ideal
+
+\[ (xz,yz) = (x,y) \cap (z) \]
+
+The corresponding irreducible varieties
+
+\begin{itemize}
+\item The $x-y$ plane
+\item The $z$ axis
+\end{itemize}
+
+\begin{center}
+
+\begin{tikzpicture}
+\begin{axis}[
+    hide axis,
+    view={10}{-30},
+    samples=20
+]
+\addplot3 [
+    mesh,
+    domain=-10:10,
+    y domain=-10:10,
+] (
+    x, y, 0
+);
+
+\pgfmathsetmacro\slice{.4}
+
+\addplot3 [
+    mesh,
+    domain=-10:10,
+    color=black,
+    line width=1pt,
+] (
+    0, 0, x
+);
+
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{Independent Sets}
+\begin{definition}[Independent set]
+Let $I$ be an ideal of the polynomial ring $Q[X]$. A subset $U$ in $X$ is called an {\it independent
+set} modulo $I$ if $I \cap Q[U] = \{0\}$.
+
+%An independent set U modulo I is called a maximally
+%independent set modulo I if I ∩ Q[U ∪ {x}] 6= {0} for every variable x in X \ U .
+%A subset U in X is called a strongly independent set modulo I with respect to an
+%admissible order < if HT (I) ∩ T (U ) = ∅, where T (U ) is the set of all terms in U
+%and HT (I) is the set of head terms of all non-zero elements in I with respect to <.
+%Moreover, U is called a maximal strongly independent set modulo I with respect to <
+%if U is a strongly independent set and HT (I) ∩ T (U ∪ {x}) 6= ∅ for every variable x
+%in X \ U .
+\end{definition}
+
+\begin{definition}[Maximally Independent set]
+An independent set $U \mod I$ is called a {\it maximally
+independent set} modulo $I$ if $I \cap Q[U \cup {x}] \ne \{0\}$ for every variable $x$ in $X \backslash U$.
+%A subset U in X is called a strongly independent set modulo I with respect to an
+%admissible order < if HT (I) ∩ T (U ) = ∅, where T (U ) is the set of all terms in U
+%and HT (I) is the set of head terms of all non-zero elements in I with respect to <.
+%Moreover, U is called a maximal strongly independent set modulo I with respect to <
+%if U is a strongly independent set and HT (I) ∩ T (U ∪ {x}) 6= ∅ for every variable x
+%in X \ U .
+\end{definition}
+
+\vfill
+
+\begin{tabular}{ll}
+Source: & Definition A.9 \\
+        & Takeshi Shimoyama and Kazuhiro Yokoyama, \\
+        & {\it Localization and Primary Decomposition of Polynomial Ideals}, \\
+        & J. Symbolic Computation (1996) {\bf 22}, 247–277 \\
+\end{tabular}
+\end{frame}
+
+\begin{frame}
+\frametitle{Independent Sets}
+\begin{example}
+Consider the ideal $(xz,yz)$ in $Q[x,y,z]$
+
+\begin{align*}
+(xz,yz) \cap Q[x] &= \{0\} &{\rm IS} \\
+(xz,yz) \cap Q[y] &= \{0\} &{\rm IS} \\
+(xz,yz) \cap Q[z] &= \{0\} &{\rm MIS} \\
+\\
+(xz,yz) \cap Q[x,y] &= \{0\} &{\rm MIS} \\
+(xz,yz) \cap Q[x,z] &= (xz) \\
+(xz,yz) \cap Q[y,z] &= (yz) \\
+\\
+(xz,yz) \cap Q[x,y,z] &= (xz,yz) \\
+\end{align*}
+\end{example}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Independent Sets}
+\begin{example}[cont]
+Continuing with the ideal $(xz,yz)$ in $Q[x,y,z]$.
+
+\vskip 12pt
+
+$\{z\}$ is a MIS, so let's move it into the coefficient field:
+
+\vskip 12pt
+
+In $Q(z)[x,y]$, $(xz,yz) = (x,y)$.
+
+\vskip 12pt
+
+$(x,y)$ is one of our irreducible components.
+
+\vskip 12pt
+
+Likewise, let's use $\{x,y\}$ as our MIS, and move it into the coefficient field:
+
+\vskip 12pt
+
+In $Q(x,y)[z]$, $(xz,yz) = (z)$.
+
+\vskip 12pt
+
+$(z)$ is our other irreducible component.
+
+\end{example}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Monomial Orders}
+\includegraphics[page=1, clip, trim=0in 5.5in 0in 0in, width=\textwidth]{Monomial order - Wikipedia.pdf}
+\vskip 20pt
+{\bf Examples of Monomial Orders} (all with $x>y>z$)
+\begin{itemize}
+\item Lexicographic
+
+$\qquad x^4 > x^3y > x^3 > x^2y^4 > x > y^3$
+\item Graded Lexicographic
+
+$\qquad x^2y^4 > x^4 > x^3y > x^3 > y^3 > x$
+
+$\qquad x^2 > xy > xz > y^2 > yz > z^2$
+\item Graded Reverse Lexicographic (often the fastest computationally)
+
+$\qquad x^2 > xy > y^2 > xz > yz > z^2$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Cox, Little, O'Shea
+
+{\it Ideals, Varieties, and Algorithms} (4th ed)}
+\includegraphics[page=22, clip, trim=0in 0.9in 0in 7in, width=\textwidth]{IVA.pdf}
+\includegraphics[page=23, clip, trim=0in 7.9in 0in 0.7in, width=\textwidth]{IVA.pdf}
+\hrule
+\includegraphics[page=46, clip, trim=0in 5.2in 0in 2.5in, width=\textwidth]{IVA.pdf}
+\end{frame}
+
+\begin{frame}
 \frametitle{Gr\"obner Bases}
 \begin{definition}[Gr\"obner Basis]
 Given a ring with a specified monomial order,
@@ -467,6 +638,15 @@ int posInL110 (const LSet set, const int length, LObject* p,const kStrategy) {
   }
 }
 \end{verbatim}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Rosenfeld-Gr\"obner Algorithm}
+\begin{exampleblock}{Francois Boulier, Daniel Lazard, François Ollivier, Michel Petitot
+Representation for the radical of a finitely generated differential ideal
+}
+\includegraphics[page=2, clip, trim=0in 0in 0in 5.2in, width=\textwidth]{blop.pdf}
+\end{exampleblock}
 \end{frame}
 
 %----------------------------------
