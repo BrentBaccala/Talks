@@ -21,7 +21,7 @@
 % Title information
 \title[Factorization of Ideals]{Factorization of Algebraic Ideals and Its Applications}
 \author{Brent Baccala}
-\institute{freesoft.org}
+\institute{\tt cosine@freesoft.org}
 \date{October 1, 2025}
 
 \begin{document}
@@ -31,14 +31,18 @@
 %----------------------------------
 \begin{frame}
   \titlepage
+\begin{block}{Abstract}
+\tiny
+Decomposing an ideal into an intersection of prime or primary ideals is a fundamental operation in commutative algebra, one that should be known to all math students for its utility in simplifying systems of polynomial equations.  Various algorithms have been proposed and implemented for ideal factorization, including the method of characteristic sets and the GTZ algorithm.  In this talk, I'll describe some of these methods, illustrate them with one or two examples, and explain their application to solving polynomial and differential equations.
+\end{block}
+
 \end{frame}
 
 %----------------------------------
 \begin{frame}{Motivation}
 \begin{itemize}
   \item Ideal decomposition simplifies systems of polynomial equations.
-  \item Provides structure for algebraic and geometric analysis.
-  \item Fundamental tool for both theory and computation.
+  \item Differential equations can also be solved this way.
 \end{itemize}
 \end{frame}
 
@@ -190,6 +194,168 @@
       \item Parallelization.
     \end{itemize}
 \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{The New Pseudo-Solution to Hydrogen}
+
+\[ - \frac{1}{2} \nabla^2 \Psi - \frac{1}{r} \Psi = 0 \]
+
+\[ \Psi(x,y,z) = J_0(2\sqrt{x+r}) \]
+
+\vskip 0.5in
+
+$J_0$ is the Bessel function $J_0$
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Verification with Mathematica}
+\includegraphics[page=1, clip, trim=1in 7in 1in 1in, width=\textwidth]{improved.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{The System of Equations}
+%%\scriptsize
+\fontsize{9}{11}\selectfont
+\begin{minipage}{.7\linewidth}
+\begin{equation*}
+\begin{array}{r}
+-2 \, c_{1} v_{0}^{3} - 4 \, c_{1} v_{0} v_{1}^{2} - 4 \, c_{1} v_{0} v_{2}^{2} - 2 \, c_{1} v_{0} v_{3}^{2} - 4 \, E a_{1} v_{0} =0\\
+-2 \, c_{1} v_{0}^{3} - 4 \, c_{1} v_{0} v_{1}^{2} - 2 \, c_{1} v_{0} v_{2}^{2} - 4 \, c_{1} v_{0} v_{3}^{2} - 4 \, E a_{1} v_{0} =0\\
+-2 \, c_{1} v_{0}^{3} - 2 \, c_{1} v_{0} v_{1}^{2} - 4 \, c_{1} v_{0} v_{2}^{2} - 4 \, c_{1} v_{0} v_{3}^{2} - 4 \, E a_{1} v_{0} =0\\
+-3 \, b_{1} v_{0}^{2} v_{1} -  \, b_{1} v_{1}^{3} -  \, b_{1} v_{1} v_{2}^{2} -  \, b_{1} v_{1} v_{3}^{2} =0\\
+-3 \, b_{1} v_{0}^{2} v_{2} -  \, b_{1} v_{1}^{2} v_{2} -  \, b_{1} v_{2}^{3} -  \, b_{1} v_{2} v_{3}^{2} =0\\
+-3 \, b_{1} v_{0}^{2} v_{3} -  \, b_{1} v_{1}^{2} v_{3} -  \, b_{1} v_{2}^{2} v_{3} -  \, b_{1} v_{3}^{3} =0\\
+-2 \, b_{1} v_{0}^{3} - 4 \, b_{1} v_{0} v_{1}^{2} - 4 \, b_{1} v_{0} v_{2}^{2} - 2 \, b_{1} v_{0} v_{3}^{2} =0\\
+-2 \, b_{1} v_{0}^{3} - 4 \, b_{1} v_{0} v_{1}^{2} - 2 \, b_{1} v_{0} v_{2}^{2} - 4 \, b_{1} v_{0} v_{3}^{2} =0\\
+-3 \, c_{1} v_{0}^{2} v_{1} -  \, c_{1} v_{1}^{3} -  \, c_{1} v_{1} v_{2}^{2} -  \, c_{1} v_{1} v_{3}^{2} - 2 \, E a_{1} v_{1} =0\\
+-3 \, c_{1} v_{0}^{2} v_{2} -  \, c_{1} v_{1}^{2} v_{2} -  \, c_{1} v_{2}^{3} -  \, c_{1} v_{2} v_{3}^{2} - 2 \, E a_{1} v_{2} =0\\
+-3 \, c_{1} v_{0}^{2} v_{3} -  \, c_{1} v_{1}^{2} v_{3} -  \, c_{1} v_{2}^{2} v_{3} -  \, c_{1} v_{3}^{3} - 2 \, E a_{1} v_{3} =0\\
+-2 \, b_{1} v_{0}^{3} - 2 \, b_{1} v_{0} v_{1}^{2} - 4 \, b_{1} v_{0} v_{2}^{2} - 4 \, b_{1} v_{0} v_{3}^{2} =0\\
+- \, c_{0} v_{0}^{2} -  \, c_{0} v_{1}^{2} -  \, c_{0} v_{2}^{2} -  \, c_{0} v_{3}^{2} - 2 \, E a_{0} - 2 \, a_{1} v_{0} =0\\
+- \, c_{1} v_{0}^{3} - 3 \, c_{1} v_{0} v_{1}^{2} -  \, c_{1} v_{0} v_{2}^{2} -  \, c_{1} v_{0} v_{3}^{2} - 2 \, E a_{1} v_{0} =0\\
+- \, c_{1} v_{0}^{3} -  \, c_{1} v_{0} v_{1}^{2} - 3 \, c_{1} v_{0} v_{2}^{2} -  \, c_{1} v_{0} v_{3}^{2} - 2 \, E a_{1} v_{0} =0\\
+- \, c_{1} v_{0}^{3} -  \, c_{1} v_{0} v_{1}^{2} -  \, c_{1} v_{0} v_{2}^{2} - 3 \, c_{1} v_{0} v_{3}^{2} - 2 \, E a_{1} v_{0} =0\\
+-2 \, a_{1} v_{0}^{2} -  \, b_{0} v_{0}^{2} -  \, b_{0} v_{1}^{2} -  \, b_{0} v_{2}^{2} -  \, b_{0} v_{3}^{2} =0\\
+- \, b_{1} v_{0}^{3} - 3 \, b_{1} v_{0} v_{1}^{2} -  \, b_{1} v_{0} v_{2}^{2} -  \, b_{1} v_{0} v_{3}^{2} =0\\
+- \, b_{1} v_{0}^{3} -  \, b_{1} v_{0} v_{1}^{2} - 3 \, b_{1} v_{0} v_{2}^{2} -  \, b_{1} v_{0} v_{3}^{2} =0\\
+- \, b_{1} v_{0}^{3} -  \, b_{1} v_{0} v_{1}^{2} -  \, b_{1} v_{0} v_{2}^{2} - 3 \, b_{1} v_{0} v_{3}^{2} =0
+\end{array}
+\end{equation*}
+\end{minipage}%
+\begin{minipage}{.3\linewidth}
+\begin{equation*}
+\begin{array}{r}
+-4 \, b_{1} v_{0} v_{1} v_{2} =0\\
+-4 \, b_{1} v_{0} v_{1} v_{3} =0\\
+-4 \, b_{1} v_{0} v_{2} v_{3} =0\\
+-4 \, c_{1} v_{0} v_{1} v_{2} =0\\
+-4 \, c_{1} v_{0} v_{1} v_{3} =0\\
+-4 \, c_{1} v_{0} v_{2} v_{3} =0\\
+-2 \, c_{0} v_{0} v_{1} - 2 \, a_{1} v_{1} =0\\
+-2 \, c_{0} v_{0} v_{2} - 2 \, a_{1} v_{2} =0\\
+-2 \, c_{0} v_{0} v_{3} - 2 \, a_{1} v_{3} =0\\
+-2 \, a_{1} v_{0} v_{1} - 2 \, b_{0} v_{0} v_{1} =0\\
+-2 \, a_{1} v_{0} v_{2} - 2 \, b_{0} v_{0} v_{2} =0\\
+-2 \, a_{1} v_{0} v_{3} - 2 \, b_{0} v_{0} v_{3} =0\\
+-2 \, a_{0} =0\\
+-2 \, a_{0} v_{0} =0\\
+\end{array}
+\end{equation*}
+\end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The Prime Decomposition of the System of Equations}
+{\tiny\begin{verbatim}
+sage: I = ideal(eqns_RQQ)
+sage: I.radical().primary_decomposition()
+[Ideal (c1, b1, a1 - b0, a0, E, v0*c0 - b0, v0^2 - v1^2 - v2^2 - v3^2, v1^2*c0 + v2^2*c0 + v3^2*c0 - v0*b0) of Multivariate Polynomial Ring in E, v0, v1, v2, v3, a0, a1, b0, b1, c0, c1 over Rational Field,
+ Ideal (b1, 2*a1 - b0, a0, v3, v2, v1, v0*c0 - b0, E*c0 - v0*c1, v0^2*c1 - E*b0) of Multivariate Polynomial Ring in E, v0, v1, v2, v3, a0, a1, b0, b1, c0, c1 over Rational Field,
+ Ideal (a1, a0, v0, v1^2 + v2^2 + v3^2) of Multivariate Polynomial Ring in E, v0, v1, v2, v3, a0, a1, b0, b1, c0, c1 over Rational Field,
+ Ideal (a0, v3, v2, v1, v0) of Multivariate Polynomial Ring in E, v0, v1, v2, v3, a0, a1, b0, b1, c0, c1 over Rational Field,
+ Ideal (c1, c0, b1, b0, a1, a0) of Multivariate Polynomial Ring in E, v0, v1, v2, v3, a0, a1, b0, b1, c0, c1 over Rational Field]
+\end{verbatim}}
+
+\vskip -12pt
+\begin{subequations}
+\label{ideal}
+\begin{align}
+& \left(c_{1}, c_{0}, b_{1}, b_{0}, a_{1}, a_{0}\right)\label{ideal:5} \\
+& \qquad \text{sets all coefficients of the ODE to zero} \nonumber \\
+& \left(v_{3}, v_{2}, v_{1}, v_{0}, a_{0}\right)\label{ideal:4}\\
+& \qquad \text{sets the variable $v$ to zero} \nonumber \\
+& \left(v_{1}^{2} + v_{2}^{2} + v_{3}^{2}, v_{0}, a_{1}, a_{0}\right)\label{ideal:3}\\
+& \qquad \text{sets the coefficient of $\Psi_{vv}$ in the ODE to zero} \nonumber \\
+%% (b1, 2*a1 + b0, a0, v3, v2, v1, v0*c0 - b0, E*c0 - v0*c1, v0^2*c1 - E*b0)
+& \left(v_{3}, v_{2}, v_{1}, b_{1}, c_{0} v_{0} - b_{0}, 2 a_{1} - b_{0}, a_{0}, E c_{0} - c_{1} v_{0}, v_0^2 c_1 - E b_0\right)\label{ideal:2}\\
+& \qquad \text{the classical solution} \nonumber \\
+& \left(v_{0}^{2} - v_{1}^{2} - v_{2}^{2} - v_{3}^{2}, c_{1}, b_{1}, b_{0} - c_{0} v_{0}, a_{1} + c_{0} v_{0}, a_{0}, E\right)\label{ideal:1}\\
+& \qquad \text{the new pseudo-solution} \nonumber
+\end{align}
+\end{subequations}
+\end{frame}
+
+\begin{frame}
+\frametitle{Shimoyama and Yokoyama Algorithm}
+% left bottom right top
+\includegraphics[page=9, clip, trim=1.3in 4in 0in 5.1in, scale=0.9]{1-s2.0-S0747717196900528-main.pdf}
+
+\vfill
+\small
+\begin{tabular}{ll}
+Source: & Takeshi Shimoyama and Kazuhiro Yokoyama, \\
+        & {\it Localization and Primary Decomposition of Polynomial Ideals}, \\
+        & J. Symbolic Computation (1996) {\bf 22}, 247–277 \\
+\end{tabular}
+\end{frame}
+
+\begin{frame}
+\frametitle{Gr\"obner Bases}
+\begin{definition}[Gr\"obner Basis]
+Given a ring with a specified monomial order,
+a {\it Gr\"obner Basis} or {\it standard basis} for an ideal $I$ is a set of
+polynomials $G$ such that:
+\begin{enumerate}
+\item The polynomials in $G$ form a basis for the ideal $I$
+\item The leading terms in $G$ form a basis for the ideal ${\rm lt}(I)$ formed by the leading terms in $I$.
+\end{enumerate}
+\end{definition}
+
+\begin{example}
+In the ring ${\mathbb Z}[x,y,z]$ with lexicographic ordering $x>y>z$, the ideal $(2x+3y+4z-5, 3x+4y+5z-2)$
+has a reduced Gr\"obner basis given by
+\begin{align*}
+2x-2z+28 \\
+3x-3z+42 \\
+y+2z-11
+\end{align*}
+\end{example}
+\end{frame}
+
+\begin{frame}
+\frametitle{Buchberger's Algorithm}
+
+{\bf Input:} A set of polynomials $F$ that generates $I$
+
+{\bf Output:} A Gröbner basis $G$ for $I$
+
+\begin{enumerate}
+\item $G := F$
+\item For every $f_i,f_j$ in $G$, denote by $g_i$ the leading term of $f_i$ with respect to the given monomial ordering,
+and by $a_{ij}$ the least common multiple of $g_i$ and $g_j$
+\item Choose two polynomials in $G$ and let $S_{ij}=\frac{a_{ij}}{g_i}f_i  - \frac{a_{ij}}{g_j}f_j $
+
+(Note that the leading terms here will cancel by construction).
+\item Reduce $S_{ij}$, with the multivariate division algorithm relative to the set $G$ until the result is not further reducible.
+
+If the result is non-zero, add it to $G$.
+\item Repeat steps 2-4 until all possible pairs are considered, including those involving the new polynomials added in step 4.
+\item Output $G$
+\end{enumerate}
+
+Source: Wikipedia, {\it Buchberger's Algorithm}
 \end{frame}
 
 %----------------------------------
