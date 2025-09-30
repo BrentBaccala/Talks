@@ -50,22 +50,25 @@ Decomposing an ideal into an intersection of prime or primary ideals is a fundam
 
 %----------------------------------
 \begin{frame}{Background: Ideals in Commutative Algebra}
-\begin{columns}
-\column{0.55\textwidth}
+%\begin{columns}
+%\column{0.55\textwidth}
 \begin{itemize}
   \item An \textbf{ideal} $I \subset R$ is a subset closed under addition and multiplication by ring elements.
   \item \textbf{Prime ideal:} if $ab \in P$, then $a \in P$ or $b \in P$.
   \item \textbf{Primary ideal:} if $ab \in Q$, then $a \in Q$ or $b^n \in Q$.
+  \item \textbf{Radical} of an ideal $\sqrt{I} = \{ r \in R \ | \ \exists n \in \mathbb{Z}, r^n \in I\}$
+  \item An ideal is always a subset of its radical $I \subseteq \sqrt{I}$
+  \item An ideal $I$ is said to be \textbf{radical} if $\sqrt{I} = I$
 \end{itemize}
-\column{0.45\textwidth}
-\centering
-\begin{tikzpicture}
-  \draw[thick] (0,0) circle (1);
-  \node at (0,1.4) {Ring $R$};
-  \fill[blue!30] (0,0) circle (0.5);
-  \node at (0,0) {$I$};
-\end{tikzpicture}
-\end{columns}
+%\column{0.45\textwidth}
+%\centering
+%\begin{tikzpicture}
+%  \draw[thick] (0,0) circle (1);
+%  \node at (0,1.4) {Ring $R$};
+%  \fill[blue!30] (0,0) circle (0.5);
+%  \node at (0,0) {$I$};
+%\end{tikzpicture}
+%\end{columns}
 \end{frame}
 
 %----------------------------------
@@ -73,19 +76,81 @@ Decomposing an ideal into an intersection of prime or primary ideals is a fundam
 \begin{columns}
 \column{0.55\textwidth}
 \begin{itemize}
-  \item Decomposing an ideal as an intersection of prime ideals.
-  \item Geometric viewpoint: corresponds to union of algebraic varieties.
-  \item Analogy with integer factorization.
+%  \item An \textbf{ideal} $I \subset R$ is a subset closed under addition and multiplication by ring elements.
+%  \item \textbf{Prime ideal:} if $ab \in P$, then $a \in P$ or $b \in P$.
+%  \item \textbf{Primary ideal:} if $ab \in Q$, then $a \in Q$ or $b^n \in Q$.
+  \item \textbf{Lasker–Noether theorem}: Every ideal in a Noetherian ring admits a decomposition as the intersection of primary ideals.
+  \item Each primary ideal has an associated prime ideal
+  \item Each associated prime ideal is the radical of its primary ideal
+  \item The prime ideals in such a decomposition are unique
+  \item If the original ideal is radical, then the primary ideals are the prime ideals
+  \item The intersection of the associated prime ideals is the radical of the original ideal
+%  \item Decomposing an ideal as an intersection of prime ideals.
+%  \item Geometric viewpoint: corresponds to union of algebraic varieties.
+%  \item Analogy with integer factorization.
 \end{itemize}
 \column{0.45\textwidth}
 \centering
-\begin{tikzpicture}
-  \draw[thick] (0,0) circle (1.2);
-  \draw[thick] (1,0) circle (1.2);
-  \draw[thick] (0.5,0.9) circle (1.2);
-  \node at (0, -1.6) {$I = P_1 \cap P_2 \cap P_3$};
+\hspace*{-1in}
+\begin{tikzpicture}[scale=0.75, thick]
+  % Prime ideals (larger enclosing ellipses) clipped to show only half of the ellipse
+
+\begin{scope}
+  \clip (0,2.2) rectangle (5,6);
+  \draw[blue!60, fill=blue!10] (1.5,2.2) ellipse [x radius=2.2, y radius=0.9, rotate=90];
+  \node[text=blue] at (1.5, 3.9) {$P_1$};
+\end{scope}
+
+\begin{scope}[rotate around={120:(1.5,1.1)}]
+  \clip (0,2.2) rectangle (5,6);
+  \draw[blue!60, fill=blue!10] (1.5,2.2) ellipse [x radius=2.2, y radius=0.9, rotate=90];
+  \node[text=blue] at (1.5, 3.9) {$P_2$};
+\end{scope}
+
+\begin{scope}[rotate around={240:(1.5,1.1)}]
+  \clip (0,2.2) rectangle (5,6);
+  \draw[blue!60, fill=blue!10] (1.5,2.2) ellipse [x radius=2.2, y radius=0.9, rotate=90];
+  \node[text=blue] at (1.5, 3.9) {$P_3$};
+\end{scope}
+
+  % Primary ideals (smaller, slightly rotated ellipses)
+  \draw[red!70!black, very thick,fill=red!10] (1.5,2.2) ellipse [x radius=1.4, y radius=0.9, rotate=90] node[above] {$Q_1$};
+
+\begin{scope}[rotate around={120:(1.5,1.1)}]
+  \draw[red!70!black, very thick,fill=red!10] (1.5,2.2) ellipse [x radius=1.4, y radius=0.9, rotate=90] node[above] {$Q_2$};
+\end{scope}
+
+\begin{scope}[rotate around={240:(1.5,1.1)}]
+  \draw[red!70!black, very thick,fill=red!10] (1.5,2.2) ellipse [x radius=1.4, y radius=0.9, rotate=90] node[above] {$Q_3$};
+\end{scope}
+
+  % Primary ideals (smaller, slightly rotated ellipses) (no fill, to show borders)
+  \draw[red!70!black, very thick] (1.5,2.2) ellipse [x radius=1.4, y radius=0.9, rotate=90] node[above] {$Q_1$};
+
+\begin{scope}[rotate around={120:(1.5,1.1)}]
+  \draw[red!70!black, very thick, save path=\savedpath] (1.5,2.2) ellipse [x radius=1.4, y radius=0.9, rotate=90] node[above] {$Q_2$};
+\end{scope}
+
+\begin{scope}[rotate around={240:(1.5,1.1)}]
+  \draw[red!70!black, very thick, save path=\savedpathh] (1.5,2.2) ellipse [x radius=1.4, y radius=0.9, rotate=90] node[above] {$Q_3$};
+\end{scope}
+
+  % Intersection highlight for I (clip to smaller ellipses Q1,Q2,Q3)
+  \begin{scope}
+    \clip (1.5,2.2) ellipse [x radius=1.4, y radius=0.9, rotate=90];
+    \clip[use path=\savedpath];
+    \clip[use path=\savedpathh];
+    \fill[purple!40] (-2,-1) rectangle (6,5);
+  \end{scope}
+  \node at (1.5,1.1) [purple!80!black] {$I$};
+
 \end{tikzpicture}
 \end{columns}
+%\vspace*{-0.3in}
+%\begin{itemize}
+%  \item Each primary ideal has an associated prime ideal
+%  \item The prime ideals in such a decomposition are unique
+%\end{itemize}
 \end{frame}
 
 %----------------------------------
