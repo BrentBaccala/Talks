@@ -571,6 +571,52 @@ y+2z-11
 \end{frame}
 
 \begin{frame}
+\frametitle{GPT-5's Comparison of polynomial solution methods}
+\tiny
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{2.3cm}|p{2cm}|p{2cm}|p{2.5cm}|}
+\hline
+\textbf{Feature} & \textbf{Characteristic Sets (Wu’s Method)} & \textbf{Gröbner Bases} & \textbf{Regular Chains / Triangular Decomposition} \\
+\hline
+\textbf{Output form} & Triangular set (distinct main variable per polynomial) & Canonical Gröbner basis for chosen monomial order & Triangular sets with associated inequations \\
+\hline
+\textbf{Dependence on ordering} & Strongly dependent on variable ranking & Canonical once order is fixed & Depends on chosen variable order \\
+\hline
+\textbf{Uniqueness} & Not unique (varies with ranking) & Unique (for fixed monomial order) & Not unique \\
+\hline
+\textbf{Ease of solving} & Procedural: solve one variable at a time & Requires back-substitution, not directly triangular & Procedural like characteristic sets, but more refined \\
+\hline
+\textbf{Handling of inequations / branches} & Case distinctions may be needed during pseudo-division & Purely equations (ideal-based) & Explicit handling of inequations and case splits \\
+\hline
+\textbf{Algebraic guarantees} & Not directly tied to irreducible decomposition or ideal theory & Deep ties to algebraic geometry (ideal membership, dimension, Hilbert series) & Connects more directly to geometric decomposition into varieties \\
+\hline
+\textbf{Computation cost} & Often efficient in practice (esp. in geometry theorem proving) & Can be doubly exponential in worst case & Can be heavy due to branching, but manageable in practice \\
+\hline
+\textbf{Best use cases} & Geometry theorem proving, structured elimination & General-purpose algebraic computation, canonical decomposition & Computing solution varieties with inequations, parametric systems \\
+\hline
+\end{tabular}
+\caption{Comparison of methods for decomposing polynomial systems.}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Flexibility in constructing Gr\"obner Bases}
+Much of the utility of Gr\"obner bases lies in the flexibility in how they can be defined.
+\begin{itemize}
+\item Many monomial orders can be defined
+
+Lexicographic orders can be used to eliminate specific variables
+
+\vskip 12pt
+\item Variables can be moved into the coefficient field
+
+Maximally Independent Sets can be used to reduce to zero-dimensional ideals
+\end{itemize}
+\end{frame}
+
+\begin{frame}
 \frametitle{Buchberger's Algorithm}
 
 {\bf Input:} A set of polynomials $F$ that generates $I$
@@ -703,6 +749,55 @@ int posInL110 (const LSet set, const int length, LObject* p,const kStrategy) {
   }
 }
 \end{verbatim}
+\end{frame}
+
+\begin{frame}{Contrasting Data Structures: Array vs. Tree}
+\centering
+\begin{tikzpicture}[every node/.style={font=\small}]
+
+% --- Array ---
+\node at (2.8,3.5) {\textbf{Array}};
+\node at (2.8,3) {C++ {\tt std::vector}};
+
+\foreach \i/\val in {0/A,1/B,2/C,3/D,4/E,5/F,6/G,7/H} {
+  \draw (0.8*\i,0) rectangle (0.8*\i+0.8,0.8);
+  \node at (0.8*\i+0.4,0.4) {\val};
+  \node[below] at (0.8*\i+0.4,0) {\i};
+}
+
+% --- Tree ---
+\begin{scope}[shift={(-0.6,0)}]
+\node at (10,3.5) {\textbf{Tree}};
+\node at (10,3) {C++ {\tt std::map}};
+
+% level 0
+\node[circle,draw,fill=blue!10] (n0) at (10,2) {A};
+
+% level 1
+\node[circle,draw,fill=blue!10] (n1) at (8.5,1) {B};
+\node[circle,draw,fill=blue!10] (n2) at (11.5,1) {E};
+
+% level 2
+\node[circle,draw,fill=blue!10] (n3) at (7.8,0) {C};
+\node[circle,draw,fill=blue!10] (n4) at (9.2,0) {D};
+\node[circle,draw,fill=blue!10] (n5) at (10.8,0) {F};
+\node[circle,draw,fill=blue!10] (n6) at (12.2,0) {G};
+
+% level 3 (just one child to make 8 total)
+\node[circle,draw,fill=blue!10] (n7) at (12.6,-1) {H};
+
+% connections
+\draw (n0) -- (n1);
+\draw (n0) -- (n2);
+\draw (n1) -- (n3);
+\draw (n1) -- (n4);
+\draw (n2) -- (n5);
+\draw (n2) -- (n6);
+\draw (n6) -- (n7);
+
+\end{scope}
+
+\end{tikzpicture}
 \end{frame}
 
 \begin{frame}
