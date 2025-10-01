@@ -55,6 +55,16 @@ Decomposing an ideal into an intersection of prime or primary ideals is a fundam
 \end{itemize}
 \end{frame}
 
+\begin{frame}
+\frametitle{Cox, Little, O'Shea
+
+{\it Ideals, Varieties, and Algorithms} (4th ed)}
+\includegraphics[page=22, clip, trim=0in 0.9in 0in 7in, width=\textwidth]{IVA.pdf}
+\includegraphics[page=23, clip, trim=0in 7.9in 0in 0.7in, width=\textwidth]{IVA.pdf}
+\hrule
+\includegraphics[page=46, clip, trim=0in 5.2in 0in 2.5in, width=\textwidth]{IVA.pdf}
+\end{frame}
+
 %----------------------------------
 \begin{frame}{Background: Ideals in Commutative Algebra}
 %\begin{columns}
@@ -161,79 +171,6 @@ Decomposing an ideal into an intersection of prime or primary ideals is a fundam
 \end{frame}
 
 %----------------------------------
-\begin{frame}{Classical Results}
-\begin{itemize}
-  \item \textbf{Lasker–Noether theorem}: Every ideal in a Noetherian ring admits a primary decomposition.
-  \item Uniqueness up to radicals and associated primes.
-\end{itemize}
-\end{frame}
-
-%----------------------------------
-\begin{frame}{Algorithms for Ideal Factorization}
-\centering
-\begin{tikzpicture}[node distance=1.5cm]
-\node (start) [startstop] {Start with Ideal $I \subset k[x_1,\dots,x_n]$};
-\node (cs) [process, below of=start] {Characteristic Set Method};
-\node (gtz) [process, right of=cs, xshift=5cm] {GTZ Algorithm};
-\node (end) [startstop, below of=cs, yshift=-2.5cm, xshift=2.5cm] {Primary Decomposition of $I$};
-
-\draw [arrow] (start) -- (cs);
-\draw [arrow] (start) -| (gtz);
-\draw [arrow] (cs) |- (end);
-\draw [arrow] (gtz) |- (end);
-\end{tikzpicture}
-\end{frame}
-
-%----------------------------------
-\begin{frame}{Characteristic Set Method}
-\begin{itemize}
-  \item Uses elimination and triangular sets.
-  \item Originates in differential algebra.
-  \item Advantage: systematic structure.
-  \item Limitation: ordering choice is crucial.
-\end{itemize}
-\end{frame}
-
-%----------------------------------
-\begin{frame}{GTZ Algorithm}
-\begin{itemize}
-  \item Gröbner basis-based.
-  \item Splits and refines components iteratively.
-  \item Widely implemented in CAS.
-\end{itemize}
-\centering
-\begin{tikzpicture}[node distance=1.3cm]
-\node (gb) [process] {Compute Gröbner Basis of $I$};
-\node (comp) [process, below of=gb] {Detect Components};
-\node (split) [decision, below of=comp] {Embedded Components?};
-\node (splityes) [process, left of=split, xshift=-4cm] {Split Ideal};
-\node (no) [process, below of=split, yshift=-2.5cm] {Record Decomposition};
-
-\draw [arrow] (gb) -- (comp);
-\draw [arrow] (comp) -- (split);
-\draw [arrow] (split.west) -- ++(-1.5,0) -- (splityes.east);
-\draw [arrow] (split.south) -- ++(0,-1) -- (no.north);
-\end{tikzpicture}
-\end{frame}
-
-%----------------------------------
-\begin{frame}{Worked Example 1}
-\begin{itemize}
-  \item Example: $I = \langle x^2-y, \, xy \rangle \subset k[x,y]$
-  \item Gröbner basis computation $\rightarrow$ decomposition.
-  \item Interpreted geometrically as simpler varieties.
-\end{itemize}
-\centering
-\begin{tikzpicture}
-  \draw[->] (-0.5,0) -- (3,0) node[right] {$x$};
-  \draw[->] (0,-0.5) -- (0,3) node[above] {$y$};
-  \draw[domain=0:1.8,smooth,variable=\x,blue] plot ({\x},{\x*\x}) node[right] {$y=x^2$};
-  \draw[red] (0,0) -- (0,2.5) node[above] {$x=0$};
-  \node at (2.3,2.5) {Geometric Decomposition};
-\end{tikzpicture}
-\end{frame}
-
-%----------------------------------
 \begin{frame}{Applications to Polynomial Equations}
 \begin{itemize}
   \item Decomposition $\Leftrightarrow$ splitting solution sets.
@@ -247,142 +184,6 @@ Decomposing an ideal into an intersection of prime or primary ideals is a fundam
   \node at (1.5,-1.3) {$V(P_2)$};
   \node at (0.75,1.2) {$V(I)=V(P_1)\cup V(P_2)$};
 \end{tikzpicture}
-\end{frame}
-
-%----------------------------------
-\begin{frame}{Applications to Differential Equations}
-\begin{itemize}
-  \item Characteristic set methods connect differential systems with ideals.
-  \item Decomposition splits families of solutions.
-\end{itemize}
-\end{frame}
-
-%----------------------------------
-\begin{frame}{Current Limits and Open Problems}
-\begin{itemize}
-  \item Complexity is often exponential.
-  \item Gröbner basis can be costly.
-  \item Future directions:
-    \begin{itemize}
-      \item Hybrid and numerical-symbolic methods.
-      \item Parallelization.
-    \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{The New Pseudo-Solution to Hydrogen}
-
-\[ - \frac{1}{2} \nabla^2 \Psi - \frac{1}{r} \Psi = 0 \]
-
-\[ \Psi(x,y,z) = J_0(2\sqrt{x+r}) \]
-
-\vskip 0.5in
-
-$J_0$ is the Bessel function $J_0$
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Verification with Mathematica}
-\includegraphics[page=1, clip, trim=1in 7in 1in 1in, width=\textwidth]{improved.pdf}
-\end{frame}
-
-\begin{frame}
-\frametitle{The System of Equations}
-%%\scriptsize
-\fontsize{9}{11}\selectfont
-\begin{minipage}{.7\linewidth}
-\begin{equation*}
-\begin{array}{r}
--2 \, c_{1} v_{0}^{3} - 4 \, c_{1} v_{0} v_{1}^{2} - 4 \, c_{1} v_{0} v_{2}^{2} - 2 \, c_{1} v_{0} v_{3}^{2} - 4 \, E a_{1} v_{0} =0\\
--2 \, c_{1} v_{0}^{3} - 4 \, c_{1} v_{0} v_{1}^{2} - 2 \, c_{1} v_{0} v_{2}^{2} - 4 \, c_{1} v_{0} v_{3}^{2} - 4 \, E a_{1} v_{0} =0\\
--2 \, c_{1} v_{0}^{3} - 2 \, c_{1} v_{0} v_{1}^{2} - 4 \, c_{1} v_{0} v_{2}^{2} - 4 \, c_{1} v_{0} v_{3}^{2} - 4 \, E a_{1} v_{0} =0\\
--3 \, b_{1} v_{0}^{2} v_{1} -  \, b_{1} v_{1}^{3} -  \, b_{1} v_{1} v_{2}^{2} -  \, b_{1} v_{1} v_{3}^{2} =0\\
--3 \, b_{1} v_{0}^{2} v_{2} -  \, b_{1} v_{1}^{2} v_{2} -  \, b_{1} v_{2}^{3} -  \, b_{1} v_{2} v_{3}^{2} =0\\
--3 \, b_{1} v_{0}^{2} v_{3} -  \, b_{1} v_{1}^{2} v_{3} -  \, b_{1} v_{2}^{2} v_{3} -  \, b_{1} v_{3}^{3} =0\\
--2 \, b_{1} v_{0}^{3} - 4 \, b_{1} v_{0} v_{1}^{2} - 4 \, b_{1} v_{0} v_{2}^{2} - 2 \, b_{1} v_{0} v_{3}^{2} =0\\
--2 \, b_{1} v_{0}^{3} - 4 \, b_{1} v_{0} v_{1}^{2} - 2 \, b_{1} v_{0} v_{2}^{2} - 4 \, b_{1} v_{0} v_{3}^{2} =0\\
--3 \, c_{1} v_{0}^{2} v_{1} -  \, c_{1} v_{1}^{3} -  \, c_{1} v_{1} v_{2}^{2} -  \, c_{1} v_{1} v_{3}^{2} - 2 \, E a_{1} v_{1} =0\\
--3 \, c_{1} v_{0}^{2} v_{2} -  \, c_{1} v_{1}^{2} v_{2} -  \, c_{1} v_{2}^{3} -  \, c_{1} v_{2} v_{3}^{2} - 2 \, E a_{1} v_{2} =0\\
--3 \, c_{1} v_{0}^{2} v_{3} -  \, c_{1} v_{1}^{2} v_{3} -  \, c_{1} v_{2}^{2} v_{3} -  \, c_{1} v_{3}^{3} - 2 \, E a_{1} v_{3} =0\\
--2 \, b_{1} v_{0}^{3} - 2 \, b_{1} v_{0} v_{1}^{2} - 4 \, b_{1} v_{0} v_{2}^{2} - 4 \, b_{1} v_{0} v_{3}^{2} =0\\
-- \, c_{0} v_{0}^{2} -  \, c_{0} v_{1}^{2} -  \, c_{0} v_{2}^{2} -  \, c_{0} v_{3}^{2} - 2 \, E a_{0} - 2 \, a_{1} v_{0} =0\\
-- \, c_{1} v_{0}^{3} - 3 \, c_{1} v_{0} v_{1}^{2} -  \, c_{1} v_{0} v_{2}^{2} -  \, c_{1} v_{0} v_{3}^{2} - 2 \, E a_{1} v_{0} =0\\
-- \, c_{1} v_{0}^{3} -  \, c_{1} v_{0} v_{1}^{2} - 3 \, c_{1} v_{0} v_{2}^{2} -  \, c_{1} v_{0} v_{3}^{2} - 2 \, E a_{1} v_{0} =0\\
-- \, c_{1} v_{0}^{3} -  \, c_{1} v_{0} v_{1}^{2} -  \, c_{1} v_{0} v_{2}^{2} - 3 \, c_{1} v_{0} v_{3}^{2} - 2 \, E a_{1} v_{0} =0\\
--2 \, a_{1} v_{0}^{2} -  \, b_{0} v_{0}^{2} -  \, b_{0} v_{1}^{2} -  \, b_{0} v_{2}^{2} -  \, b_{0} v_{3}^{2} =0\\
-- \, b_{1} v_{0}^{3} - 3 \, b_{1} v_{0} v_{1}^{2} -  \, b_{1} v_{0} v_{2}^{2} -  \, b_{1} v_{0} v_{3}^{2} =0\\
-- \, b_{1} v_{0}^{3} -  \, b_{1} v_{0} v_{1}^{2} - 3 \, b_{1} v_{0} v_{2}^{2} -  \, b_{1} v_{0} v_{3}^{2} =0\\
-- \, b_{1} v_{0}^{3} -  \, b_{1} v_{0} v_{1}^{2} -  \, b_{1} v_{0} v_{2}^{2} - 3 \, b_{1} v_{0} v_{3}^{2} =0
-\end{array}
-\end{equation*}
-\end{minipage}%
-\begin{minipage}{.3\linewidth}
-\begin{equation*}
-\begin{array}{r}
--4 \, b_{1} v_{0} v_{1} v_{2} =0\\
--4 \, b_{1} v_{0} v_{1} v_{3} =0\\
--4 \, b_{1} v_{0} v_{2} v_{3} =0\\
--4 \, c_{1} v_{0} v_{1} v_{2} =0\\
--4 \, c_{1} v_{0} v_{1} v_{3} =0\\
--4 \, c_{1} v_{0} v_{2} v_{3} =0\\
--2 \, c_{0} v_{0} v_{1} - 2 \, a_{1} v_{1} =0\\
--2 \, c_{0} v_{0} v_{2} - 2 \, a_{1} v_{2} =0\\
--2 \, c_{0} v_{0} v_{3} - 2 \, a_{1} v_{3} =0\\
--2 \, a_{1} v_{0} v_{1} - 2 \, b_{0} v_{0} v_{1} =0\\
--2 \, a_{1} v_{0} v_{2} - 2 \, b_{0} v_{0} v_{2} =0\\
--2 \, a_{1} v_{0} v_{3} - 2 \, b_{0} v_{0} v_{3} =0\\
--2 \, a_{0} =0\\
--2 \, a_{0} v_{0} =0\\
-\end{array}
-\end{equation*}
-\end{minipage}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{The Prime Decomposition of the System of Equations}
-{\tiny\begin{verbatim}
-sage: I = ideal(eqns_RQQ)
-sage: I.radical().primary_decomposition()
-[Ideal (c1, b1, a1 - b0, a0, E, v0*c0 - b0, v0^2 - v1^2 - v2^2 - v3^2, v1^2*c0 + v2^2*c0 + v3^2*c0 - v0*b0) of Multivariate Polynomial Ring in E, v0, v1, v2, v3, a0, a1, b0, b1, c0, c1 over Rational Field,
- Ideal (b1, 2*a1 - b0, a0, v3, v2, v1, v0*c0 - b0, E*c0 - v0*c1, v0^2*c1 - E*b0) of Multivariate Polynomial Ring in E, v0, v1, v2, v3, a0, a1, b0, b1, c0, c1 over Rational Field,
- Ideal (a1, a0, v0, v1^2 + v2^2 + v3^2) of Multivariate Polynomial Ring in E, v0, v1, v2, v3, a0, a1, b0, b1, c0, c1 over Rational Field,
- Ideal (a0, v3, v2, v1, v0) of Multivariate Polynomial Ring in E, v0, v1, v2, v3, a0, a1, b0, b1, c0, c1 over Rational Field,
- Ideal (c1, c0, b1, b0, a1, a0) of Multivariate Polynomial Ring in E, v0, v1, v2, v3, a0, a1, b0, b1, c0, c1 over Rational Field]
-\end{verbatim}}
-
-\vskip -12pt
-\begin{subequations}
-\label{ideal}
-\begin{align}
-& \left(c_{1}, c_{0}, b_{1}, b_{0}, a_{1}, a_{0}\right)\label{ideal:5} \\
-& \qquad \text{sets all coefficients of the ODE to zero} \nonumber \\
-& \left(v_{3}, v_{2}, v_{1}, v_{0}, a_{0}\right)\label{ideal:4}\\
-& \qquad \text{sets the variable $v$ to zero} \nonumber \\
-& \left(v_{1}^{2} + v_{2}^{2} + v_{3}^{2}, v_{0}, a_{1}, a_{0}\right)\label{ideal:3}\\
-& \qquad \text{sets the coefficient of $\Psi_{vv}$ in the ODE to zero} \nonumber \\
-%% (b1, 2*a1 + b0, a0, v3, v2, v1, v0*c0 - b0, E*c0 - v0*c1, v0^2*c1 - E*b0)
-& \left(v_{3}, v_{2}, v_{1}, b_{1}, c_{0} v_{0} - b_{0}, 2 a_{1} - b_{0}, a_{0}, E c_{0} - c_{1} v_{0}, v_0^2 c_1 - E b_0\right)\label{ideal:2}\\
-& \qquad \text{the classical solution} \nonumber \\
-& \left(v_{0}^{2} - v_{1}^{2} - v_{2}^{2} - v_{3}^{2}, c_{1}, b_{1}, b_{0} - c_{0} v_{0}, a_{1} + c_{0} v_{0}, a_{0}, E\right)\label{ideal:1}\\
-& \qquad \text{the new pseudo-solution} \nonumber
-\end{align}
-\end{subequations}
-\end{frame}
-
-\begin{frame}
-\frametitle{Shimoyama and Yokoyama Algorithm}
-% left bottom right top
-\includegraphics[page=9, clip, trim=1.3in 4in 0in 5.1in, scale=0.9]{1-s2.0-S0747717196900528-main.pdf}
-
-\vfill
-\small
-\begin{tabular}{ll}
-Source: & Takeshi Shimoyama and Kazuhiro Yokoyama, \\
-        & {\it Localization and Primary Decomposition of Polynomial Ideals}, \\
-        & J. Symbolic Computation (1996) {\bf 22}, 247–277 \\
-\end{tabular}
 \end{frame}
 
 \begin{frame}
@@ -432,6 +233,37 @@ The corresponding irreducible varieties
 \end{axis}
 \end{tikzpicture}
 \end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{GPT-5's Comparison of polynomial solution methods}
+\tiny
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{2.3cm}|p{2cm}|p{2cm}|p{2.5cm}|}
+\hline
+\textbf{Feature} & \textbf{Characteristic Sets (Wu’s Method)} & \textbf{Gröbner Bases} & \textbf{Regular Chains / Triangular Decomposition} \\
+\hline
+\textbf{Output form} & Triangular set (distinct main variable per polynomial) & Canonical Gröbner basis for chosen monomial order & Triangular sets with associated inequations \\
+\hline
+\textbf{Dependence on ordering} & Strongly dependent on variable ranking & Canonical once order is fixed & Depends on chosen variable order \\
+\hline
+\textbf{Uniqueness} & Not unique (varies with ranking) & Unique (for fixed monomial order) & Not unique \\
+\hline
+\textbf{Ease of solving} & Procedural: solve one variable at a time & Requires back-substitution, not directly triangular & Procedural like characteristic sets, but more refined \\
+\hline
+\textbf{Handling of inequations / branches} & Case distinctions may be needed during pseudo-division & Purely equations (ideal-based) & Explicit handling of inequations and case splits \\
+\hline
+\textbf{Algebraic guarantees} & Not directly tied to irreducible decomposition or ideal theory & Deep ties to algebraic geometry (ideal membership, dimension, Hilbert series) & Connects more directly to geometric decomposition into varieties \\
+\hline
+\textbf{Computation cost} & Often efficient in practice (esp. in geometry theorem proving) & Can be doubly exponential in worst case & Can be heavy due to branching, but manageable in practice \\
+\hline
+\textbf{Best use cases} & Geometry theorem proving, structured elimination & General-purpose algebraic computation, canonical decomposition & Computing solution varieties with inequations, parametric systems \\
+\hline
+\end{tabular}
+\caption{Comparison of methods for decomposing polynomial systems.}
+\end{table}
 \end{frame}
 
 \begin{frame}[t]
@@ -525,6 +357,64 @@ $(z)$ is our other irreducible component.
 \end{frame}
 
 \begin{frame}
+\frametitle{Characteristic Sets (from the Singular documentation)}
+
+Let $<$ be the lexicographical ordering on $R=K[x_1,...,x_n]$ with $x_1 < ... < x_n$.
+
+\vskip 12pt
+For $f \in R$ let lvar($f$) (the leading variable of $f$) be the largest variable in $f$, i.e., if $f=a_s(x_1,...,x_{k-1})x_k^s+...+a_0(x_1,...,x_{k-1})$ for some $k \leq n$ then lvar$(f)=x_k$.
+
+\vskip 12pt
+Moreover, let ini $(f):=a_s(x_1,...,x_{k-1})$.
+
+\vskip 12pt
+A set $T=\{f_1,...,f_r\} \subset R$ is called triangular if $\hbox{lvar}(f_1)<...<\hbox{lvar}(f_r)$.
+
+%$T$ is called irreducible if for every $i$ there are no $d_i$,$f_i'$,$f_i''$ such that
+
+%\begin{displaymath}\hbox{lvar}(d_i)<\hbox{lvar}(f_i) = \hbox{lvar}(f_i')=\hbox{lvar}(f_i''),\end{displaymath}
+
+
+%\begin{displaymath}0 \not\in \hbox{prem}(\{ d_i, \hbox{ini}(f_i'), \hbox{ini}(f_i'')\},\{ f_1,...,f_{i-1}\}),\end{displaymath}
+
+
+%\begin{displaymath}\hbox{prem}(d_if_i-f_i'f_i'',\{f_1,...,f_{i-1}\})=0.\end{displaymath}
+
+%Furthermore, $(T,U)$ is called irreducible if $T$ is irreducible.
+
+\vskip 12pt
+The main result on triangular sets is the following:
+
+\vskip 12pt
+
+Let $G=\{g_1,...,g_s\} \subset R$, then there are irreducible triangular sets $T_1,...,T_l$ such that $V(G)=\bigcup_{i=1}^{l}(V(T_i\setminus I_i))$ where $I_i=\{\hbox{ini}(f) \mid f \in T_i \}$. Such a set $\{T_1,...,T_l\}$ is called an {\bf irreducible characteristic series} of the ideal $(G)$
+\end{frame}
+
+\begin{frame}
+\frametitle{Irreducible Characteristic Sets}
+
+Consider a triangular set of generators for an ideal, say $(f,g)$.
+
+\vskip 12pt
+$\hbox{lvar}(f)<\hbox{lvar}(g)$.
+
+\vskip 12pt
+All of the variables less than $x_1 = \hbox{lvar}(f)$, say $u_1,...,u_n$ are treated as part of the coefficient field $K=Q[u_1,...u_n]$,
+so $f \in K[x_1]$.
+
+\vskip 12pt
+We can now construct $K' = K[x_1] \mod f$.
+
+\vskip 12pt
+If $g$ can be factored in $K'[x_2]$, then $g = ab + mf$.
+
+\vskip 12pt
+\[ (f,g) = (f,ab) = (f,a) \cup (f,b) \]
+
+
+\end{frame}
+
+\begin{frame}
 \frametitle{Monomial Orders}
 \includegraphics[page=1, clip, trim=0in 5.5in 0in 0in, width=\textwidth]{Monomial order - Wikipedia.pdf}
 \vskip 20pt
@@ -542,16 +432,6 @@ $\qquad x^2 > xy > xz > y^2 > yz > z^2$
 
 $\qquad x^2 > xy > y^2 > xz > yz > z^2$
 \end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Cox, Little, O'Shea
-
-{\it Ideals, Varieties, and Algorithms} (4th ed)}
-\includegraphics[page=22, clip, trim=0in 0.9in 0in 7in, width=\textwidth]{IVA.pdf}
-\includegraphics[page=23, clip, trim=0in 7.9in 0in 0.7in, width=\textwidth]{IVA.pdf}
-\hrule
-\includegraphics[page=46, clip, trim=0in 5.2in 0in 2.5in, width=\textwidth]{IVA.pdf}
 \end{frame}
 
 \begin{frame}
@@ -578,37 +458,6 @@ y+2z-11
 \end{frame}
 
 \begin{frame}
-\frametitle{GPT-5's Comparison of polynomial solution methods}
-\tiny
-\begin{table}[h!]
-\centering
-\renewcommand{\arraystretch}{1.4}
-\begin{tabular}{|p{2.3cm}|p{2cm}|p{2cm}|p{2.5cm}|}
-\hline
-\textbf{Feature} & \textbf{Characteristic Sets (Wu’s Method)} & \textbf{Gröbner Bases} & \textbf{Regular Chains / Triangular Decomposition} \\
-\hline
-\textbf{Output form} & Triangular set (distinct main variable per polynomial) & Canonical Gröbner basis for chosen monomial order & Triangular sets with associated inequations \\
-\hline
-\textbf{Dependence on ordering} & Strongly dependent on variable ranking & Canonical once order is fixed & Depends on chosen variable order \\
-\hline
-\textbf{Uniqueness} & Not unique (varies with ranking) & Unique (for fixed monomial order) & Not unique \\
-\hline
-\textbf{Ease of solving} & Procedural: solve one variable at a time & Requires back-substitution, not directly triangular & Procedural like characteristic sets, but more refined \\
-\hline
-\textbf{Handling of inequations / branches} & Case distinctions may be needed during pseudo-division & Purely equations (ideal-based) & Explicit handling of inequations and case splits \\
-\hline
-\textbf{Algebraic guarantees} & Not directly tied to irreducible decomposition or ideal theory & Deep ties to algebraic geometry (ideal membership, dimension, Hilbert series) & Connects more directly to geometric decomposition into varieties \\
-\hline
-\textbf{Computation cost} & Often efficient in practice (esp. in geometry theorem proving) & Can be doubly exponential in worst case & Can be heavy due to branching, but manageable in practice \\
-\hline
-\textbf{Best use cases} & Geometry theorem proving, structured elimination & General-purpose algebraic computation, canonical decomposition & Computing solution varieties with inequations, parametric systems \\
-\hline
-\end{tabular}
-\caption{Comparison of methods for decomposing polynomial systems.}
-\end{table}
-\end{frame}
-
-\begin{frame}
 \frametitle{Flexibility in constructing Gr\"obner Bases}
 Much of the utility of Gr\"obner bases lies in the flexibility in how they can be defined.
 \begin{itemize}
@@ -625,7 +474,7 @@ Maximally Independent Sets can be used to reduce to zero-dimensional ideals
 
 \begin{frame}
 \frametitle{Singular's {\tt minAssPrimes}}
-Singular's algorithm to compute minimal associated primes of an ideal:
+Singular's default algorithm to compute minimal associated primes of an ideal:
 \begin{enumerate}
 \item {\tt simplifyIdeal}
 
@@ -897,6 +746,158 @@ int posInL110 (const LSet set, const int length, LObject* p,const kStrategy) {
 \end{frame}
 
 \begin{frame}
+\frametitle{The New Pseudo-Solution to Hydrogen}
+
+\[ - \frac{1}{2} \nabla^2 \Psi - \frac{1}{r} \Psi = 0 \]
+
+\[ \Psi(x,y,z) = J_0(2\sqrt{x+r}) \]
+
+\vskip 0.5in
+
+$J_0$ is the Bessel function $J_0$
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Verification with Mathematica}
+\includegraphics[page=1, clip, trim=1in 7in 1in 1in, width=\textwidth]{improved.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ansatz 5}
+
+To find the classical solutions to hydrogen, we assumed that the solution was {\it separable}.
+This was basically a lucky guess.
+
+\vskip 12pt
+
+Let's make a different assumption (and see if it's lucky, too):
+
+\vskip 12pt
+
+\begin{itemize}
+\item The solution satisfies a second-order ODE with rational coefficients
+
+\[ a(v) \frac{d^2 \Psi}{dv^2} + b(v) \frac{d \Psi}{dv} + c(v) \Psi = 0 \]
+
+\item $a(v)$, $b(v)$, $c(v)$ are polynomials in $v$
+
+\item $v$ is a polynomial in $x,y,z,r$
+
+\item $a(v)$, $b(v)$, $c(v)$, and $v$ are all first degree polynomials
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ansatz 5}
+
+\begin{center}
+
+The Hydrogen PDE:
+
+\[ - \frac{1}{2} \Psi_{xx} - \frac{1}{2} \Psi_{yy} - \frac{1}{2} \Psi_{zz} - \frac{1}{r} \Psi = E \Psi \]
+
+\vskip 10pt
+
+Ansatz 5:
+
+\begin{equation*}
+\label{ansatz 5a}
+v = v_1 x + v_2 y + v_3 z + v_4 r
+\end{equation*}
+
+\begin{equation*}
+\label{ansatz 5b}
+(a_0 + a_1 v) \Psi_{vv} + (b_0 + b_1 v) \Psi_v + (c_0 + c_1 v) \Psi = 0
+\end{equation*}
+
+\end{center}
+
+\end{frame}
+\begin{frame}
+\frametitle{The System of Equations}
+%%\scriptsize
+\fontsize{9}{11}\selectfont
+\begin{minipage}{.7\linewidth}
+\begin{equation*}
+\begin{array}{r}
+-2 \, c_{1} v_{0}^{3} - 4 \, c_{1} v_{0} v_{1}^{2} - 4 \, c_{1} v_{0} v_{2}^{2} - 2 \, c_{1} v_{0} v_{3}^{2} - 4 \, E a_{1} v_{0} =0\\
+-2 \, c_{1} v_{0}^{3} - 4 \, c_{1} v_{0} v_{1}^{2} - 2 \, c_{1} v_{0} v_{2}^{2} - 4 \, c_{1} v_{0} v_{3}^{2} - 4 \, E a_{1} v_{0} =0\\
+-2 \, c_{1} v_{0}^{3} - 2 \, c_{1} v_{0} v_{1}^{2} - 4 \, c_{1} v_{0} v_{2}^{2} - 4 \, c_{1} v_{0} v_{3}^{2} - 4 \, E a_{1} v_{0} =0\\
+-3 \, b_{1} v_{0}^{2} v_{1} -  \, b_{1} v_{1}^{3} -  \, b_{1} v_{1} v_{2}^{2} -  \, b_{1} v_{1} v_{3}^{2} =0\\
+-3 \, b_{1} v_{0}^{2} v_{2} -  \, b_{1} v_{1}^{2} v_{2} -  \, b_{1} v_{2}^{3} -  \, b_{1} v_{2} v_{3}^{2} =0\\
+-3 \, b_{1} v_{0}^{2} v_{3} -  \, b_{1} v_{1}^{2} v_{3} -  \, b_{1} v_{2}^{2} v_{3} -  \, b_{1} v_{3}^{3} =0\\
+-2 \, b_{1} v_{0}^{3} - 4 \, b_{1} v_{0} v_{1}^{2} - 4 \, b_{1} v_{0} v_{2}^{2} - 2 \, b_{1} v_{0} v_{3}^{2} =0\\
+-2 \, b_{1} v_{0}^{3} - 4 \, b_{1} v_{0} v_{1}^{2} - 2 \, b_{1} v_{0} v_{2}^{2} - 4 \, b_{1} v_{0} v_{3}^{2} =0\\
+-3 \, c_{1} v_{0}^{2} v_{1} -  \, c_{1} v_{1}^{3} -  \, c_{1} v_{1} v_{2}^{2} -  \, c_{1} v_{1} v_{3}^{2} - 2 \, E a_{1} v_{1} =0\\
+-3 \, c_{1} v_{0}^{2} v_{2} -  \, c_{1} v_{1}^{2} v_{2} -  \, c_{1} v_{2}^{3} -  \, c_{1} v_{2} v_{3}^{2} - 2 \, E a_{1} v_{2} =0\\
+-3 \, c_{1} v_{0}^{2} v_{3} -  \, c_{1} v_{1}^{2} v_{3} -  \, c_{1} v_{2}^{2} v_{3} -  \, c_{1} v_{3}^{3} - 2 \, E a_{1} v_{3} =0\\
+-2 \, b_{1} v_{0}^{3} - 2 \, b_{1} v_{0} v_{1}^{2} - 4 \, b_{1} v_{0} v_{2}^{2} - 4 \, b_{1} v_{0} v_{3}^{2} =0\\
+- \, c_{0} v_{0}^{2} -  \, c_{0} v_{1}^{2} -  \, c_{0} v_{2}^{2} -  \, c_{0} v_{3}^{2} - 2 \, E a_{0} - 2 \, a_{1} v_{0} =0\\
+- \, c_{1} v_{0}^{3} - 3 \, c_{1} v_{0} v_{1}^{2} -  \, c_{1} v_{0} v_{2}^{2} -  \, c_{1} v_{0} v_{3}^{2} - 2 \, E a_{1} v_{0} =0\\
+- \, c_{1} v_{0}^{3} -  \, c_{1} v_{0} v_{1}^{2} - 3 \, c_{1} v_{0} v_{2}^{2} -  \, c_{1} v_{0} v_{3}^{2} - 2 \, E a_{1} v_{0} =0\\
+- \, c_{1} v_{0}^{3} -  \, c_{1} v_{0} v_{1}^{2} -  \, c_{1} v_{0} v_{2}^{2} - 3 \, c_{1} v_{0} v_{3}^{2} - 2 \, E a_{1} v_{0} =0\\
+-2 \, a_{1} v_{0}^{2} -  \, b_{0} v_{0}^{2} -  \, b_{0} v_{1}^{2} -  \, b_{0} v_{2}^{2} -  \, b_{0} v_{3}^{2} =0\\
+- \, b_{1} v_{0}^{3} - 3 \, b_{1} v_{0} v_{1}^{2} -  \, b_{1} v_{0} v_{2}^{2} -  \, b_{1} v_{0} v_{3}^{2} =0\\
+- \, b_{1} v_{0}^{3} -  \, b_{1} v_{0} v_{1}^{2} - 3 \, b_{1} v_{0} v_{2}^{2} -  \, b_{1} v_{0} v_{3}^{2} =0\\
+- \, b_{1} v_{0}^{3} -  \, b_{1} v_{0} v_{1}^{2} -  \, b_{1} v_{0} v_{2}^{2} - 3 \, b_{1} v_{0} v_{3}^{2} =0
+\end{array}
+\end{equation*}
+\end{minipage}%
+\begin{minipage}{.3\linewidth}
+\begin{equation*}
+\begin{array}{r}
+-4 \, b_{1} v_{0} v_{1} v_{2} =0\\
+-4 \, b_{1} v_{0} v_{1} v_{3} =0\\
+-4 \, b_{1} v_{0} v_{2} v_{3} =0\\
+-4 \, c_{1} v_{0} v_{1} v_{2} =0\\
+-4 \, c_{1} v_{0} v_{1} v_{3} =0\\
+-4 \, c_{1} v_{0} v_{2} v_{3} =0\\
+-2 \, c_{0} v_{0} v_{1} - 2 \, a_{1} v_{1} =0\\
+-2 \, c_{0} v_{0} v_{2} - 2 \, a_{1} v_{2} =0\\
+-2 \, c_{0} v_{0} v_{3} - 2 \, a_{1} v_{3} =0\\
+-2 \, a_{1} v_{0} v_{1} - 2 \, b_{0} v_{0} v_{1} =0\\
+-2 \, a_{1} v_{0} v_{2} - 2 \, b_{0} v_{0} v_{2} =0\\
+-2 \, a_{1} v_{0} v_{3} - 2 \, b_{0} v_{0} v_{3} =0\\
+-2 \, a_{0} =0\\
+-2 \, a_{0} v_{0} =0\\
+\end{array}
+\end{equation*}
+\end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The Prime Decomposition of the System of Equations}
+{\tiny\begin{verbatim}
+sage: I = ideal(eqns_RQQ)
+sage: I.radical().primary_decomposition()
+[Ideal (c1, b1, a1 - b0, a0, E, v0*c0 - b0, v0^2 - v1^2 - v2^2 - v3^2, v1^2*c0 + v2^2*c0 + v3^2*c0 - v0*b0) of Multivariate Polynomial Ring in E, v0, v1, v2, v3, a0, a1, b0, b1, c0, c1 over Rational Field,
+ Ideal (b1, 2*a1 - b0, a0, v3, v2, v1, v0*c0 - b0, E*c0 - v0*c1, v0^2*c1 - E*b0) of Multivariate Polynomial Ring in E, v0, v1, v2, v3, a0, a1, b0, b1, c0, c1 over Rational Field,
+ Ideal (a1, a0, v0, v1^2 + v2^2 + v3^2) of Multivariate Polynomial Ring in E, v0, v1, v2, v3, a0, a1, b0, b1, c0, c1 over Rational Field,
+ Ideal (a0, v3, v2, v1, v0) of Multivariate Polynomial Ring in E, v0, v1, v2, v3, a0, a1, b0, b1, c0, c1 over Rational Field,
+ Ideal (c1, c0, b1, b0, a1, a0) of Multivariate Polynomial Ring in E, v0, v1, v2, v3, a0, a1, b0, b1, c0, c1 over Rational Field]
+\end{verbatim}}
+
+\vskip -12pt
+\begin{subequations}
+\label{ideal}
+\begin{align}
+& \left(c_{1}, c_{0}, b_{1}, b_{0}, a_{1}, a_{0}\right)\label{ideal:5} \\
+& \qquad \text{sets all coefficients of the ODE to zero} \nonumber \\
+& \left(v_{3}, v_{2}, v_{1}, v_{0}, a_{0}\right)\label{ideal:4}\\
+& \qquad \text{sets the variable $v$ to zero} \nonumber \\
+& \left(v_{1}^{2} + v_{2}^{2} + v_{3}^{2}, v_{0}, a_{1}, a_{0}\right)\label{ideal:3}\\
+& \qquad \text{sets the coefficient of $\Psi_{vv}$ in the ODE to zero} \nonumber \\
+%% (b1, 2*a1 + b0, a0, v3, v2, v1, v0*c0 - b0, E*c0 - v0*c1, v0^2*c1 - E*b0)
+& \left(v_{3}, v_{2}, v_{1}, b_{1}, c_{0} v_{0} - b_{0}, 2 a_{1} - b_{0}, a_{0}, E c_{0} - c_{1} v_{0}, v_0^2 c_1 - E b_0\right)\label{ideal:2}\\
+& \qquad \text{the classical solution} \nonumber \\
+& \left(v_{0}^{2} - v_{1}^{2} - v_{2}^{2} - v_{3}^{2}, c_{1}, b_{1}, b_{0} - c_{0} v_{0}, a_{1} + c_{0} v_{0}, a_{0}, E\right)\label{ideal:1}\\
+& \qquad \text{the new pseudo-solution} \nonumber
+\end{align}
+\end{subequations}
+\end{frame}
+
+\begin{frame}
 \frametitle{The Rosenfeld-Gr\"obner Algorithm}
 \begin{exampleblock}{Francois Boulier, Daniel Lazard, François Ollivier, Michel Petitot
 Representation for the radical of a finitely generated differential ideal
@@ -943,15 +944,6 @@ $C^\infty(\mathbf{R}^3)$, or $H^2(\mathbf{C})$
 \node at (3,-6) {\bf We can do this!};
 
 \end{tikzpicture}
-\end{frame}
-
-%----------------------------------
-\begin{frame}{Summary and Conclusions}
-\begin{itemize}
-  \item Every ideal in a Noetherian ring can be decomposed.
-  \item Algorithms (Characteristic Set, GTZ) make this practical.
-  \item Applications: polynomial and differential systems.
-\end{itemize}
 \end{frame}
 
 %----------------------------------
