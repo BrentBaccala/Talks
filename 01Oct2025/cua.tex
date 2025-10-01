@@ -33,6 +33,13 @@
 %----------------------------------
 \begin{frame}
   \titlepage
+
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[xshift=4.75cm, yshift=0.5cm] at (current page) 
+      % https://www.freesoft.org/bbaccala/01Oct2025.pdf
+      {\includegraphics[width=3cm]{qr.png}};
+  \end{tikzpicture}
+
 \begin{block}{Abstract}
 \tiny
 Decomposing an ideal into an intersection of prime or primary ideals is a fundamental operation in commutative algebra, one that should be known to all math students for its utility in simplifying systems of polynomial equations.  Various algorithms have been proposed and implemented for ideal factorization, including the method of characteristic sets and the GTZ algorithm.  In this talk, I'll describe some of these methods, illustrate them with one or two examples, and explain their application to solving polynomial and differential equations.
@@ -82,9 +89,9 @@ Decomposing an ideal into an intersection of prime or primary ideals is a fundam
   \item \textbf{Lasker–Noether theorem}: Every ideal in a Noetherian ring admits a decomposition as the intersection of primary ideals.
   \item Each primary ideal has an associated prime ideal
   \item Each associated prime ideal is the radical of its primary ideal
-  \item The prime ideals in such a decomposition are unique
-  \item If the original ideal is radical, then the primary ideals are the prime ideals
-  \item The intersection of the associated prime ideals is the radical of the original ideal
+  \item The minimal prime ideals in such a decomposition are unique
+  %\item If the original ideal is radical, then the primary ideals are the prime ideals
+  \item The intersection of the minimal associated prime ideals is the radical of the original ideal
 %  \item Decomposing an ideal as an intersection of prime ideals.
 %  \item Geometric viewpoint: corresponds to union of algebraic varieties.
 %  \item Analogy with integer factorization.
@@ -614,6 +621,95 @@ Lexicographic orders can be used to eliminate specific variables
 
 Maximally Independent Sets can be used to reduce to zero-dimensional ideals
 \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Singular's {\tt minAssPrimes}}
+Singular's algorithm to compute minimal associated primes of an ideal:
+\begin{enumerate}
+\item {\tt simplifyIdeal}
+
+Search the ideal for polynomials of the form $x_i-f(x_1,...,x_{i-1},x_{i+1},x_n)$
+
+and substitute $f(x_1,...,x_{i-1},x_{i+1},x_n)$ for $x_i$.
+
+\item Compute a Gr\"obner basis for the ideal
+
+Use a factorizing Gr\"obner basis algorithm by default,
+
+that attempts factor each new polynomial added to the Gr\"obner basis.
+
+Produces a list of Gr\"obner bases describing a list of ideals, whose intersection is the original ideal
+
+\item Computes the minimal associated primes
+
+Use the Laplagne algorithm by default (an enhancement of GTZ)
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\frametitle{My variant of the algorithm}
+\begin{enumerate}
+\item Search the ideal for polynomials of the form $x_i-f(x_1,...,x_{i-1},x_{i+1},x_n)$
+
+and substitute $f(x_1,...,x_{i-1},x_{i+1},x_n)$ for $x_i$.
+
+\item Factor the polynomials
+
+\item Run a CNF-to-DNF conversion to produce a system of ideals
+
+\item Repeat steps 1 through 3 until all of the systems stabilize
+
+\item Run Singular's {\tt minAssPrimes} to polish the results
+\end{enumerate}
+
+\vskip 12pt
+
+I wrote the algorithm in Sage and used a SQL database to store and track
+the intermediate results.
+\end{frame}
+
+\begin{frame}
+\frametitle{CNF-to-DNF conversion}
+
+\begin{definition}[Conjuctive Normal Form]
+A logical formula formed as a conjunction of clauses, each clause being a disjunction of variables
+
+\[
+(A \vee B \vee C) \wedge (B \vee D) \wedge (A \vee E \vee F)
+\]
+\end{definition}
+
+\begin{definition}[Disjunctive Normal Form]
+A logical formula formed as a disjunction of clauses, each clause being a conjunction of variables
+\[
+(A \wedge B) \vee (C \wedge D \wedge E) \vee (A \wedge F)
+\]
+\end{definition}
+
+\begin{definition}[Monotone Boolean function]
+A monotone Boolean function has no logical NOTs (only ANDs and ORs).
+\end{definition}
+\end{frame}
+
+\begin{frame}
+\frametitle{CNF-to-DNF conversion}
+
+\begin{definition}[Monotone dualization]
+A monotone Boolean function in CNF has an essentially unique DNF, that is also monotone,
+and these two formulae are dual to each other.
+\end{definition}
+
+\vskip 12pt
+
+Monotone dualization (monotone CNF-to-DNF conversion) is the extra step required to go from polynomial factorization to ideal factorization.
+
+\[
+(f_1 f_2, g_1 g_2) \Rightarrow (f_1, g_1) \cap (f_1, g_2) \cap (f_2, g_1) \cap (f_2, g_2)
+\]
+\[
+(f_1 \vee f_2) \wedge (g_1 \vee g_2) = (f_1 \wedge g_1) \vee (f_2 \wedge g_1) \vee (f_1 \wedge g_2) \vee (f_2 \wedge g_2)
+\]
 \end{frame}
 
 \begin{frame}
