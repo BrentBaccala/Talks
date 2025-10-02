@@ -9,7 +9,7 @@
 
 \usepackage{amsmath, amssymb, amsfonts}
 \usepackage{tikz}
-\usetikzlibrary{shapes.geometric, arrows}
+\usetikzlibrary{shapes.geometric, arrows, positioning}
 \usepackage{fancyvrb}
 
 \usepackage{pgfplots}
@@ -55,6 +55,29 @@ Decomposing an ideal into an intersection of prime or primary ideals is a fundam
 \end{itemize}
 \end{frame}
 
+%----------------------------------
+\begin{frame}{Commutative Algebra and Algebraic Geometry}
+\small
+\centering
+\begin{tikzpicture}[node distance=20pt]
+\node (commutative algebra) [draw, text width=150pt] {Commutative algebra
+      \begin{itemize}
+        \item rings, ideals, fields, algebraic extensions
+        \item indeterminates are simply objects that obey the commutative, associative, distributive axioms
+        \item Ex: $x^2+y^2+z^2=1$
+      \end{itemize}
+};
+\node (algebraic geometry) [draw, node distance=100pt, below of=commutative algebra, text width=150pt] {Algebraic Geometry
+      \begin{itemize}
+        \item indeterminates now take values in a field like $\mathbf{C}, \mathbf{R}, \mathbf{Q}, \overline{\mathbf{Q}}, \mathbf{F}_p$
+      \end{itemize}
+};
+
+\draw [very thick, ->] (commutative algebra.south) -- (algebraic geometry.north);
+
+\end{tikzpicture}
+\end{frame}
+
 \begin{frame}
 \frametitle{Cox, Little, O'Shea
 
@@ -63,6 +86,22 @@ Decomposing an ideal into an intersection of prime or primary ideals is a fundam
 \includegraphics[page=23, clip, trim=0in 7.9in 0in 0.7in, width=\textwidth]{IVA.pdf}
 \hrule
 \includegraphics[page=46, clip, trim=0in 5.2in 0in 2.5in, width=\textwidth]{IVA.pdf}
+\end{frame}
+
+%----------------------------------
+\begin{frame}{Applications to Polynomial Equations}
+\begin{itemize}
+  \item Ideal intersection $\Leftrightarrow$ variety union.
+  \item Prime ideals $\Leftrightarrow$ irreducibile varieties.
+\end{itemize}
+\centering
+\begin{tikzpicture}
+  \draw[blue!40,fill=blue!20] (0,0) circle(1);
+  \draw[red!40,fill=red!20] (1.5,0) circle(1);
+  \node at (0,-1.3) {$V(P_1)$};
+  \node at (1.5,-1.3) {$V(P_2)$};
+  \node at (0.75,1.2) {$V(I)=V(P_1)\cup V(P_2)$};
+\end{tikzpicture}
 \end{frame}
 
 %----------------------------------
@@ -168,22 +207,6 @@ Decomposing an ideal into an intersection of prime or primary ideals is a fundam
 %  \item Each primary ideal has an associated prime ideal
 %  \item The prime ideals in such a decomposition are unique
 %\end{itemize}
-\end{frame}
-
-%----------------------------------
-\begin{frame}{Applications to Polynomial Equations}
-\begin{itemize}
-  \item Decomposition $\Leftrightarrow$ splitting solution sets.
-  \item Ideal $\cap$ decomposition $\Rightarrow$ variety union.
-\end{itemize}
-\centering
-\begin{tikzpicture}
-  \draw[blue!40,fill=blue!20] (0,0) circle(1);
-  \draw[red!40,fill=red!20] (1.5,0) circle(1);
-  \node at (0,-1.3) {$V(P_1)$};
-  \node at (1.5,-1.3) {$V(P_2)$};
-  \node at (0.75,1.2) {$V(I)=V(P_1)\cup V(P_2)$};
-\end{tikzpicture}
 \end{frame}
 
 \begin{frame}
@@ -472,6 +495,10 @@ Maximally Independent Sets can be used to reduce to zero-dimensional ideals
 \end{itemize}
 \end{frame}
 
+\begin{frame}{Gianni, Trager and Zacharias, Gr\"obner Bases and Primary Decomposition of Polynomial Ideals}
+\includegraphics[page=14, clip, trim=0in 0in 0in 1in, width=\textwidth]{GianniTragerZacharias.pdf}
+\end{frame}
+
 \begin{frame}
 \frametitle{Singular's {\tt minAssPrimes}}
 Singular's default algorithm to compute minimal associated primes of an ideal:
@@ -656,42 +683,40 @@ baccala@samsung:~/src/helium$ perf report
 
 
 %----------------------------------
-\begin{frame}[fragile]{A Buggy Comparator}
+\begin{frame}[fragile]{\tt kMergeBintoL}
 \tiny\begin{verbatim}
-int posInL110 (const LSet set, const int length, LObject* p,const kStrategy) {
-  if (length<0) return 0;
-
-  int o = p->GetpFDeg();
-  int op = set[length].GetpFDeg();
-  int cmp_int= -currRing->OrdSgn;
-
-  if ((op > o)
-  || ((op == o) && (set[length].length >p->length))
-  || ((op == o) && (set[length].length <= p->length) && (pLmCmp(set[length].p,p->p) != cmp_int)))
-    return length+1;
-  int i;
-  int an = 0;
-  int en= length;
-  loop
+void kMergeBintoL(kStrategy strat)
+{
+  int j=strat->Ll+strat->Bl+1;
+  if (j>strat->Lmax)
   {
-    if (an >= en-1)
-    {
-      op = set[an].GetpFDeg();
-      if ((op > o)
-      || ((op == o) && (set[an].length >p->length))
-      || ((op == o) && (set[an].length <=p->length) && (pLmCmp(set[an].p,p->p) != cmp_int)))
-        return en;
-      return an;
-    }
-    i=(an+en) / 2;
-    op = set[i].GetpFDeg();
-    if ((op > o)
-    || ((op == o) && (set[i].length > p->length))
-    || ((op == o) && (set[i].length <= p->length) && (pLmCmp(set[i].p,p->p) != cmp_int)))
-      an=i;
-    else
-      en=i;
+    j=((j+setmaxLinc-1)/setmaxLinc)*setmaxLinc-strat->Lmax;
+    enlargeL(&(strat->L),&(strat->Lmax),j);
   }
+  j = strat->Ll;
+  int i;
+  for (i=strat->Bl; i>=0; i--)
+  {
+    j = strat->posInL(strat->L,j,&(strat->B[i]),strat);
+    enterL(&strat->L,&strat->Ll,&strat->Lmax,strat->B[i],j);
+  }
+  strat->Bl = -1;
+}
+
+void enterL (LSet *set,int *length, int *LSetmax, LObject p,int at)
+{
+  // this should be corrected
+  assume(p.FDeg == p.pFDeg());
+
+  if ((*length)>=0)
+  {
+    if ((*length) == (*LSetmax)-1) enlargeL(set,LSetmax,*LSetmax);
+    if (at <= (*length))
+      memmove(&((*set)[at+1]), &((*set)[at]), ((*length)-at+1)*sizeof(LObject));
+  }
+  else at = 0;
+  (*set)[at] = p;
+  (*length)++;
 }
 \end{verbatim}
 \end{frame}
@@ -745,6 +770,76 @@ int posInL110 (const LSet set, const int length, LObject* p,const kStrategy) {
 \end{tikzpicture}
 \end{frame}
 
+%----------------------------------
+\begin{frame}[fragile]{A Buggy Comparator}
+\tiny\begin{verbatim}
+int posInL110 (const LSet set, const int length, LObject* p,const kStrategy) {
+  if (length<0) return 0;
+
+  int o = p->GetpFDeg();
+  int op = set[length].GetpFDeg();
+  int cmp_int= -currRing->OrdSgn;
+
+  if ((op > o)
+  || ((op == o) && (set[length].length >p->length))
+  || ((op == o) && (set[length].length <= p->length) && (pLmCmp(set[length].p,p->p) != cmp_int)))
+    return length+1;
+  int i;
+  int an = 0;
+  int en= length;
+  loop
+  {
+    if (an >= en-1)
+    {
+      op = set[an].GetpFDeg();
+      if ((op > o)
+      || ((op == o) && (set[an].length >p->length))
+      || ((op == o) && (set[an].length <=p->length) && (pLmCmp(set[an].p,p->p) != cmp_int)))
+        return en;
+      return an;
+    }
+    i=(an+en) / 2;
+    op = set[i].GetpFDeg();
+    if ((op > o)
+    || ((op == o) && (set[i].length > p->length))
+    || ((op == o) && (set[i].length <= p->length) && (pLmCmp(set[i].p,p->p) != cmp_int)))
+      an=i;
+    else
+      en=i;
+  }
+}
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{A Buggy Comparator}
+\centering
+\begin{tikzpicture}[node distance=3cm, every node/.style={font=\small}]
+
+% Style definitions for the little info boxes
+\tikzstyle{infobox}=[draw, rectangle, minimum width=2cm, minimum height=0.8cm, align=center]
+
+% --- Object A ---
+\node (A) [draw, thick, minimum width=3cm, minimum height=3cm, label=above:{\Large A}] {};
+
+% Place boxes inside A
+\node[infobox] (Adeg) at ([yshift=0.9cm]A.center) {degree = 1};
+\node[infobox] (Alen) at (A.center) {length = 5};
+\node[infobox] (Alm)  at ([yshift=-0.9cm]A.center) {lm = $x$};
+
+% --- Object B ---
+\node (B) [draw, thick, minimum width=3cm, minimum height=3cm, right=of A, label=above:{\Large B}] {};
+
+% Place boxes inside B
+\node[infobox] (Bdeg) at ([yshift=0.9cm]B.center) {degree = 1};
+\node[infobox] (Blen) at (B.center) {length = 2};
+\node[infobox] (Blm)  at ([yshift=-0.9cm]B.center) {lm = $x^2$};
+
+\end{tikzpicture}
+\[ A > B \]
+\[ B > A \]
+
+\end{frame}
+
 \begin{frame}
 \frametitle{The New Pseudo-Solution to Hydrogen}
 
@@ -766,12 +861,7 @@ $J_0$ is the Bessel function $J_0$
 \begin{frame}
 \frametitle{Ansatz 5}
 
-To find the classical solutions to hydrogen, we assumed that the solution was {\it separable}.
-This was basically a lucky guess.
-
-\vskip 12pt
-
-Let's make a different assumption (and see if it's lucky, too):
+\[ - \frac{1}{2} \nabla^2 \Psi - \frac{1}{r} \Psi = E \Psi \]
 
 \vskip 12pt
 
@@ -897,15 +987,6 @@ sage: I.radical().primary_decomposition()
 \end{subequations}
 \end{frame}
 
-\begin{frame}
-\frametitle{The Rosenfeld-Gr\"obner Algorithm}
-\begin{exampleblock}{Francois Boulier, Daniel Lazard, François Ollivier, Michel Petitot
-Representation for the radical of a finitely generated differential ideal
-}
-\includegraphics[page=2, clip, trim=0in 0in 0in 5.2in, width=\textwidth]{blop.pdf}
-\end{exampleblock}
-\end{frame}
-
 %----------------------------------
 \begin{frame}{The Big Picture}
 \small
@@ -944,6 +1025,15 @@ $C^\infty(\mathbf{R}^3)$, or $H^2(\mathbf{C})$
 \node at (3,-6) {\bf We can do this!};
 
 \end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Rosenfeld-Gr\"obner Algorithm}
+\begin{exampleblock}{Francois Boulier, Daniel Lazard, François Ollivier, Michel Petitot
+Representation for the radical of a finitely generated differential ideal
+}
+\includegraphics[page=2, clip, trim=0in 0in 0in 5.2in, width=\textwidth]{blop.pdf}
+\end{exampleblock}
 \end{frame}
 
 %----------------------------------
